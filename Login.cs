@@ -37,6 +37,9 @@ namespace IssleduemSmetanu
             InitializeComponent();
 
             #region ---------- РАЗВЛЕЧЕНИЯ С РАМОЧКОЙ ----------
+
+            this.StartPosition = FormStartPosition.CenterScreen;
+
             this.MaximumSize = this.Size;
             this.MinimumSize = this.Size;
 
@@ -224,6 +227,7 @@ namespace IssleduemSmetanu
         private void usernameTextBox_Leave(object sender, EventArgs e)
         {
             usernameLabel.Font = new Font(usernameLabel.Font.FontFamily, usernameLabel.Font.Size, FontStyle.Regular);
+            //avatarPictureBox.Image = Properties.Resources.Researcher;
 
             // ----- ИЗМЕНЕНИЕ АВАТАРКИ -----
             //

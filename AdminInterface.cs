@@ -34,7 +34,7 @@ namespace IssleduemSmetanu
             InitializeComponent();
 
             #region ---------- РАЗВЛЕЧЕНИЯ С РАМОЧКОЙ ----------
-            this.Text = "Администрируем сметану";
+            this.Text = "Заведующий исследователями сметаны";
             this.StartPosition = FormStartPosition.CenterScreen;
 
             this.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 10, 10));

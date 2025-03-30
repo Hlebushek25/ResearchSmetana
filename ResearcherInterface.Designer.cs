@@ -115,6 +115,12 @@
             this.label7 = new System.Windows.Forms.Label();
             this.valuesTable = new System.Windows.Forms.TabPage();
             this.graph = new System.Windows.Forms.TabPage();
+            this.resultsTable = new System.Windows.Forms.DataGridView();
+            this.Coord = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Temperature = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Visconsity = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.button4 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.inputParameters.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -146,6 +152,9 @@
             this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
             this.flowLayoutPanel5.SuspendLayout();
+            this.valuesTable.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.resultsTable)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -1105,6 +1114,8 @@
             // valuesTable
             // 
             this.valuesTable.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(246)))), ((int)(((byte)(246)))));
+            this.valuesTable.Controls.Add(this.panel1);
+            this.valuesTable.Controls.Add(this.resultsTable);
             this.valuesTable.Location = new System.Drawing.Point(4, 25);
             this.valuesTable.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.valuesTable.Name = "valuesTable";
@@ -1123,7 +1134,62 @@
             this.graph.TabIndex = 2;
             this.graph.Text = "График";
             // 
-            // MainForm
+            // resultsTable
+            // 
+            this.resultsTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.resultsTable.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(229)))), ((int)(((byte)(226)))), ((int)(((byte)(209)))));
+            this.resultsTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.resultsTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Coord,
+            this.Temperature,
+            this.Visconsity});
+            this.resultsTable.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.resultsTable.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.resultsTable.Location = new System.Drawing.Point(3, 2);
+            this.resultsTable.Name = "resultsTable";
+            this.resultsTable.RowHeadersWidth = 51;
+            this.resultsTable.RowTemplate.Height = 24;
+            this.resultsTable.Size = new System.Drawing.Size(875, 545);
+            this.resultsTable.TabIndex = 0;
+            // 
+            // Coord
+            // 
+            this.Coord.HeaderText = "Координата по длине канала, м";
+            this.Coord.MinimumWidth = 6;
+            this.Coord.Name = "Coord";
+            // 
+            // Temperature
+            // 
+            this.Temperature.HeaderText = "Температура, °С";
+            this.Temperature.MinimumWidth = 6;
+            this.Temperature.Name = "Temperature";
+            // 
+            // Visconsity
+            // 
+            this.Visconsity.HeaderText = "Вязкость, Па*с";
+            this.Visconsity.MinimumWidth = 6;
+            this.Visconsity.Name = "Visconsity";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.button4);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(3, 483);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(875, 64);
+            this.panel1.TabIndex = 1;
+            // 
+            // button4
+            // 
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button4.Location = new System.Drawing.Point(715, 20);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(139, 29);
+            this.button4.TabIndex = 0;
+            this.button4.Text = "Сохранить в .xls";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // ResearcherInterface
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -1132,7 +1198,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MaximizeBox = false;
-            this.Name = "MainForm";
+            this.Name = "ResearcherInterface";
             this.Text = "Исследуем сметану";
             this.tabControl1.ResumeLayout(false);
             this.inputParameters.ResumeLayout(false);
@@ -1192,6 +1258,9 @@
             this.flowLayoutPanel4.PerformLayout();
             this.flowLayoutPanel5.ResumeLayout(false);
             this.flowLayoutPanel5.PerformLayout();
+            this.valuesTable.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.resultsTable)).EndInit();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1285,6 +1354,12 @@
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.DataGridView resultsTable;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Coord;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Temperature;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Visconsity;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button button4;
     }
 }
 

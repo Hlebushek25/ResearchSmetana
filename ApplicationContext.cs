@@ -29,7 +29,7 @@ namespace IssleduemSmetanu
                             using (MemoryStream wavFile = new MemoryStream(Properties.Resources.Startup))
                             using (SoundPlayer player = new SoundPlayer(wavFile))
                             {
-                                player.Play(); // Воспроизведение звука
+                                //player.Play(); // Воспроизведение звука
                             }
                         }
                         catch (Exception ex)
@@ -46,7 +46,7 @@ namespace IssleduemSmetanu
                             using (MemoryStream wavFile = new MemoryStream(Properties.Resources.Startup))
                             using (SoundPlayer player = new SoundPlayer(wavFile))
                             {
-                                player.Play(); // Воспроизведение звука
+                                //player.Play(); // Воспроизведение звука
                             }
                         }
                         catch (Exception ex)
