@@ -95,11 +95,11 @@
       <DependentUpon>BSOD.cs</DependentUpon>
     </Compile>
     <Compile Include="CheckValues.cs" />
-    <Compile Include="Error.cs">
+    <Compile Include="Dialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Error.Designer.cs">
-      <DependentUpon>Error.cs</DependentUpon>
+    <Compile Include="Dialog.Designer.cs">
+      <DependentUpon>Dialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
@@ -121,8 +121,8 @@
     <EmbeddedResource Include="BSOD.resx">
       <DependentUpon>BSOD.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Error.resx">
-      <DependentUpon>Error.cs</DependentUpon>
+    <EmbeddedResource Include="Dialog.resx">
+      <DependentUpon>Dialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
@@ -165,6 +165,7 @@
     <Content Include="bin\Debug\media\windows-xp-start-md.wav" />
     <Content Include="bin\Debug\media\windows-xp-start.wav" />
     <Content Include="bin\Debug\media\windows-xp-startup.wav" />
+    <None Include="media\kolobok-warning.gif" />
     <Content Include="media\windows-xp-critical-error.wav" />
     <Content Include="media\windows-xp-start.wav" />
   </ItemGroup>

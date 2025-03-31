@@ -61,7 +61,7 @@ namespace IssleduemSmetanu
                         ExitThread();
                         break;
                     default:
-                        Error error = new Error("Произошла критическая ошибка\nпри запуске программы");
+                        Dialog error = new Dialog("Произошла критическая ошибка\nпри запуске программы", DialogType.Error);
                         error.Show();
 
                         await Task.Delay(3000);

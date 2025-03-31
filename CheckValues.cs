@@ -21,7 +21,7 @@ namespace IssleduemSmetanu
 
                 if (textBoxValue == null)
                 {
-                    callError("Введённые данные некорректны\nЗначение должно быть числом");
+                    callDialog("Введённые данные некорректны\nЗначение должно быть числом", DialogType.Error);
                     textBox.Focus();
                     return;
                 }
@@ -96,7 +96,7 @@ namespace IssleduemSmetanu
         {
             if (value <= 0)
             {
-                callError($"Значение параметра {parameterName} должно быть положительным");
+                callDialog($"Значение параметра {parameterName} должно быть положительным", DialogType.Error);
                 (sender as TextBox).Focus();
                 return;
             }
@@ -106,16 +106,17 @@ namespace IssleduemSmetanu
         {
             if (value < -273)
             {
-                callError($"Значение параметра {parameterName} должно быть больше -273°С");
+                callDialog($"Значение параметра {parameterName} должно быть больше -273°С", DialogType.Error);
                 (sender as TextBox).Focus();
                 return;
             }
         }
 
-        private static void callError(string message)
+        private static string callDialog(string message, DialogType type)
         {
-            Error error = new Error(message);
+            Dialog error = new Dialog(message, type);
             error.ShowDialog();
+            return error.ActionCode;
         }
     }
 }

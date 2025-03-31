@@ -12,11 +12,21 @@ using System.Windows.Forms;
 using System.Media;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using System.IO;
+using System.Data.SqlTypes;
 
 namespace IssleduemSmetanu
 {
-    public partial class Error : Form
+    public enum DialogType
     {
+        Error,
+        YesOrNo
+    };
+    public partial class Dialog : Form
+    {
+        public string ActionCode { get; private set; }
+
+        //private DialogType type;
+
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn(
             int nLeftRect, int nTopRect, int nRightRect, int nBottomRect,
@@ -33,16 +43,16 @@ namespace IssleduemSmetanu
         // Константа сообщения для перетаскивания окна
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HTCAPTION = 0x2;
-        public Error(string errorMessage)
+        public Dialog(string message, DialogType dialogType)
         {
             InitializeComponent();
 
             #region ---------- РАЗВЛЕЧЕНИЯ С РАМОЧКОЙ ----------
-            label1.Text = errorMessage;
+            label1.Text = message;
 
             // Настройки формы
             this.Text = "Ошибка!";
-            this.Size = new Size(label1.Width + 150, label1.Height + 70);
+            this.Size = new Size(label1.Width + 150, label1.Height + 100);
             this.StartPosition = FormStartPosition.CenterScreen;
 
             this.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, this.Width, this.Height, 10, 10));
@@ -111,22 +121,56 @@ namespace IssleduemSmetanu
 
             this.Controls.Add(headerPanel);
 
-            this.Load += (sender, e) =>
-            {
-                try
-                {
-                    using (MemoryStream wavFile = new MemoryStream(Properties.Resources.Error))
-                    using (SoundPlayer player = new SoundPlayer(wavFile))
-                    {
-                        player.Play(); // Воспроизведение звука
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Ошибка воспроизведения звука: {ex.Message}");
-                }
-            };
             #endregion
+
+            switch (dialogType)
+            {
+                case DialogType.Error:
+                    this.Load += (sender, e) =>
+                    {
+                        try
+                        {
+                            using (MemoryStream wavFile = new MemoryStream(Properties.Resources.Error))
+                            using (SoundPlayer player = new SoundPlayer(wavFile))
+                            {
+                                player.Play(); // Воспроизведение звука
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Ошибка воспроизведения звука: {ex.Message}");
+                        }
+                    };
+                    okButton.Visible = true;
+                    okButton.Location = new Point(this.Width - 75, this.Height - 35);
+                    this.Text = "Ошибка!";
+                    windowIcon.Image = Properties.Resources.kolobok;
+                    break;
+                case DialogType.YesOrNo:
+                    this.Load += (sender, e) =>
+                    {
+                        try
+                        {
+                            using (MemoryStream wavFile = new MemoryStream(Properties.Resources.Exclamation))
+                            using (SoundPlayer player = new SoundPlayer(wavFile))
+                            {
+                                player.Play(); // Воспроизведение звука
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Ошибка воспроизведения звука: {ex.Message}");
+                        }
+                    };
+                    yesButton.Visible = true;
+                    noButton.Visible = true;
+                    yesButton.Location = new Point(this.Width - 150, this.Height - 35);
+                    noButton.Location = new Point(this.Width - 75, this.Height - 35);
+                    this.Text = "Продолжить?";
+                    windowIcon.Image = Properties.Resources.kolobok_warning;
+                    break;
+            }
+            
 
             this.KeyPreview = true;
             this.KeyDown += (sender, e) =>
@@ -180,5 +224,22 @@ namespace IssleduemSmetanu
 
         }
 
+        private void okButton_Click(object sender, EventArgs e)
+        {
+            ActionCode = "ok";
+            this.Close();
+        }
+
+        private void noButton_Click(object sender, EventArgs e)
+        {
+            ActionCode = "no";
+            this.Close();
+        }
+
+        private void yesButton_Click(object sender, EventArgs e)
+        {
+            ActionCode = "yes";
+            this.Close();
+        }
     }
 }
