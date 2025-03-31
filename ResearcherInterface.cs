@@ -13,6 +13,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 
 namespace IssleduemSmetanu
 {
@@ -241,5 +243,56 @@ namespace IssleduemSmetanu
             }
         }
 
+        private void saveToExcelButton_Click(object sender, EventArgs e)
+        {
+            //System.Xml.Serialization.XmlSerializer x = new System.Xml.Serialization.XmlSerializer(typeof(PointF[]));
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "xlsx (*xlsx)|*.xlsx|Все файлы (*.*)|*.* ";
+            saveFileDialog.Title = "Сохранение данных";
+            saveFileDialog.FileName = "Результаты расчётов.xlsx";
+            saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string filepath = saveFileDialog.FileName;
+                ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+                using (ExcelPackage excelPackage = new ExcelPackage())
+                {
+                    ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Результаты расчётов");
+                    
+                    worksheet.Cells[1, 1].Value = "Координата по длине канала, м";
+                    worksheet.Cells[1, 2].Value = "Температура, °С";
+                    worksheet.Cells[1, 3].Value = "Вязкость, Па*с";
+                    worksheet.Cells[1, 1].Style.Font.Bold = true;
+                    worksheet.Cells[1, 2].Style.Font.Bold = true;
+                    worksheet.Cells[1, 3].Style.Font.Bold = true;
+                    for (int i = 0; i < resultsTable.Rows.Count; i++)
+                    {
+                        worksheet.Cells[i + 2, 1].Value = resultsTable.Rows[i].Cells[0].Value;
+                        worksheet.Cells[i + 2, 2].Value = resultsTable.Rows[i].Cells[1].Value;
+                        worksheet.Cells[i + 2, 3].Value = resultsTable.Rows[i].Cells[2].Value;
+                    }
+                    worksheet.Column(1).AutoFit();
+                    worksheet.Column(2).AutoFit();
+                    worksheet.Column(3).AutoFit();
+                    var cell = worksheet.Cells[$"A1:C{resultsTable.Rows.Count}"];
+                    cell.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    cell.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                    cell.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    cell.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                    FileInfo file = new FileInfo(filepath);
+                    try
+                    {
+                        excelPackage.SaveAs(file);
+                    }
+                    catch (Exception ex)
+                    {
+                        callError("Не удалось сохранить файл (ಥ﹏ಥ)\nВозможно он открыт в другой программе");
+                    }
+                }
+            }
+        }
     }
 }

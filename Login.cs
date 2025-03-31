@@ -170,8 +170,8 @@ namespace IssleduemSmetanu
             continueButton.Click += (sender, e) =>
             {
                 // ----- вот тут перед рандомом сделать проверку на роль -----
-                //this.ActionCode = "ContinueAsResearcher";
-                this.ActionCode = "ContinueAsAdmin";
+                this.ActionCode = "ContinueAsResearcher";
+                //this.ActionCode = "ContinueAsAdmin";
 
                 // ----- НЕРЕАЛЬНЫЙ РАНДОМ -----
                 Random random = new Random();

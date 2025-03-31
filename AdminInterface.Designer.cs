@@ -35,8 +35,8 @@
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.usersTable = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Usernames = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Passwords = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.Materials.SuspendLayout();
             this.Users.SuspendLayout();
@@ -110,8 +110,8 @@
             this.usersTable.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(229)))), ((int)(((byte)(226)))), ((int)(((byte)(209)))));
             this.usersTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.usersTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn1,
-            this.dataGridViewTextBoxColumn2});
+            this.Usernames,
+            this.Passwords});
             this.usersTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.usersTable.Location = new System.Drawing.Point(3, 3);
             this.usersTable.Name = "usersTable";
@@ -120,17 +120,17 @@
             this.usersTable.Size = new System.Drawing.Size(778, 375);
             this.usersTable.TabIndex = 1;
             // 
-            // dataGridViewTextBoxColumn1
+            // Usernames
             // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "Имена пользователей";
-            this.dataGridViewTextBoxColumn1.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.Usernames.HeaderText = "Имена пользователей";
+            this.Usernames.MinimumWidth = 6;
+            this.Usernames.Name = "Usernames";
             // 
-            // dataGridViewTextBoxColumn2
+            // Passwords
             // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "Пароли";
-            this.dataGridViewTextBoxColumn2.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.Passwords.HeaderText = "Пароли";
+            this.Passwords.MinimumWidth = 6;
+            this.Passwords.Name = "Passwords";
             // 
             // AdminInterface
             // 
@@ -159,7 +159,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridView usersTable;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Usernames;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Passwords;
     }
 }
