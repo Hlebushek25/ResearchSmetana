@@ -227,7 +227,7 @@ namespace IssleduemSmetanu
         private void usernameTextBox_Leave(object sender, EventArgs e)
         {
             usernameLabel.Font = new Font(usernameLabel.Font.FontFamily, usernameLabel.Font.Size, FontStyle.Regular);
-            //avatarPictureBox.Image = Properties.Resources.Researcher;
+            avatarPictureBox.Image = Properties.Resources.Researcher;
 
             // ----- ИЗМЕНЕНИЕ АВАТАРКИ -----
             //

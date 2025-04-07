@@ -107,6 +107,11 @@
     <Compile Include="Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="ResearcherInterface.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -132,14 +137,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -160,14 +160,13 @@
     <None Include="Resources\Doge.jpg" />
     <None Include="Resources\_1SoIaOOqWQ.jpg" />
     <None Include="Resources\1693796012_new_preview_windows_xp_frog_user_icon_hq_by_stinkyjaden_dfkdd5b.jpg" />
-    <None Include="bin\Debug\media\kolobok.gif" />
-    <Content Include="bin\Debug\media\windows-xp-critical-error.wav" />
-    <Content Include="bin\Debug\media\windows-xp-start-md.wav" />
-    <Content Include="bin\Debug\media\windows-xp-start.wav" />
-    <Content Include="bin\Debug\media\windows-xp-startup.wav" />
     <None Include="media\kolobok-warning.gif" />
+    <None Include="media\kolobok.gif" />
     <Content Include="media\windows-xp-critical-error.wav" />
     <Content Include="media\windows-xp-start.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Debug\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
