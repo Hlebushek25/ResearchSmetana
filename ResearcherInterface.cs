@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SQLite;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Globalization;
@@ -38,7 +40,67 @@ namespace IssleduemSmetanu
         private const int HTCAPTION = 0x2;
 
         private bool isNavigateButton = false;
+        ////
+        private static string dbPath = "DB.db";
+        public static List<Material> GetAllMaterials(string dbPath)
+        {
+            var users = new List<Material>();
 
+            using (var connection = new SQLiteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText = "SELECT id_material, name_material FROM material";
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        users.Add(new Material
+                        {
+                            IdMaterial = reader.GetInt32(0),
+                            NameMaterial = reader.GetString(1),
+                        });
+                    }
+                }
+            }
+
+            return users;
+        }
+
+        public static List<MaterialCharacteristic> GetMaterialCharacteristics(string dbPath, int materialId)
+        {
+            var characteristics = new List<MaterialCharacteristic>();
+
+            using (var connection = new SQLiteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText = "SELECT id, id_material, id_characteristic, value_characteristic FROM value_characteristic_material WHERE id_material = @materialId";
+                command.Parameters.AddWithValue("@materialId", materialId);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        characteristics.Add(new MaterialCharacteristic
+                        {
+                            Id = reader.GetInt32(0),
+                            IdMaterial = reader.GetInt32(1),
+                            IdCharacteristic = reader.GetInt32(2),
+                            ValueCharacteristic = reader.GetDouble(3)
+                            //ValueCharacteristic = reader.IsDBNull(3) ? string.Empty : reader.GetDouble(3)
+                        });
+                    }
+                }
+            }
+
+            return characteristics;
+        }
+
+        ////
         public ResearcherInterface()
         {
             InitializeComponent();
@@ -177,6 +239,24 @@ namespace IssleduemSmetanu
                 }
 
             };
+            ////
+            try
+            {
+                List<Material> materials = GetAllMaterials(dbPath);
+
+                materialComboBox.DisplayMember = "NameMaterial";
+                materialComboBox.ValueMember = "IdMaterial";
+                materialComboBox.DataSource = materials;
+
+                //// Опционально: добавить пустой элемент
+                //materialComboBox.Items.Insert(0, new Material { IdMaterial = 0, NameMaterial = "Выберите материал" });
+                //materialComboBox.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки материалов: {ex.Message}");
+            }
+            ////
         }
 
 
@@ -213,7 +293,53 @@ namespace IssleduemSmetanu
             }
 
         }
+        ////
+        private void materialComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (materialComboBox.SelectedItem == null) return;
 
+            var selectedMaterial = (Material)materialComboBox.SelectedItem;
+            int materialId = selectedMaterial.IdMaterial;
+
+            try
+            {
+                var characteristics = GetMaterialCharacteristics(dbPath, materialId);
+
+                // Очищаем все TextBox перед заполнением
+                densityTextBox.Clear();
+                specificHeatCapacityTextBox.Clear();
+                meltingPointTextBox.Clear();
+
+                // Заполняем TextBox в соответствии с id_characteristic
+                foreach (var characteristic in characteristics)
+                {
+                    switch (characteristic.IdCharacteristic)
+                    {
+                        case 1: // Плотность
+                            densityTextBox.Text = characteristic.ValueCharacteristic.ToString();
+                            break;
+                        case 2: // Удельная теплоемкость
+                            specificHeatCapacityTextBox.Text = characteristic.ValueCharacteristic.ToString();
+                            break;
+                        case 3: // Температура плавления
+                            meltingPointTextBox.Text = characteristic.ValueCharacteristic.ToString();
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки характеристик: {ex.Message}");
+            }
+
+            //////////////
+            //if (materialComboBox.SelectedItem != null && materialComboBox.SelectedIndex > 0)
+            //{
+            //    Material selected = (Material)materialComboBox.SelectedItem;
+            //    MessageBox.Show($"Выбран материал: {selected.NameMaterial} (ID: {selected.IdMaterial})");
+            //}
+        }
+        ////
         private void button1_Click(object sender, EventArgs e)
         {
             Dialog error = new Dialog("АААААААААА ОШИБКА\nВот прям на две строки\nИли даже и того больше", DialogType.Error);
@@ -304,4 +430,18 @@ namespace IssleduemSmetanu
             }
         }
     }
+    public class Material
+    {
+        public int IdMaterial { get; set; }
+        public string NameMaterial { get; set; }    
+    }
+
+    public class MaterialCharacteristic
+    {
+        public int Id { get; set; }
+        public int IdMaterial { get; set; }
+        public int IdCharacteristic { get; set; }
+        public double ValueCharacteristic { get; set; }
+    }
+
 }

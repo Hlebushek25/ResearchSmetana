@@ -12,6 +12,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using System.Data.SQLite;
+using System.Diagnostics;
+using System.IO;
 
 namespace IssleduemSmetanu
 {
@@ -32,6 +35,41 @@ namespace IssleduemSmetanu
 
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HTCAPTION = 0x2;
+
+////
+        private static string dbPath = "Users.db";      
+        public static List<User> GetAllUsers(string dbPath)
+        {
+            var users = new List<User>();
+
+            using (var connection = new SQLiteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText = "SELECT id_user, login, pass, role FROM user";
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        users.Add(new User
+                        {
+                            IdUser = reader.GetInt32(0),
+                            Login = reader.GetString(1),
+                            Password = reader.GetString(2),
+                            Role = reader.GetString(3)
+                        });
+                    }
+                }
+            }
+
+            return users;
+        }
+               
+        List<User> users = GetAllUsers(dbPath);
+////
+
         public Login()
         {
             InitializeComponent();
@@ -169,17 +207,46 @@ namespace IssleduemSmetanu
 
             continueButton.Click += (sender, e) =>
             {
-                // ----- вот тут перед рандомом сделать проверку на роль -----
-                this.ActionCode = "ContinueAsResearcher";
-                //this.ActionCode = "ContinueAsAdmin";
+                string username = usernameTextBox.Text;
+                string password = passwordTextBox.Text;
 
-                // ----- НЕРЕАЛЬНЫЙ РАНДОМ -----
-                Random random = new Random();
-                if (random.Next(1, 21) == 1)
+                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 {
+                    MessageBox.Show("Введите логин и пароль!");
+                    return;
+                }
+
+                try
+                {
+                    var user = users.FirstOrDefault(u => u.Login.Equals(username, StringComparison.OrdinalIgnoreCase) && u.Password == password);
+
+                    if (user == null)
+                    {
+                        Dialog error = new Dialog("Неверный логин или пароль!", DialogType.Error);
+                        error.ShowDialog();
+                        return;
+                    }
+
+                    this.ActionCode = user.Role.Equals("admin", StringComparison.OrdinalIgnoreCase)
+                        ? "ContinueAsAdmin"
+                        : "ContinueAsResearcher";
+
+                    // ----- НЕРЕАЛЬНЫЙ РАНДОМ -----
+                    Random random = new Random();
+                    if (random.Next(1, 21) == 1)
+                    {
+                        this.ActionCode = "error";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при проверке данных: {ex.Message}");
                     this.ActionCode = "error";
                 }
-                this.Close();
+                finally
+                {
+                    this.Close();
+                }
             };
 
             this.KeyPreview = true;
@@ -226,25 +293,42 @@ namespace IssleduemSmetanu
 
         private void usernameTextBox_Leave(object sender, EventArgs e)
         {
-            usernameLabel.Font = new Font(usernameLabel.Font.FontFamily, usernameLabel.Font.Size, FontStyle.Regular);
-            avatarPictureBox.Image = Properties.Resources.Researcher;
+            usernameLabel.Font = new Font(usernameLabel.Font.FontFamily, usernameLabel.Font.Size, FontStyle.Regular);               
+            avatarPictureBox.Image = Properties.Resources.Doge;
 
-            // ----- ИЗМЕНЕНИЕ АВАТАРКИ -----
-            //
-            // Сделать проверку
-            //
-            //switch (РОЛЬ)
-            //{
-            //    case "Researcher":
-            //        avatarPictureBox.Image = Properties.Resources.Researcher;
-            //        break;
-            //    case "Admin":
-            //        avatarPictureBox.Image = Properties.Resources.Admin;
-            //        break;
-            //    default:
-            //        avatarPictureBox.Image = Properties.Resources.Doge;
-            //        break;
-            //}
+            if (string.IsNullOrWhiteSpace(usernameTextBox.Text))
+            {
+                return;
+            }
+
+            try
+            {
+                //// Ищем пользователя в базе данных
+                var user = users.FirstOrDefault(u => u.Login.Equals(usernameTextBox.Text, StringComparison.OrdinalIgnoreCase));
+
+                if (user != null)
+                {
+                    // Меняем аватар в зависимости от роли
+                    switch (user.Role?.ToLower()) // Приводим роль к нижнему регистру для унификации
+                    {
+                        case "researcher":
+                            avatarPictureBox.Image = Properties.Resources.Researcher;
+                            break;
+                        case "admin":
+                            avatarPictureBox.Image = Properties.Resources.Admin;
+                            break;
+                        default:
+                            avatarPictureBox.Image = Properties.Resources.Doge;
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Логируем ошибку, но не прерываем работу приложения
+                Debug.WriteLine($"Ошибка при проверке пользователя: {ex.Message}");
+                avatarPictureBox.Image = Properties.Resources.Doge;
+            }
         }
 
         private void passwordTextBox_Enter(object sender, EventArgs e)
@@ -256,5 +340,13 @@ namespace IssleduemSmetanu
         {
             passwordLabel.Font = new Font(passwordLabel.Font.FontFamily, passwordLabel.Font.Size, FontStyle.Regular);
         }
+    }
+
+    public class User
+    {
+        public int IdUser { get; set; }
+        public string Login { get; set; }
+        public string Password { get; set; }
+        public string Role { get; set; }
     }
 }
