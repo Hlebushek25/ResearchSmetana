@@ -254,7 +254,8 @@ namespace IssleduemSmetanu
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка загрузки материалов: {ex.Message}");
+                Dialog dialog = new Dialog($"Ошибка загрузки материалов: {ex.Message}", DialogType.Error);
+                dialog.ShowDialog();
             }
             ////
         }
@@ -329,7 +330,8 @@ namespace IssleduemSmetanu
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка загрузки характеристик: {ex.Message}");
+                Dialog dialog = new Dialog($"Ошибка загрузки характеристик: {ex.Message}", DialogType.Error);
+                dialog.ShowDialog();
             }
 
             //////////////

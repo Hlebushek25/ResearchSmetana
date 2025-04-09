@@ -212,13 +212,14 @@ namespace IssleduemSmetanu
 
                 if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 {
-                    MessageBox.Show("Введите логин и пароль!");
+                    Dialog dialog = new Dialog("Введите логин и пароль!", DialogType.Error);
+                    dialog.ShowDialog();
                     return;
                 }
 
                 try
                 {
-                    var user = users.FirstOrDefault(u => u.Login.Equals(username, StringComparison.OrdinalIgnoreCase) && u.Password == password);
+                    User user = users.FirstOrDefault(u => u.Login.Equals(username, StringComparison.OrdinalIgnoreCase) && u.Password == password);
 
                     if (user == null)
                     {
@@ -233,19 +234,16 @@ namespace IssleduemSmetanu
 
                     // ----- НЕРЕАЛЬНЫЙ РАНДОМ -----
                     Random random = new Random();
-                    if (random.Next(1, 21) == 1)
+                    if (random.Next(1, 51) == 1)
                     {
                         this.ActionCode = "error";
                     }
+                    this.Close();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Ошибка при проверке данных: {ex.Message}");
-                    this.ActionCode = "error";
-                }
-                finally
-                {
-                    this.Close();
+                    Dialog dialog = new Dialog(ex.Message, DialogType.Error);
+                    dialog.ShowDialog();
                 }
             };
 
