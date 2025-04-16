@@ -36,8 +36,9 @@ namespace IssleduemSmetanu
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HTCAPTION = 0x2;
 
-////
-        private static string dbPath = "Users.db";      
+        ////
+        private static string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "Users.db");
+
         public static List<User> GetAllUsers(string dbPath)
         {
             var users = new List<User>();

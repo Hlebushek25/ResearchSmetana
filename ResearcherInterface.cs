@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace IssleduemSmetanu
 {
@@ -40,67 +41,9 @@ namespace IssleduemSmetanu
         private const int HTCAPTION = 0x2;
 
         private bool isNavigateButton = false;
-        ////
-        private static string dbPath = "DB.db";
-        public static List<Material> GetAllMaterials(string dbPath)
-        {
-            var users = new List<Material>();
 
-            using (var connection = new SQLiteConnection($"Data Source={dbPath}"))
-            {
-                connection.Open();
+        private static string dbpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "DB.db");
 
-                var command = connection.CreateCommand();
-                command.CommandText = "SELECT id_material, name_material FROM material";
-
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        users.Add(new Material
-                        {
-                            IdMaterial = reader.GetInt32(0),
-                            NameMaterial = reader.GetString(1),
-                        });
-                    }
-                }
-            }
-
-            return users;
-        }
-
-        public static List<MaterialCharacteristic> GetMaterialCharacteristics(string dbPath, int materialId)
-        {
-            var characteristics = new List<MaterialCharacteristic>();
-
-            using (var connection = new SQLiteConnection($"Data Source={dbPath}"))
-            {
-                connection.Open();
-
-                var command = connection.CreateCommand();
-                command.CommandText = "SELECT id, id_material, id_characteristic, value_characteristic FROM value_characteristic_material WHERE id_material = @materialId";
-                command.Parameters.AddWithValue("@materialId", materialId);
-
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        characteristics.Add(new MaterialCharacteristic
-                        {
-                            Id = reader.GetInt32(0),
-                            IdMaterial = reader.GetInt32(1),
-                            IdCharacteristic = reader.GetInt32(2),
-                            ValueCharacteristic = reader.GetDouble(3)
-                            //ValueCharacteristic = reader.IsDBNull(3) ? string.Empty : reader.GetDouble(3)
-                        });
-                    }
-                }
-            }
-
-            return characteristics;
-        }
-
-        ////
         public ResearcherInterface()
         {
             InitializeComponent();
@@ -239,10 +182,12 @@ namespace IssleduemSmetanu
                 }
 
             };
+
             ////
             try
             {
-                List<Material> materials = GetAllMaterials(dbPath);
+                List<Material> materials = LoadDB.GetAllMaterials(dbpath);
+                //List<Material> materials = GetAllMaterials(dbPath);
 
                 materialComboBox.DisplayMember = "NameMaterial";
                 materialComboBox.ValueMember = "IdMaterial";
@@ -304,7 +249,8 @@ namespace IssleduemSmetanu
 
             try
             {
-                var characteristics = GetMaterialCharacteristics(dbPath, materialId);
+                List<MaterialCharacteristic> characteristics = LoadDB.GetMaterialCharacteristics(dbpath, materialId);
+                //List<MaterialCharacteristic> characteristics = GetMaterialCharacteristics(dbPath, materialId);
 
                 // Очищаем все TextBox перед заполнением
                 densityTextBox.Clear();
@@ -324,6 +270,40 @@ namespace IssleduemSmetanu
                             break;
                         case 3: // Температура плавления
                             meltingPointTextBox.Text = characteristic.ValueCharacteristic.ToString();
+                            break;
+                    }
+                }
+
+                List<MaterialEmpericalCoef> empericalCoefs = LoadDB.GetEmpericalCoef(dbpath, materialId);
+                
+                viscosityTextBox.Clear();
+                tempRatioTextBox.Clear();
+                castingTempTextBox.Clear();
+                timeConstTextBox.Clear();   
+                viscosityAnomalyTextBox.Clear();
+                heatTransferRatioTextBox.Clear();
+
+                foreach (var empericalCoef in empericalCoefs)
+                {
+                    switch (empericalCoef.IdEmpericalCoef)
+                    {
+                        case 1: 
+                            viscosityTextBox.Text = empericalCoef.ValueEmpericalCoef.ToString();
+                            break;
+                        case 2: 
+                            tempRatioTextBox.Text = empericalCoef.ValueEmpericalCoef.ToString();
+                            break;
+                        case 3: 
+                            castingTempTextBox.Text = empericalCoef.ValueEmpericalCoef.ToString();
+                            break;
+                        case 4:
+                            timeConstTextBox.Text = empericalCoef.ValueEmpericalCoef.ToString();
+                            break;
+                        case 5:
+                            viscosityAnomalyTextBox.Text = empericalCoef.ValueEmpericalCoef.ToString();
+                            break;
+                        case 6:
+                            heatTransferRatioTextBox.Text = empericalCoef.ValueEmpericalCoef.ToString();
                             break;
                     }
                 }
@@ -432,18 +412,4 @@ namespace IssleduemSmetanu
             }
         }
     }
-    public class Material
-    {
-        public int IdMaterial { get; set; }
-        public string NameMaterial { get; set; }    
-    }
-
-    public class MaterialCharacteristic
-    {
-        public int Id { get; set; }
-        public int IdMaterial { get; set; }
-        public int IdCharacteristic { get; set; }
-        public double ValueCharacteristic { get; set; }
-    }
-
 }
