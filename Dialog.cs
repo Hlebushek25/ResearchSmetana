@@ -19,11 +19,14 @@ namespace IssleduemSmetanu
     public enum DialogType
     {
         Error,
+        ErrorWithTimer,
         YesOrNo
     };
     public partial class Dialog : Form
     {
         public string ActionCode { get; private set; }
+        private string message = string.Empty;
+        private Timer timer;
 
         //private DialogType type;
 
@@ -46,6 +49,7 @@ namespace IssleduemSmetanu
         public Dialog(string message, DialogType dialogType)
         {
             InitializeComponent();
+            this.message = message;
 
             #region ---------- РАЗВЛЕЧЕНИЯ С РАМОЧКОЙ ----------
             label1.Text = message;
@@ -146,6 +150,38 @@ namespace IssleduemSmetanu
                     this.Text = "Ошибка!";
                     windowIcon.Image = Properties.Resources.kolobok;
                     break;
+
+                case DialogType.ErrorWithTimer:
+                    this.Load += (sender, e) =>
+                    {
+                        try
+                        {
+                            using (MemoryStream wavFile = new MemoryStream(Properties.Resources.Error))
+                            using (SoundPlayer player = new SoundPlayer(wavFile))
+                            {
+                                player.Play(); // Воспроизведение звука
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Ошибка воспроизведения звука: {ex.Message}");
+                        }
+                    };
+                    okButton.Visible = true;
+                    okButton.Location = new Point(this.Width - 75, this.Height - 35);
+                    this.Text = "Ошибка!";
+                    windowIcon.Image = Properties.Resources.kolobok;
+
+                    timer = new Timer
+                    {
+                        Interval = 1000
+                    };
+
+                    timer.Tick += Timer_Tick;
+                    timer.Start();
+
+                    break;
+
                 case DialogType.YesOrNo:
                     this.Load += (sender, e) =>
                     {
@@ -239,6 +275,26 @@ namespace IssleduemSmetanu
         private void yesButton_Click(object sender, EventArgs e)
         {
             ActionCode = "yes";
+            this.Close();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            TimeSpan remainingTime = Properties.Settings.Default.BlockUntil - DateTime.Now;
+            label1.Text = message + remainingTime.Minutes.ToString() + " м " + remainingTime.Seconds.ToString() + " c";
+
+            if (remainingTime <= TimeSpan.Zero)
+            {
+                timer.Stop();
+                TimerFinished();
+            }
+        }
+
+        private void TimerFinished()
+        {
+            Properties.Settings.Default.LoginTryQuantity = Properties.Settings.Default.DefaultLoginTryQuantity;
+            Properties.Settings.Default.BlockUntil = DateTime.MinValue;
+            Properties.Settings.Default.Save();
             this.Close();
         }
     }

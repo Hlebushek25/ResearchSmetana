@@ -224,22 +224,65 @@ namespace IssleduemSmetanu
 
                     if (user == null)
                     {
-                        Dialog error = new Dialog("Неверный логин или пароль!", DialogType.Error);
-                        error.ShowDialog();
-                        return;
-                    }
+                        int loginTryQuantity = int.Parse(Properties.Settings.Default.LoginTryQuantity) - 1;
+                        if (loginTryQuantity > 0)
+                        {
+                            string errorMessage = "Неверный логин или пароль!\nОсталось ";
+                            switch (loginTryQuantity % 10)
+                            {
+                                case 1:
+                                    if (loginTryQuantity % 100 / 10 == 1)
+                                        errorMessage += $"{loginTryQuantity} попыток.";
+                                    else
+                                        errorMessage += $"{loginTryQuantity} попытка.";
+                                    break;
+                                case 2: case 3: case 4:
+                                    if (loginTryQuantity % 100 / 10 == 1)
+                                        errorMessage += $"{loginTryQuantity} попыток.";
+                                    else
+                                        errorMessage += $"{loginTryQuantity} попытки.";
+                                    break;
+                                default:
+                                    errorMessage += $"{loginTryQuantity} попыток.";
+                                    break;
+                            }
+                            Dialog error = new Dialog(errorMessage, DialogType.Error);
+                            Properties.Settings.Default.LoginTryQuantity = loginTryQuantity.ToString();
+                            Properties.Settings.Default.Save();
+                            loginTryQuantity -= 1;
+                            error.ShowDialog();
+                            return;
+                        }
+                        else
+                        {
+                            if (Properties.Settings.Default.BlockUntil == null || Properties.Settings.Default.BlockUntil < DateTime.Now)
+                            {
+                                Properties.Settings.Default.BlockUntil = DateTime.Now.AddSeconds(10);
+                                Properties.Settings.Default.Save();
+                            }
 
-                    this.ActionCode = user.Role.Equals("admin", StringComparison.OrdinalIgnoreCase)
+                            Dialog error = new Dialog("Вам здесь больше не рады!\nВозвращайтесь через ", DialogType.ErrorWithTimer);
+                            error.ShowDialog();
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        this.ActionCode = user.Role.Equals("admin", StringComparison.OrdinalIgnoreCase)
                         ? "ContinueAsAdmin"
                         : "ContinueAsResearcher";
 
-                    // ----- НЕРЕАЛЬНЫЙ РАНДОМ -----
-                    Random random = new Random();
-                    if (random.Next(1, 51) == 1)
-                    {
-                        this.ActionCode = "error";
+                        Properties.Settings.Default.LoginTryQuantity = Properties.Settings.Default.DefaultLoginTryQuantity;
+                        Properties.Settings.Default.Save();
+
+                        // ----- НЕРЕАЛЬНЫЙ РАНДОМ -----
+                        Random random = new Random();
+                        if (random.Next(1, 51) == 1)
+                        {
+                            this.ActionCode = "error";
+                        }
+                        this.Close();
                     }
-                    this.Close();
                 }
                 catch (Exception ex)
                 {
