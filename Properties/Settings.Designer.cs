@@ -26,21 +26,24 @@ namespace IssleduemSmetanu.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("5")]
-        public string LoginTryQuantity {
+        public uint LoginTryQuantity {
             get {
-                return ((string)(this["LoginTryQuantity"]));
+                return ((uint)(this["LoginTryQuantity"]));
             }
             set {
                 this["LoginTryQuantity"] = value;
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5")]
-        public string DefaultLoginTryQuantity {
+        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        public uint DefaultLoginTryQuantity {
             get {
-                return ((string)(this["DefaultLoginTryQuantity"]));
+                return ((uint)(this["DefaultLoginTryQuantity"]));
+            }
+            set {
+                this["DefaultLoginTryQuantity"] = value;
             }
         }
         
@@ -52,6 +55,18 @@ namespace IssleduemSmetanu.Properties {
             }
             set {
                 this["BlockUntil"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("60")]
+        public uint LoginTimeout {
+            get {
+                return ((uint)(this["LoginTimeout"]));
+            }
+            set {
+                this["LoginTimeout"] = value;
             }
         }
     }

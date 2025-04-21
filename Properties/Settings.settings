@@ -2,14 +2,17 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="IssleduemSmetanu.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="LoginTryQuantity" Type="System.String" Scope="User">
+    <Setting Name="LoginTryQuantity" Type="System.UInt32" Scope="User">
       <Value Profile="(Default)">5</Value>
     </Setting>
-    <Setting Name="DefaultLoginTryQuantity" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">5</Value>
+    <Setting Name="DefaultLoginTryQuantity" Type="System.UInt32" Scope="User">
+      <Value Profile="(Default)">4</Value>
     </Setting>
     <Setting Name="BlockUntil" Type="System.DateTime" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="LoginTimeout" Type="System.UInt32" Scope="User">
+      <Value Profile="(Default)">60</Value>
     </Setting>
   </Settings>
 </SettingsFile>

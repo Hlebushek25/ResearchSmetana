@@ -49,7 +49,22 @@ namespace IssleduemSmetanu
         public Dialog(string message, DialogType dialogType)
         {
             InitializeComponent();
+
             this.message = message;
+
+            if (dialogType == DialogType.ErrorWithTimer)
+            {
+                TimeSpan remainingTime = Properties.Settings.Default.BlockUntil - DateTime.Now;
+                label1.Text = message;
+                if (remainingTime.Days != 0) label1.Text += remainingTime.Days.ToString() + " д ";
+                if (remainingTime.Hours != 0) label1.Text += remainingTime.Hours.ToString() + " ч ";
+                if (remainingTime.Minutes != 0) label1.Text += remainingTime.Minutes.ToString() + " м ";
+                if (remainingTime.Seconds != 0) label1.Text += remainingTime.Seconds.ToString() + " с ";
+            }
+            else
+            {
+                label1.Text = message;
+            }
 
             #region ---------- РАЗВЛЕЧЕНИЯ С РАМОЧКОЙ ----------
             label1.Text = message;
@@ -281,7 +296,11 @@ namespace IssleduemSmetanu
         private void Timer_Tick(object sender, EventArgs e)
         {
             TimeSpan remainingTime = Properties.Settings.Default.BlockUntil - DateTime.Now;
-            label1.Text = message + remainingTime.Minutes.ToString() + " м " + remainingTime.Seconds.ToString() + " c";
+            label1.Text = message;
+            if (remainingTime.Days != 0) label1.Text += remainingTime.Days.ToString() + " д ";
+            if (remainingTime.Hours != 0) label1.Text += remainingTime.Hours.ToString() + " ч ";
+            if (remainingTime.Minutes != 0) label1.Text += remainingTime.Minutes.ToString() + " м ";
+            if (remainingTime.Seconds != 0) label1.Text += remainingTime.Seconds.ToString() + " с ";
 
             if (remainingTime <= TimeSpan.Zero)
             {

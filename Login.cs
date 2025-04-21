@@ -222,49 +222,47 @@ namespace IssleduemSmetanu
                 {
                     User user = users.FirstOrDefault(u => u.Login.Equals(username, StringComparison.OrdinalIgnoreCase) && u.Password == password);
 
-                    if (user == null)
+                    uint loginTryQuantity = Properties.Settings.Default.LoginTryQuantity;
+                    if (user == null && loginTryQuantity > 0)
                     {
-                        int loginTryQuantity = int.Parse(Properties.Settings.Default.LoginTryQuantity) - 1;
-                        if (loginTryQuantity > 0)
+                        string errorMessage = "Неверный логин или пароль!\nОсталось ";
+                        switch (loginTryQuantity % 10)
                         {
-                            string errorMessage = "Неверный логин или пароль!\nОсталось ";
-                            switch (loginTryQuantity % 10)
-                            {
-                                case 1:
-                                    if (loginTryQuantity % 100 / 10 == 1)
-                                        errorMessage += $"{loginTryQuantity} попыток.";
-                                    else
-                                        errorMessage += $"{loginTryQuantity} попытка.";
-                                    break;
-                                case 2: case 3: case 4:
-                                    if (loginTryQuantity % 100 / 10 == 1)
-                                        errorMessage += $"{loginTryQuantity} попыток.";
-                                    else
-                                        errorMessage += $"{loginTryQuantity} попытки.";
-                                    break;
-                                default:
+                            case 1:
+                                if (loginTryQuantity % 100 / 10 == 1)
                                     errorMessage += $"{loginTryQuantity} попыток.";
-                                    break;
-                            }
-                            Dialog error = new Dialog(errorMessage, DialogType.Error);
-                            Properties.Settings.Default.LoginTryQuantity = loginTryQuantity.ToString();
-                            Properties.Settings.Default.Save();
-                            loginTryQuantity -= 1;
-                            error.ShowDialog();
-                            return;
+                                else
+                                    errorMessage += $"{loginTryQuantity} попытка.";
+                                break;
+                            case 2: case 3: case 4:
+                                if (loginTryQuantity % 100 / 10 == 1)
+                                    errorMessage += $"{loginTryQuantity} попыток.";
+                                else
+                                    errorMessage += $"{loginTryQuantity} попытки.";
+                                break;
+                            default:
+                                errorMessage += $"{loginTryQuantity} попыток.";
+                                break;
                         }
-                        else
+                        Dialog error = new Dialog(errorMessage, DialogType.Error);
+                        error.ShowDialog();
+                        loginTryQuantity -= 1;
+                        Properties.Settings.Default.LoginTryQuantity = loginTryQuantity;
+                        Properties.Settings.Default.Save();
+                        return;
+                    }
+                    else if (loginTryQuantity <= 0)
+                    {
+                        if (Properties.Settings.Default.BlockUntil == null || Properties.Settings.Default.BlockUntil < DateTime.Now)
                         {
-                            if (Properties.Settings.Default.BlockUntil == null || Properties.Settings.Default.BlockUntil < DateTime.Now)
-                            {
-                                Properties.Settings.Default.BlockUntil = DateTime.Now.AddSeconds(10);
-                                Properties.Settings.Default.Save();
-                            }
+                            Properties.Settings.Default.BlockUntil = DateTime.Now.AddSeconds(Properties.Settings.Default.LoginTimeout);
 
-                            Dialog error = new Dialog("Вам здесь больше не рады!\nВозвращайтесь через ", DialogType.ErrorWithTimer);
-                            error.ShowDialog();
-                            return;
+                            Properties.Settings.Default.Save();
                         }
+
+                        Dialog error = new Dialog("Вам здесь больше не рады!\nВозвращайтесь через ", DialogType.ErrorWithTimer);
+                        error.ShowDialog();
+                        return;
                     }
                     else
                     {

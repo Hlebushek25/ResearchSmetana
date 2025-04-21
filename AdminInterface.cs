@@ -33,6 +33,12 @@ namespace IssleduemSmetanu
         {
             InitializeComponent();
 
+            timeoutHoursTextBox.Text = (Properties.Settings.Default.LoginTimeout / 3600).ToString();
+            timeoutMinutesTextBox.Text = (Properties.Settings.Default.LoginTimeout % 3600 / 60).ToString();
+            timeoutSecondsTextBox.Text = (Properties.Settings.Default.LoginTimeout % 60).ToString();
+
+            tryQuantityTextBox.Text = (Properties.Settings.Default.DefaultLoginTryQuantity + 1).ToString();
+
             #region ---------- РАЗВЛЕЧЕНИЯ С РАМОЧКОЙ ----------
             this.Text = "Заведующий исследователями сметаны";
             this.StartPosition = FormStartPosition.CenterScreen;
