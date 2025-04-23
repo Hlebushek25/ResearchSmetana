@@ -10,22 +10,87 @@ namespace IssleduemSmetanu
 {
     internal class MathModel
     {
-        private double width = 0;
-        private double height = 0;
-        private double length = 0;
-        private double density = 0;
-        private double specificHeatCapacity = 0;
-        private double meltingPoint = 0;
-        private double lidSpeed = 0;
-        private double lidTemperature = 0;
-        private double viscAtZeroShearAndRefTemp = 0;
-        private double viscThermCoeff = 0;
-        private double ref_temp = 0;
-        private double timeConstant = 0;
-        private double viscAnomalyFactor = 0;
-        private double heatTransferCoefficient = 0;
+        private double width { get; set; }                      //Ширина
+        private double height { get; set; }                     //Глубина
+        private double length { get; set; }                     //Длина
+        private double density { get; set; }                    //Плотность
+        private double specificHeatCapacity { get; set; }       //Удельная теплоемкость
+        private double meltingPoint { get; set; }               //Температура плавления
+        private double lidSpeed { get; set; }                   //Скорость крышки
+        private double lidTemperature { get; set; }             //Температура крышки
+        private double viscAtZeroShearAndRefTemp { get; set; }  //Вязкость материала при нулевой скорости деформации сдвига и температуре приведения
+        private double viscThermCoeff { get; set; }             //Температурный коэффициент вязкости материала
+        private double ref_temp { get; set; }                   //Температура приведения
+        private double timeConstant { get; set; }               //Постоянная времени
+        private double viscAnomalyFactor { get; set; }          //Показатель аномалии вязкости материала
+        private double heatTransferCoefficient { get; set; }    //Коэффициент теплоотдачи от крышки канала к материалу
+        private double step { get; set; }                       //Шаг
 
 
+        public MathModel(double width, double height, double length, double density, double specificHeatCapacity, double meltingPoint, double lidSpeed, double lidTemperature,
+                         double viscAtZeroShearAndRefTemp, double viscThermCoeff, double ref_temp, double timeConstant, double viscAnomalyFactor, double heatTransferCoefficient, double step)
+        {
+            this.width = width;
+            this.height = height;
+            this.length = length;
+            this.density = density;
+            this.specificHeatCapacity = specificHeatCapacity;
+            this.meltingPoint = meltingPoint;
+            this.lidSpeed = lidSpeed;
+            this.lidTemperature = lidTemperature;
+            this.viscAtZeroShearAndRefTemp = viscAtZeroShearAndRefTemp;
+            this.viscThermCoeff = viscThermCoeff;
+            this.ref_temp = ref_temp;
+            this.timeConstant = timeConstant;
+            this.viscAnomalyFactor = viscAnomalyFactor;
+            this.heatTransferCoefficient = heatTransferCoefficient;
+            this.step = step;
+        }
+
+        public double CalculatePerformance(/*double width, double height, double lidSpeed*/)
+        {
+            double performance = 3600 * density * (((height * width * lidSpeed) / 2) * ((0.125 * Math.Pow(height / width, 2)) - (0.625 * (height / width)) + 1));
+            return Math.Round(performance);
+        }
+
+        public double[,] CalculateTemperature()
+        {
+            double Qch = (((height * width * lidSpeed) / 2) * ((0.125 * Math.Pow(height / width, 2)) - (0.625 * (height / width)) + 1));
+
+            double gamma = lidSpeed / height;
+            //double qGamma = height * width * viscAtZeroShearAndRefTemp * Math.Pow(gamma, 2) * (Math.Pow(1 + Math.Pow(timeConstant * gamma, 2), (viscAnomalyFactor - 1) / 2));
+            double part1 = height * width * viscAtZeroShearAndRefTemp;
+            double part2 = Math.Pow(gamma, 2);
+            double part3 = timeConstant * gamma;
+            double part4 = Math.Pow(part3, 2);
+            double part5 = 1 + part4;
+            double part6 = (viscAnomalyFactor - 1.0) / 2.0;
+            double part7 = Math.Pow(part5, part6);
+            double qGamma = part1 * part2 * part7;
+
+            double qAlpha = width * heatTransferCoefficient * ((1/viscThermCoeff) - lidTemperature + ref_temp);
+
+            int N = (int)Math.Round(length / step);
+            
+            double[,] combinedArray = new double[3, N+1];
+
+            for (int i = 0; i <= N; i++)
+            {
+                combinedArray[0, i] = i * step;
+
+                double temperature = ref_temp + ((1 / viscThermCoeff) * Math.Log((((viscThermCoeff * qGamma) + (width * heatTransferCoefficient)) / (viscThermCoeff * qAlpha)) * 
+                       (1 - Math.Exp((-viscThermCoeff * qAlpha) / (density * specificHeatCapacity * Qch) * combinedArray[0, i])) + 
+                       Math.Exp(viscThermCoeff * (meltingPoint - ref_temp - (qAlpha / (density * specificHeatCapacity * Qch) * combinedArray[0, i])))));
+                combinedArray[1, i] = Math.Round(temperature, 2);
+
+                double viscosity = viscAtZeroShearAndRefTemp * Math.Exp(-viscThermCoeff * (temperature - ref_temp)) * part7;
+                combinedArray[2, i] = Math.Round(viscosity);
+            }
+
+            return combinedArray;
+        }
+
+        
     }
 
     public class LoadDB
@@ -139,4 +204,6 @@ namespace IssleduemSmetanu
         public int IdEmpericalCoef { get; set; }
         public double ValueEmpericalCoef { get; set; }
     }
+
+
 }

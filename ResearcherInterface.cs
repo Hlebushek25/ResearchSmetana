@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Media.Media3D;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
@@ -183,11 +184,9 @@ namespace IssleduemSmetanu
 
             };
 
-            ////
             try
             {
                 List<Material> materials = LoadDB.GetAllMaterials(dbpath);
-                //List<Material> materials = GetAllMaterials(dbPath);
 
                 materialComboBox.DisplayMember = "NameMaterial";
                 materialComboBox.ValueMember = "IdMaterial";
@@ -202,7 +201,6 @@ namespace IssleduemSmetanu
                 Dialog dialog = new Dialog($"Ошибка загрузки материалов: {ex.Message}", DialogType.Error);
                 dialog.ShowDialog();
             }
-            ////
         }
 
 
@@ -239,7 +237,7 @@ namespace IssleduemSmetanu
             }
 
         }
-        ////
+
         private void materialComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (materialComboBox.SelectedItem == null) return;
@@ -250,14 +248,11 @@ namespace IssleduemSmetanu
             try
             {
                 List<MaterialCharacteristic> characteristics = LoadDB.GetMaterialCharacteristics(dbpath, materialId);
-                //List<MaterialCharacteristic> characteristics = GetMaterialCharacteristics(dbPath, materialId);
 
-                // Очищаем все TextBox перед заполнением
                 densityTextBox.Clear();
                 specificHeatCapacityTextBox.Clear();
                 meltingPointTextBox.Clear();
 
-                // Заполняем TextBox в соответствии с id_characteristic
                 foreach (var characteristic in characteristics)
                 {
                     switch (characteristic.IdCharacteristic)
@@ -314,14 +309,8 @@ namespace IssleduemSmetanu
                 dialog.ShowDialog();
             }
 
-            //////////////
-            //if (materialComboBox.SelectedItem != null && materialComboBox.SelectedIndex > 0)
-            //{
-            //    Material selected = (Material)materialComboBox.SelectedItem;
-            //    MessageBox.Show($"Выбран материал: {selected.NameMaterial} (ID: {selected.IdMaterial})");
-            //}
         }
-        ////
+
         private void button1_Click(object sender, EventArgs e)
         {
             Dialog error = new Dialog("АААААААААА ОШИБКА\nВот прям на две строки\nИли даже и того больше", DialogType.Error);
@@ -409,6 +398,82 @@ namespace IssleduemSmetanu
                         }
                     }
                 }
+            }
+        }
+
+        private void calculateButton_Click(object sender, EventArgs e)
+        {
+            double width = 0, depth = 0, lenght = 0, density = 0, specificHeatCapacity = 0,
+                   meltingPoint = 0, capSpeed = 0, capTemp = 0, viscosity = 0, tempRatio = 0,
+                   castingTemp = 0, timeConst = 0, viscosityAnomaly = 0, heatTransferRatio = 0, step = 0;
+
+            bool success =
+                double.TryParse(widthTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out width) &&
+                double.TryParse(depthTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out depth) &&
+                double.TryParse(lenghtTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out lenght) &&
+                double.TryParse(densityTextBox.Text, out density) &&
+                double.TryParse(specificHeatCapacityTextBox.Text, out specificHeatCapacity) &&
+                double.TryParse(meltingPointTextBox.Text, out meltingPoint) &&
+                double.TryParse(capSpeedTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out capSpeed) &&
+                double.TryParse(capTempTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out capTemp) &&
+                double.TryParse(viscosityTextBox.Text, out viscosity) &&
+                double.TryParse(tempRatioTextBox.Text, out tempRatio) &&
+                double.TryParse(castingTempTextBox.Text, out castingTemp) &&
+                double.TryParse(timeConstTextBox.Text, out timeConst) &&
+                double.TryParse(viscosityAnomalyTextBox.Text, out viscosityAnomaly) &&
+                double.TryParse(heatTransferRatioTextBox.Text, out heatTransferRatio) &&
+                double.TryParse(tableStepTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out step);
+
+            if (success)
+            {
+                MathModel calc = new MathModel(width, depth, lenght, density, specificHeatCapacity, meltingPoint,
+                                             capSpeed, capTemp, viscosity, tempRatio, castingTemp, timeConst,
+                                             viscosityAnomaly, heatTransferRatio, step);
+                double Performance = calc.CalculatePerformance();
+                double[,] temp = calc.CalculateTemperature();
+                DisplayCombinedArrayInTable(resultsTable, temp);
+                criteriaIndicatorsLabel.Text = $"Производительность = {Performance} [кг/ч]\nТемпература = {Math.Round(temp[1, temp.GetLength(1) - 1], 1)} [°C]\nВязкость = {temp[2, temp.GetLength(1) - 1]} [Па*с]";
+            }
+            else
+            {
+                Dialog error = new Dialog("Ошибка! Проверьте введённые числа. Используйте точку (.) или запятую (,) в зависимости от настроек.", DialogType.Error);
+                error.ShowDialog();
+            }
+        }
+
+        private void DisplayCombinedArrayInTable(DataGridView resultsTable, double[,] combinedArray)
+        {
+            if (!int.TryParse(graphStepTextBox.Text, out int skipStep) || skipStep < 1)
+            {
+                Dialog error = new Dialog("Введите корректный шаг пропуска (целое число ≥ 1)", DialogType.Error);
+                error.ShowDialog();
+                return;
+            }
+
+            int numRecords = combinedArray.GetLength(1);
+            resultsTable.ColumnCount = 3;
+            resultsTable.Rows.Clear();
+
+
+            resultsTable.Rows.Add(
+                combinedArray[0, 0],
+                combinedArray[1, 0],
+                combinedArray[2, 0]);
+
+            for (int j = skipStep; j < numRecords - 1; j += skipStep)
+            {
+                resultsTable.Rows.Add(
+                    combinedArray[0, j],
+                    combinedArray[1, j],
+                    combinedArray[2, j]);
+            }
+
+            if (numRecords > 1)
+            {
+                resultsTable.Rows.Add(
+                    combinedArray[0, numRecords - 1],
+                    combinedArray[1, numRecords - 1],
+                    combinedArray[2, numRecords - 1]);
             }
         }
     }

@@ -34,7 +34,7 @@
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.label10 = new System.Windows.Forms.Label();
+            this.criteriaIndicatorsLabel = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel21 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel20 = new System.Windows.Forms.FlowLayoutPanel();
@@ -45,7 +45,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.graphStepTextBox = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
+            this.calculateButton = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel13 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel14 = new System.Windows.Forms.FlowLayoutPanel();
@@ -165,7 +165,7 @@
             this.tabControl1.Controls.Add(this.valuesTable);
             this.tabControl1.Controls.Add(this.graph);
             this.tabControl1.Location = new System.Drawing.Point(3, 29);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(667, 470);
@@ -185,9 +185,9 @@
             this.inputParameters.Controls.Add(this.flowLayoutPanel1);
             this.inputParameters.Controls.Add(this.groupBox1);
             this.inputParameters.Location = new System.Drawing.Point(4, 22);
-            this.inputParameters.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.inputParameters.Margin = new System.Windows.Forms.Padding(2);
             this.inputParameters.Name = "inputParameters";
-            this.inputParameters.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.inputParameters.Padding = new System.Windows.Forms.Padding(2);
             this.inputParameters.Size = new System.Drawing.Size(659, 444);
             this.inputParameters.TabIndex = 0;
             this.inputParameters.Text = "Входные параметры";
@@ -196,9 +196,9 @@
             // 
             this.groupBox7.Controls.Add(this.label12);
             this.groupBox7.Location = new System.Drawing.Point(267, 358);
-            this.groupBox7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox7.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox7.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox7.Size = new System.Drawing.Size(387, 81);
             this.groupBox7.TabIndex = 10;
             this.groupBox7.TabStop = false;
@@ -220,28 +220,28 @@
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.label10);
+            this.groupBox6.Controls.Add(this.criteriaIndicatorsLabel);
             this.groupBox6.Location = new System.Drawing.Point(8, 358);
-            this.groupBox6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox6.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox6.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox6.Size = new System.Drawing.Size(255, 81);
             this.groupBox6.TabIndex = 9;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Критериальные показатели расчёта";
             // 
-            // label10
+            // criteriaIndicatorsLabel
             // 
-            this.label10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label10.Location = new System.Drawing.Point(2, 15);
-            this.label10.Margin = new System.Windows.Forms.Padding(8, 0, 2, 0);
-            this.label10.Name = "label10";
-            this.label10.Padding = new System.Windows.Forms.Padding(8, 6, 5, 6);
-            this.label10.Size = new System.Drawing.Size(251, 64);
-            this.label10.TabIndex = 0;
-            this.label10.Text = "Производительность = 0000 [кг/ч]\r\nТемпература = 000 [°C]\r\nВязкость = 000 [Па*с]";
-            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.criteriaIndicatorsLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.criteriaIndicatorsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.criteriaIndicatorsLabel.Location = new System.Drawing.Point(2, 15);
+            this.criteriaIndicatorsLabel.Margin = new System.Windows.Forms.Padding(8, 0, 2, 0);
+            this.criteriaIndicatorsLabel.Name = "criteriaIndicatorsLabel";
+            this.criteriaIndicatorsLabel.Padding = new System.Windows.Forms.Padding(8, 6, 5, 6);
+            this.criteriaIndicatorsLabel.Size = new System.Drawing.Size(251, 64);
+            this.criteriaIndicatorsLabel.TabIndex = 0;
+            this.criteriaIndicatorsLabel.Text = "Производительность = 0000 [кг/ч]\r\nТемпература = 000 [°C]\r\nВязкость = 000 [Па*с]";
+            this.criteriaIndicatorsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // groupBox5
             // 
@@ -249,9 +249,9 @@
             this.groupBox5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox5.Controls.Add(this.flowLayoutPanel21);
             this.groupBox5.Location = new System.Drawing.Point(8, 301);
-            this.groupBox5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox5.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox5.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox5.Size = new System.Drawing.Size(644, 45);
             this.groupBox5.TabIndex = 8;
             this.groupBox5.TabStop = false;
@@ -263,10 +263,10 @@
             this.flowLayoutPanel21.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel21.Controls.Add(this.flowLayoutPanel20);
             this.flowLayoutPanel21.Controls.Add(this.flowLayoutPanel22);
-            this.flowLayoutPanel21.Controls.Add(this.button3);
+            this.flowLayoutPanel21.Controls.Add(this.calculateButton);
             this.flowLayoutPanel21.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel21.Location = new System.Drawing.Point(2, 15);
-            this.flowLayoutPanel21.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel21.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel21.Name = "flowLayoutPanel21";
             this.flowLayoutPanel21.Size = new System.Drawing.Size(640, 28);
             this.flowLayoutPanel21.TabIndex = 0;
@@ -279,7 +279,7 @@
             this.flowLayoutPanel20.Controls.Add(this.tableStepTextBox);
             this.flowLayoutPanel20.Controls.Add(this.label4);
             this.flowLayoutPanel20.Location = new System.Drawing.Point(2, 2);
-            this.flowLayoutPanel20.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel20.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel20.Name = "flowLayoutPanel20";
             this.flowLayoutPanel20.Size = new System.Drawing.Size(235, 24);
             this.flowLayoutPanel20.TabIndex = 5;
@@ -299,11 +299,11 @@
             this.tableStepTextBox.BackColor = System.Drawing.SystemColors.Window;
             this.tableStepTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tableStepTextBox.Location = new System.Drawing.Point(143, 2);
-            this.tableStepTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableStepTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.tableStepTextBox.Name = "tableStepTextBox";
             this.tableStepTextBox.Size = new System.Drawing.Size(56, 20);
             this.tableStepTextBox.TabIndex = 114;
-            this.tableStepTextBox.Text = "0.1";
+            this.tableStepTextBox.Text = "0.005";
             this.tableStepTextBox.Leave += new System.EventHandler(this.textBoxLeave);
             // 
             // label4
@@ -323,7 +323,7 @@
             this.flowLayoutPanel22.Controls.Add(this.graphStepTextBox);
             this.flowLayoutPanel22.Controls.Add(this.label8);
             this.flowLayoutPanel22.Location = new System.Drawing.Point(241, 2);
-            this.flowLayoutPanel22.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel22.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel22.Name = "flowLayoutPanel22";
             this.flowLayoutPanel22.Size = new System.Drawing.Size(235, 24);
             this.flowLayoutPanel22.TabIndex = 6;
@@ -343,11 +343,11 @@
             this.graphStepTextBox.BackColor = System.Drawing.SystemColors.Window;
             this.graphStepTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.graphStepTextBox.Location = new System.Drawing.Point(143, 2);
-            this.graphStepTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.graphStepTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.graphStepTextBox.Name = "graphStepTextBox";
             this.graphStepTextBox.Size = new System.Drawing.Size(56, 20);
             this.graphStepTextBox.TabIndex = 115;
-            this.graphStepTextBox.Text = "1";
+            this.graphStepTextBox.Text = "4";
             this.graphStepTextBox.Leave += new System.EventHandler(this.textBoxLeave);
             // 
             // label8
@@ -359,25 +359,26 @@
             this.label8.TabIndex = 2;
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // button3
+            // calculateButton
             // 
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button3.Location = new System.Drawing.Point(480, 2);
-            this.button3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(158, 21);
-            this.button3.TabIndex = 116;
-            this.button3.Text = "Расчитать";
-            this.button3.UseVisualStyleBackColor = true;
+            this.calculateButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.calculateButton.Location = new System.Drawing.Point(480, 2);
+            this.calculateButton.Margin = new System.Windows.Forms.Padding(2);
+            this.calculateButton.Name = "calculateButton";
+            this.calculateButton.Size = new System.Drawing.Size(158, 21);
+            this.calculateButton.TabIndex = 116;
+            this.calculateButton.Text = "Расчитать";
+            this.calculateButton.UseVisualStyleBackColor = true;
+            this.calculateButton.Click += new System.EventHandler(this.calculateButton_Click);
             // 
             // groupBox4
             // 
             this.groupBox4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox4.Controls.Add(this.flowLayoutPanel13);
             this.groupBox4.Location = new System.Drawing.Point(5, 154);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox4.Size = new System.Drawing.Size(649, 143);
             this.groupBox4.TabIndex = 7;
             this.groupBox4.TabStop = false;
@@ -396,7 +397,7 @@
             this.flowLayoutPanel13.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel13.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel13.Location = new System.Drawing.Point(2, 15);
-            this.flowLayoutPanel13.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel13.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel13.Name = "flowLayoutPanel13";
             this.flowLayoutPanel13.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.flowLayoutPanel13.Size = new System.Drawing.Size(645, 126);
@@ -411,7 +412,7 @@
             this.flowLayoutPanel14.Controls.Add(this.viscosityTextBox);
             this.flowLayoutPanel14.Controls.Add(this.label19);
             this.flowLayoutPanel14.Location = new System.Drawing.Point(7, 8);
-            this.flowLayoutPanel14.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel14.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel14.Name = "flowLayoutPanel14";
             this.flowLayoutPanel14.Size = new System.Drawing.Size(291, 44);
             this.flowLayoutPanel14.TabIndex = 0;
@@ -432,7 +433,7 @@
             this.viscosityTextBox.BackColor = System.Drawing.SystemColors.Window;
             this.viscosityTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.viscosityTextBox.Location = new System.Drawing.Point(191, 2);
-            this.viscosityTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.viscosityTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.viscosityTextBox.Name = "viscosityTextBox";
             this.viscosityTextBox.Size = new System.Drawing.Size(56, 20);
             this.viscosityTextBox.TabIndex = 108;
@@ -457,7 +458,7 @@
             this.flowLayoutPanel15.Controls.Add(this.tempRatioTextBox);
             this.flowLayoutPanel15.Controls.Add(this.label21);
             this.flowLayoutPanel15.Location = new System.Drawing.Point(7, 56);
-            this.flowLayoutPanel15.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel15.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel15.Name = "flowLayoutPanel15";
             this.flowLayoutPanel15.Size = new System.Drawing.Size(291, 33);
             this.flowLayoutPanel15.TabIndex = 1;
@@ -477,7 +478,7 @@
             this.tempRatioTextBox.BackColor = System.Drawing.SystemColors.Window;
             this.tempRatioTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tempRatioTextBox.Location = new System.Drawing.Point(191, 2);
-            this.tempRatioTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tempRatioTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.tempRatioTextBox.Name = "tempRatioTextBox";
             this.tempRatioTextBox.Size = new System.Drawing.Size(56, 20);
             this.tempRatioTextBox.TabIndex = 109;
@@ -502,7 +503,7 @@
             this.flowLayoutPanel16.Controls.Add(this.castingTempTextBox);
             this.flowLayoutPanel16.Controls.Add(this.label23);
             this.flowLayoutPanel16.Location = new System.Drawing.Point(7, 93);
-            this.flowLayoutPanel16.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel16.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel16.Name = "flowLayoutPanel16";
             this.flowLayoutPanel16.Size = new System.Drawing.Size(305, 24);
             this.flowLayoutPanel16.TabIndex = 2;
@@ -522,7 +523,7 @@
             this.castingTempTextBox.BackColor = System.Drawing.SystemColors.Window;
             this.castingTempTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.castingTempTextBox.Location = new System.Drawing.Point(191, 2);
-            this.castingTempTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.castingTempTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.castingTempTextBox.Name = "castingTempTextBox";
             this.castingTempTextBox.Size = new System.Drawing.Size(56, 20);
             this.castingTempTextBox.TabIndex = 110;
@@ -547,7 +548,7 @@
             this.flowLayoutPanel17.Controls.Add(this.timeConstTextBox);
             this.flowLayoutPanel17.Controls.Add(this.label25);
             this.flowLayoutPanel17.Location = new System.Drawing.Point(316, 8);
-            this.flowLayoutPanel17.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel17.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel17.Name = "flowLayoutPanel17";
             this.flowLayoutPanel17.Size = new System.Drawing.Size(266, 24);
             this.flowLayoutPanel17.TabIndex = 3;
@@ -567,7 +568,7 @@
             this.timeConstTextBox.BackColor = System.Drawing.SystemColors.Window;
             this.timeConstTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.timeConstTextBox.Location = new System.Drawing.Point(170, 2);
-            this.timeConstTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.timeConstTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.timeConstTextBox.Name = "timeConstTextBox";
             this.timeConstTextBox.Size = new System.Drawing.Size(56, 20);
             this.timeConstTextBox.TabIndex = 111;
@@ -591,7 +592,7 @@
             this.flowLayoutPanel18.Controls.Add(this.viscosityAnomalyLabel);
             this.flowLayoutPanel18.Controls.Add(this.viscosityAnomalyTextBox);
             this.flowLayoutPanel18.Location = new System.Drawing.Point(316, 36);
-            this.flowLayoutPanel18.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel18.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel18.Name = "flowLayoutPanel18";
             this.flowLayoutPanel18.Size = new System.Drawing.Size(228, 33);
             this.flowLayoutPanel18.TabIndex = 4;
@@ -611,7 +612,7 @@
             this.viscosityAnomalyTextBox.BackColor = System.Drawing.SystemColors.Window;
             this.viscosityAnomalyTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.viscosityAnomalyTextBox.Location = new System.Drawing.Point(170, 2);
-            this.viscosityAnomalyTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.viscosityAnomalyTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.viscosityAnomalyTextBox.Name = "viscosityAnomalyTextBox";
             this.viscosityAnomalyTextBox.Size = new System.Drawing.Size(56, 20);
             this.viscosityAnomalyTextBox.TabIndex = 112;
@@ -626,7 +627,7 @@
             this.flowLayoutPanel19.Controls.Add(this.heatTransferRatioTextBox);
             this.flowLayoutPanel19.Controls.Add(this.label29);
             this.flowLayoutPanel19.Location = new System.Drawing.Point(316, 73);
-            this.flowLayoutPanel19.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel19.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel19.Name = "flowLayoutPanel19";
             this.flowLayoutPanel19.Size = new System.Drawing.Size(297, 33);
             this.flowLayoutPanel19.TabIndex = 5;
@@ -646,7 +647,7 @@
             this.heatTransferRatioTextBox.BackColor = System.Drawing.SystemColors.Window;
             this.heatTransferRatioTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.heatTransferRatioTextBox.Location = new System.Drawing.Point(170, 2);
-            this.heatTransferRatioTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.heatTransferRatioTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.heatTransferRatioTextBox.Name = "heatTransferRatioTextBox";
             this.heatTransferRatioTextBox.Size = new System.Drawing.Size(56, 20);
             this.heatTransferRatioTextBox.TabIndex = 113;
@@ -668,9 +669,9 @@
             this.groupBox3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox3.Controls.Add(this.flowLayoutPanel10);
             this.groupBox3.Location = new System.Drawing.Point(458, 40);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox3.Size = new System.Drawing.Size(193, 113);
             this.groupBox3.TabIndex = 6;
             this.groupBox3.TabStop = false;
@@ -685,7 +686,7 @@
             this.flowLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel10.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel10.Location = new System.Drawing.Point(2, 15);
-            this.flowLayoutPanel10.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel10.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel10.Name = "flowLayoutPanel10";
             this.flowLayoutPanel10.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.flowLayoutPanel10.Size = new System.Drawing.Size(189, 96);
@@ -699,7 +700,7 @@
             this.flowLayoutPanel11.Controls.Add(this.capSpeedTextBox);
             this.flowLayoutPanel11.Controls.Add(this.label15);
             this.flowLayoutPanel11.Location = new System.Drawing.Point(7, 8);
-            this.flowLayoutPanel11.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel11.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel11.Name = "flowLayoutPanel11";
             this.flowLayoutPanel11.Size = new System.Drawing.Size(175, 39);
             this.flowLayoutPanel11.TabIndex = 0;
@@ -719,7 +720,7 @@
             this.capSpeedTextBox.BackColor = System.Drawing.SystemColors.Window;
             this.capSpeedTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.capSpeedTextBox.Location = new System.Drawing.Point(84, 2);
-            this.capSpeedTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.capSpeedTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.capSpeedTextBox.Name = "capSpeedTextBox";
             this.capSpeedTextBox.Size = new System.Drawing.Size(56, 20);
             this.capSpeedTextBox.TabIndex = 106;
@@ -744,7 +745,7 @@
             this.flowLayoutPanel12.Controls.Add(this.capTempTextBox);
             this.flowLayoutPanel12.Controls.Add(this.label17);
             this.flowLayoutPanel12.Location = new System.Drawing.Point(7, 51);
-            this.flowLayoutPanel12.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel12.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel12.Name = "flowLayoutPanel12";
             this.flowLayoutPanel12.Size = new System.Drawing.Size(175, 37);
             this.flowLayoutPanel12.TabIndex = 1;
@@ -763,7 +764,7 @@
             // 
             this.capTempTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.capTempTextBox.Location = new System.Drawing.Point(84, 2);
-            this.capTempTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.capTempTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.capTempTextBox.Name = "capTempTextBox";
             this.capTempTextBox.Size = new System.Drawing.Size(56, 20);
             this.capTempTextBox.TabIndex = 107;
@@ -786,9 +787,9 @@
             this.groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox2.Controls.Add(this.flowLayoutPanel6);
             this.groupBox2.Location = new System.Drawing.Point(168, 40);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox2.Size = new System.Drawing.Size(286, 113);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
@@ -804,7 +805,7 @@
             this.flowLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel6.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel6.Location = new System.Drawing.Point(2, 15);
-            this.flowLayoutPanel6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel6.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel6.Name = "flowLayoutPanel6";
             this.flowLayoutPanel6.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.flowLayoutPanel6.Size = new System.Drawing.Size(282, 96);
@@ -818,7 +819,7 @@
             this.flowLayoutPanel7.Controls.Add(this.densityTextBox);
             this.flowLayoutPanel7.Controls.Add(this.label9);
             this.flowLayoutPanel7.Location = new System.Drawing.Point(7, 8);
-            this.flowLayoutPanel7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel7.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel7.Name = "flowLayoutPanel7";
             this.flowLayoutPanel7.Size = new System.Drawing.Size(268, 24);
             this.flowLayoutPanel7.TabIndex = 0;
@@ -838,7 +839,7 @@
             this.densityTextBox.BackColor = System.Drawing.SystemColors.Window;
             this.densityTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.densityTextBox.Location = new System.Drawing.Point(143, 2);
-            this.densityTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.densityTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.densityTextBox.Name = "densityTextBox";
             this.densityTextBox.Size = new System.Drawing.Size(56, 20);
             this.densityTextBox.TabIndex = 103;
@@ -862,7 +863,7 @@
             this.flowLayoutPanel8.Controls.Add(this.specificHeatCapacityTextBox);
             this.flowLayoutPanel8.Controls.Add(this.label11);
             this.flowLayoutPanel8.Location = new System.Drawing.Point(7, 36);
-            this.flowLayoutPanel8.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel8.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel8.Name = "flowLayoutPanel8";
             this.flowLayoutPanel8.Size = new System.Drawing.Size(266, 24);
             this.flowLayoutPanel8.TabIndex = 1;
@@ -881,7 +882,7 @@
             // 
             this.specificHeatCapacityTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.specificHeatCapacityTextBox.Location = new System.Drawing.Point(143, 2);
-            this.specificHeatCapacityTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.specificHeatCapacityTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.specificHeatCapacityTextBox.Name = "specificHeatCapacityTextBox";
             this.specificHeatCapacityTextBox.Size = new System.Drawing.Size(56, 20);
             this.specificHeatCapacityTextBox.TabIndex = 104;
@@ -905,7 +906,7 @@
             this.flowLayoutPanel9.Controls.Add(this.meltingPointTextBox);
             this.flowLayoutPanel9.Controls.Add(this.label13);
             this.flowLayoutPanel9.Location = new System.Drawing.Point(7, 64);
-            this.flowLayoutPanel9.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel9.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel9.Name = "flowLayoutPanel9";
             this.flowLayoutPanel9.Size = new System.Drawing.Size(266, 24);
             this.flowLayoutPanel9.TabIndex = 2;
@@ -924,7 +925,7 @@
             // 
             this.meltingPointTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.meltingPointTextBox.Location = new System.Drawing.Point(143, 2);
-            this.meltingPointTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.meltingPointTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.meltingPointTextBox.Name = "meltingPointTextBox";
             this.meltingPointTextBox.Size = new System.Drawing.Size(56, 20);
             this.meltingPointTextBox.TabIndex = 105;
@@ -944,7 +945,7 @@
             // 
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button2.Location = new System.Drawing.Point(547, 10);
-            this.button2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(107, 21);
             this.button2.TabIndex = 4;
@@ -955,7 +956,7 @@
             // 
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button1.Location = new System.Drawing.Point(435, 10);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(107, 21);
             this.button1.TabIndex = 3;
@@ -970,7 +971,7 @@
             this.flowLayoutPanel1.Controls.Add(this.label1);
             this.flowLayoutPanel1.Controls.Add(this.materialComboBox);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(5, 8);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(313, 25);
             this.flowLayoutPanel1.TabIndex = 2;
@@ -991,7 +992,7 @@
             this.materialComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.materialComboBox.FormattingEnabled = true;
             this.materialComboBox.Location = new System.Drawing.Point(89, 2);
-            this.materialComboBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.materialComboBox.Margin = new System.Windows.Forms.Padding(2);
             this.materialComboBox.Name = "materialComboBox";
             this.materialComboBox.Size = new System.Drawing.Size(222, 21);
             this.materialComboBox.TabIndex = 1;
@@ -1003,9 +1004,9 @@
             this.groupBox1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox1.Controls.Add(this.flowLayoutPanel2);
             this.groupBox1.Location = new System.Drawing.Point(5, 40);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(159, 113);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
@@ -1021,7 +1022,7 @@
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(2, 15);
-            this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.flowLayoutPanel2.Size = new System.Drawing.Size(155, 96);
@@ -1035,7 +1036,7 @@
             this.flowLayoutPanel3.Controls.Add(this.widthTextBox);
             this.flowLayoutPanel3.Controls.Add(this.label3);
             this.flowLayoutPanel3.Location = new System.Drawing.Point(7, 8);
-            this.flowLayoutPanel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel3.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
             this.flowLayoutPanel3.Size = new System.Drawing.Size(141, 24);
             this.flowLayoutPanel3.TabIndex = 0;
@@ -1055,7 +1056,7 @@
             this.widthTextBox.BackColor = System.Drawing.SystemColors.Window;
             this.widthTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.widthTextBox.Location = new System.Drawing.Point(61, 2);
-            this.widthTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.widthTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.widthTextBox.Name = "widthTextBox";
             this.widthTextBox.Size = new System.Drawing.Size(56, 20);
             this.widthTextBox.TabIndex = 100;
@@ -1081,7 +1082,7 @@
             this.flowLayoutPanel4.Controls.Add(this.depthTextBox);
             this.flowLayoutPanel4.Controls.Add(this.label5);
             this.flowLayoutPanel4.Location = new System.Drawing.Point(7, 36);
-            this.flowLayoutPanel4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel4.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
             this.flowLayoutPanel4.Size = new System.Drawing.Size(141, 24);
             this.flowLayoutPanel4.TabIndex = 1;
@@ -1100,7 +1101,7 @@
             // 
             this.depthTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.depthTextBox.Location = new System.Drawing.Point(61, 2);
-            this.depthTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.depthTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.depthTextBox.Name = "depthTextBox";
             this.depthTextBox.Size = new System.Drawing.Size(56, 20);
             this.depthTextBox.TabIndex = 101;
@@ -1125,7 +1126,7 @@
             this.flowLayoutPanel5.Controls.Add(this.lenghtTextBox);
             this.flowLayoutPanel5.Controls.Add(this.label7);
             this.flowLayoutPanel5.Location = new System.Drawing.Point(7, 64);
-            this.flowLayoutPanel5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel5.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel5.Name = "flowLayoutPanel5";
             this.flowLayoutPanel5.Size = new System.Drawing.Size(141, 24);
             this.flowLayoutPanel5.TabIndex = 2;
@@ -1144,7 +1145,7 @@
             // 
             this.lenghtTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lenghtTextBox.Location = new System.Drawing.Point(61, 2);
-            this.lenghtTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lenghtTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.lenghtTextBox.Name = "lenghtTextBox";
             this.lenghtTextBox.Size = new System.Drawing.Size(56, 20);
             this.lenghtTextBox.TabIndex = 102;
@@ -1167,9 +1168,9 @@
             this.valuesTable.Controls.Add(this.panel1);
             this.valuesTable.Controls.Add(this.resultsTable);
             this.valuesTable.Location = new System.Drawing.Point(4, 22);
-            this.valuesTable.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.valuesTable.Margin = new System.Windows.Forms.Padding(2);
             this.valuesTable.Name = "valuesTable";
-            this.valuesTable.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.valuesTable.Padding = new System.Windows.Forms.Padding(2);
             this.valuesTable.Size = new System.Drawing.Size(659, 444);
             this.valuesTable.TabIndex = 1;
             this.valuesTable.Text = "Таблица значений";
@@ -1179,7 +1180,7 @@
             this.panel1.Controls.Add(this.saveToExcelButton);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(2, 390);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(655, 52);
             this.panel1.TabIndex = 1;
@@ -1188,7 +1189,7 @@
             // 
             this.saveToExcelButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.saveToExcelButton.Location = new System.Drawing.Point(515, 18);
-            this.saveToExcelButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.saveToExcelButton.Margin = new System.Windows.Forms.Padding(2);
             this.saveToExcelButton.Name = "saveToExcelButton";
             this.saveToExcelButton.Size = new System.Drawing.Size(125, 24);
             this.saveToExcelButton.TabIndex = 0;
@@ -1208,7 +1209,7 @@
             this.resultsTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.resultsTable.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.resultsTable.Location = new System.Drawing.Point(2, 2);
-            this.resultsTable.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.resultsTable.Margin = new System.Windows.Forms.Padding(2);
             this.resultsTable.Name = "resultsTable";
             this.resultsTable.RowHeadersWidth = 51;
             this.resultsTable.RowTemplate.Height = 24;
@@ -1237,7 +1238,7 @@
             // 
             this.graph.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(246)))), ((int)(((byte)(246)))));
             this.graph.Location = new System.Drawing.Point(4, 22);
-            this.graph.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.graph.Margin = new System.Windows.Forms.Padding(2);
             this.graph.Name = "graph";
             this.graph.Size = new System.Drawing.Size(659, 444);
             this.graph.TabIndex = 2;
@@ -1254,7 +1255,7 @@
             this.ClientSize = new System.Drawing.Size(673, 502);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "ResearcherInterface";
             this.Text = "Исследуем сметану";
@@ -1398,7 +1399,7 @@
         private System.Windows.Forms.TextBox heatTransferRatioTextBox;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button calculateButton;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel21;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel20;
         private System.Windows.Forms.Label label2;
@@ -1410,7 +1411,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label criteriaIndicatorsLabel;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.DataGridView resultsTable;
         private System.Windows.Forms.DataGridViewTextBoxColumn Coord;
