@@ -10,21 +10,21 @@ namespace IssleduemSmetanu
 {
     internal class MathModel
     {
-        private double width { get; set; }                      //Ширина
-        private double height { get; set; }                     //Глубина
-        private double length { get; set; }                     //Длина
-        private double density { get; set; }                    //Плотность
-        private double specificHeatCapacity { get; set; }       //Удельная теплоемкость
-        private double meltingPoint { get; set; }               //Температура плавления
-        private double lidSpeed { get; set; }                   //Скорость крышки
-        private double lidTemperature { get; set; }             //Температура крышки
-        private double viscAtZeroShearAndRefTemp { get; set; }  //Вязкость материала при нулевой скорости деформации сдвига и температуре приведения
-        private double viscThermCoeff { get; set; }             //Температурный коэффициент вязкости материала
-        private double ref_temp { get; set; }                   //Температура приведения
-        private double timeConstant { get; set; }               //Постоянная времени
-        private double viscAnomalyFactor { get; set; }          //Показатель аномалии вязкости материала
-        private double heatTransferCoefficient { get; set; }    //Коэффициент теплоотдачи от крышки канала к материалу
-        private double step { get; set; }                       //Шаг
+        public double width { get; set; }                      //Ширина
+        public double height { get; set; }                     //Глубина
+        public double length { get; set; }                     //Длина
+        public double density { get; set; }                    //Плотность
+        public double specificHeatCapacity { get; set; }       //Удельная теплоемкость
+        public double meltingPoint { get; set; }               //Температура плавления
+        public double lidSpeed { get; set; }                   //Скорость крышки
+        public double lidTemperature { get; set; }             //Температура крышки
+        public double viscAtZeroShearAndRefTemp { get; set; }  //Вязкость материала при нулевой скорости деформации сдвига и температуре приведения
+        public double viscThermCoeff { get; set; }             //Температурный коэффициент вязкости материала
+        public double ref_temp { get; set; }                   //Температура приведения
+        public double timeConstant { get; set; }               //Постоянная времени
+        public double viscAnomalyFactor { get; set; }          //Показатель аномалии вязкости материала
+        public double heatTransferCoefficient { get; set; }    //Коэффициент теплоотдачи от крышки канала к материалу
+        public double step { get; set; }                       //Шаг
 
 
         public MathModel(double width, double height, double length, double density, double specificHeatCapacity, double meltingPoint, double lidSpeed, double lidTemperature,

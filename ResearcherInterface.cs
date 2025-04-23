@@ -24,6 +24,11 @@ namespace IssleduemSmetanu
 {
     public partial class ResearcherInterface : Form
     {
+        double performance = 0;
+        double temperature = 0;
+        double productViscosity = 0;
+
+        MathModel calc = new MathModel(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn(
@@ -387,6 +392,94 @@ namespace IssleduemSmetanu
                         cell.Style.Border.Left.Style = ExcelBorderStyle.Thin;
                         cell.Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
+                        worksheet.Cells[1, 5].Value = "Производительность канала, кг/ч";
+                        worksheet.Cells[2, 5].Value = "Температура продукта, °С";
+                        worksheet.Cells[3, 5].Value = "Вязкость продукта, Па*с";
+                        worksheet.Cells[1, 5].Style.Font.Bold = true;
+                        worksheet.Cells[2, 5].Style.Font.Bold = true;
+                        worksheet.Cells[3, 5].Style.Font.Bold = true;
+                        worksheet.Cells[1, 6].Value = performance;
+                        worksheet.Cells[2, 6].Value = temperature;
+                        worksheet.Cells[3, 6].Value = productViscosity;
+                        worksheet.Column(5).AutoFit();
+                        worksheet.Column(6).AutoFit();
+                        cell = worksheet.Cells[$"E1:F3"];
+                        cell.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        cell.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        cell.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        cell.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                        worksheet.Cells[1, 8].Value = "Геометрические параметры канала";
+                        worksheet.Cells[1, 8].Style.Font.Bold = true;
+                        worksheet.Cells[2, 8].Value = "Ширина, м";
+                        worksheet.Cells[3, 8].Value = "Глубина, м";
+                        worksheet.Cells[4, 8].Value = "Длина, м";
+                        worksheet.Cells[5, 8].Value = "Параметры свойств материала";
+                        worksheet.Cells[5, 8].Style.Font.Bold = true;
+                        worksheet.Cells[6, 8].Value = "Плотность, кг/м^3";
+                        worksheet.Cells[7, 8].Value = "Средняя удельная теплоёмкость, Дж/(кг)*°С";
+                        worksheet.Cells[8, 8].Value = "Температура плавления °С";
+                        worksheet.Cells[9, 8].Value = "Режимные параметры процесса";
+                        worksheet.Cells[9, 8].Style.Font.Bold = true;
+                        worksheet.Cells[10, 8].Value = "Скорость крышки, м/с";
+                        worksheet.Cells[11, 8].Value = "Температура крышки, °С";
+                        worksheet.Cells[12, 8].Value = "Эмперические коэффициенты математической модкли";
+                        worksheet.Cells[12, 8].Style.Font.Bold = true;
+                        worksheet.Cells[13, 8].Value = "Вязкость материала при нулевой скорости деформации сдвига и температуре приведения, Па*с";
+                        worksheet.Cells[14, 8].Value = "Температурный коэффициент вязкости материала, 1/°С";
+                        worksheet.Cells[15, 8].Value = "Температура приведения, °С";
+                        worksheet.Cells[16, 8].Value = "Постоянная времени, с";
+                        worksheet.Cells[17, 8].Value = "Индекс течения материала";
+                        worksheet.Cells[18, 8].Value = "Коэффициент теплоотдачи от крышки канала к материалу, Вт/(м^2*°C)";
+                        worksheet.Cells[19, 8].Value = "Параметры метода решения уравнений модели";
+                        worksheet.Cells[19, 8].Style.Font.Bold = true;
+                        worksheet.Cells[20, 8].Value = "Шаг расчёта по длине канала, м";
+
+                        worksheet.Cells[2, 9].Value = calc.width;
+                        worksheet.Cells[3, 9].Value = calc.height;
+                        worksheet.Cells[4, 9].Value = calc.length;
+                        worksheet.Cells[6, 9].Value = calc.density;
+                        worksheet.Cells[7, 9].Value = calc.specificHeatCapacity;
+                        worksheet.Cells[8, 9].Value = calc.meltingPoint;
+                        worksheet.Cells[10, 9].Value = calc.lidSpeed;
+                        worksheet.Cells[11, 9].Value = calc.lidTemperature;
+                        worksheet.Cells[13, 9].Value = calc.viscAtZeroShearAndRefTemp;
+                        worksheet.Cells[14, 9].Value = calc.viscThermCoeff;
+                        worksheet.Cells[15, 9].Value = calc.ref_temp;
+                        worksheet.Cells[16, 9].Value = calc.timeConstant;
+                        worksheet.Cells[17, 9].Value = calc.viscAnomalyFactor;
+                        worksheet.Cells[18, 9].Value = calc.heatTransferCoefficient;
+                        worksheet.Cells[20, 9].Value = calc.step;
+
+                        worksheet.Column(8).AutoFit();
+                        worksheet.Column(9).AutoFit();
+
+                        cell = worksheet.Cells[$"H2:I4"];
+                        cell.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        cell.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        cell.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        cell.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        cell = worksheet.Cells[$"H6:I8"];
+                        cell.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        cell.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        cell.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        cell.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        cell = worksheet.Cells[$"H10:I11"];
+                        cell.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        cell.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        cell.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        cell.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        cell = worksheet.Cells[$"H13:I18"];
+                        cell.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        cell.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        cell.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        cell.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        cell = worksheet.Cells[$"H20:I20"];
+                        cell.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        cell.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        cell.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        cell.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
                         FileInfo file = new FileInfo(filepath);
                         try
                         {
@@ -426,17 +519,19 @@ namespace IssleduemSmetanu
 
             if (success)
             {
-                MathModel calc = new MathModel(width, depth, lenght, density, specificHeatCapacity, meltingPoint,
+                calc = new MathModel(width, depth, lenght, density, specificHeatCapacity, meltingPoint,
                                              capSpeed, capTemp, viscosity, tempRatio, castingTemp, timeConst,
                                              viscosityAnomaly, heatTransferRatio, step);
-                double Performance = calc.CalculatePerformance();
-                double[,] temp = calc.CalculateTemperature();
-                DisplayCombinedArrayInTable(resultsTable, temp);
-                criteriaIndicatorsLabel.Text = $"Производительность = {Performance} [кг/ч]\nТемпература = {Math.Round(temp[1, temp.GetLength(1) - 1], 1)} [°C]\nВязкость = {temp[2, temp.GetLength(1) - 1]} [Па*с]";
+                double[,] tableData = calc.CalculateTemperature();
+                performance = calc.CalculatePerformance();
+                temperature = Math.Round(tableData[1, tableData.GetLength(1) - 1], 1);
+                productViscosity = tableData[2, tableData.GetLength(1) - 1];
+                DisplayCombinedArrayInTable(resultsTable, tableData);
+                criteriaIndicatorsLabel.Text = $"Производительность = {performance} [кг/ч]\nТемпература = {temperature} [°C]\nВязкость = {productViscosity} [Па*с]";
             }
             else
             {
-                Dialog error = new Dialog("Ошибка! Проверьте введённые числа. Используйте точку (.) или запятую (,) в зависимости от настроек.", DialogType.Error);
+                Dialog error = new Dialog("Хуйня твои значения", DialogType.Error);
                 error.ShowDialog();
             }
         }

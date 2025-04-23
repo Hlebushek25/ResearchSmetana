@@ -380,6 +380,18 @@ namespace IssleduemSmetanu
         {
             passwordLabel.Font = new Font(passwordLabel.Font.FontFamily, passwordLabel.Font.Size, FontStyle.Regular);
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.ActionCode = "ContinueAsAdmin";
+            this.Close();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.ActionCode = "ContinueAsResearcher";
+            this.Close();
+        }
     }
 
     public class User

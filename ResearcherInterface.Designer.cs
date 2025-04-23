@@ -120,9 +120,10 @@
             this.Coord = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Temperature = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Visconsity = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.graph = new System.Windows.Forms.TabPage();
+            this.temperatureGraph = new System.Windows.Forms.TabPage();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.splitter1 = new System.Windows.Forms.Splitter();
+            this.viscosityGraph = new System.Windows.Forms.TabPage();
             this.tabControl1.SuspendLayout();
             this.inputParameters.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -162,7 +163,8 @@
             // 
             this.tabControl1.Controls.Add(this.inputParameters);
             this.tabControl1.Controls.Add(this.valuesTable);
-            this.tabControl1.Controls.Add(this.graph);
+            this.tabControl1.Controls.Add(this.temperatureGraph);
+            this.tabControl1.Controls.Add(this.viscosityGraph);
             this.tabControl1.Location = new System.Drawing.Point(4, 36);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabControl1.Name = "tabControl1";
@@ -238,7 +240,7 @@
             this.criteriaIndicatorsLabel.Padding = new System.Windows.Forms.Padding(11, 7, 7, 7);
             this.criteriaIndicatorsLabel.Size = new System.Drawing.Size(334, 81);
             this.criteriaIndicatorsLabel.TabIndex = 0;
-            this.criteriaIndicatorsLabel.Text = "Производительность = 0000 [кг/ч]\r\nТемпература = 000 [°C]\r\nВязкость = 000 [Па*с]";
+            this.criteriaIndicatorsLabel.Text = "Для расчёта критериальных показателей нажмите \"Вычислить\"";
             this.criteriaIndicatorsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // groupBox5
@@ -250,7 +252,7 @@
             this.groupBox5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox5.Size = new System.Drawing.Size(865, 49);
+            this.groupBox5.Size = new System.Drawing.Size(867, 49);
             this.groupBox5.TabIndex = 8;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Параметры метода решения уравнений модели";
@@ -266,7 +268,7 @@
             this.flowLayoutPanel21.Location = new System.Drawing.Point(3, 17);
             this.flowLayoutPanel21.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.flowLayoutPanel21.Name = "flowLayoutPanel21";
-            this.flowLayoutPanel21.Size = new System.Drawing.Size(859, 30);
+            this.flowLayoutPanel21.Size = new System.Drawing.Size(861, 30);
             this.flowLayoutPanel21.TabIndex = 0;
             // 
             // flowLayoutPanel20
@@ -279,23 +281,23 @@
             this.flowLayoutPanel20.Location = new System.Drawing.Point(3, 2);
             this.flowLayoutPanel20.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.flowLayoutPanel20.Name = "flowLayoutPanel20";
-            this.flowLayoutPanel20.Size = new System.Drawing.Size(315, 26);
+            this.flowLayoutPanel20.Size = new System.Drawing.Size(337, 26);
             this.flowLayoutPanel20.TabIndex = 5;
             // 
             // label2
             // 
             this.label2.Location = new System.Drawing.Point(3, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(183, 25);
+            this.label2.Size = new System.Drawing.Size(212, 25);
             this.label2.TabIndex = 0;
-            this.label2.Text = "Шаг расчёта для таблицы";
+            this.label2.Text = "Шаг расчёта по длине канала";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tableStepTextBox
             // 
             this.tableStepTextBox.BackColor = System.Drawing.SystemColors.Window;
             this.tableStepTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tableStepTextBox.Location = new System.Drawing.Point(192, 2);
+            this.tableStepTextBox.Location = new System.Drawing.Point(221, 2);
             this.tableStepTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tableStepTextBox.Name = "tableStepTextBox";
             this.tableStepTextBox.Size = new System.Drawing.Size(74, 22);
@@ -306,10 +308,11 @@
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(272, 0);
+            this.label4.Location = new System.Drawing.Point(301, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(40, 25);
+            this.label4.Size = new System.Drawing.Size(33, 25);
             this.label4.TabIndex = 2;
+            this.label4.Text = "м";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // flowLayoutPanel22
@@ -319,26 +322,26 @@
             this.flowLayoutPanel22.Controls.Add(this.label6);
             this.flowLayoutPanel22.Controls.Add(this.graphStepTextBox);
             this.flowLayoutPanel22.Controls.Add(this.label8);
-            this.flowLayoutPanel22.Location = new System.Drawing.Point(324, 2);
+            this.flowLayoutPanel22.Location = new System.Drawing.Point(346, 2);
             this.flowLayoutPanel22.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.flowLayoutPanel22.Name = "flowLayoutPanel22";
-            this.flowLayoutPanel22.Size = new System.Drawing.Size(315, 26);
+            this.flowLayoutPanel22.Size = new System.Drawing.Size(326, 26);
             this.flowLayoutPanel22.TabIndex = 6;
             // 
             // label6
             // 
             this.label6.Location = new System.Drawing.Point(3, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(183, 25);
+            this.label6.Size = new System.Drawing.Size(215, 25);
             this.label6.TabIndex = 0;
-            this.label6.Text = "Шаг расчёта для графика";
+            this.label6.Text = "Пропуски шагов для таблицы";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // graphStepTextBox
             // 
             this.graphStepTextBox.BackColor = System.Drawing.SystemColors.Window;
             this.graphStepTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.graphStepTextBox.Location = new System.Drawing.Point(192, 2);
+            this.graphStepTextBox.Location = new System.Drawing.Point(224, 2);
             this.graphStepTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.graphStepTextBox.Name = "graphStepTextBox";
             this.graphStepTextBox.Size = new System.Drawing.Size(74, 22);
@@ -349,21 +352,21 @@
             // 
             // label8
             // 
-            this.label8.Location = new System.Drawing.Point(272, 0);
+            this.label8.Location = new System.Drawing.Point(304, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(40, 25);
+            this.label8.Size = new System.Drawing.Size(19, 25);
             this.label8.TabIndex = 2;
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // calculateButton
             // 
             this.calculateButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.calculateButton.Location = new System.Drawing.Point(645, 2);
+            this.calculateButton.Location = new System.Drawing.Point(678, 2);
             this.calculateButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.calculateButton.Name = "calculateButton";
-            this.calculateButton.Size = new System.Drawing.Size(211, 26);
+            this.calculateButton.Size = new System.Drawing.Size(180, 26);
             this.calculateButton.TabIndex = 116;
-            this.calculateButton.Text = "Расчитать";
+            this.calculateButton.Text = "Вычислить";
             this.calculateButton.UseVisualStyleBackColor = true;
             this.calculateButton.Click += new System.EventHandler(this.calculateButton_Click);
             // 
@@ -775,11 +778,11 @@
             this.groupBox2.AutoSize = true;
             this.groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox2.Controls.Add(this.flowLayoutPanel6);
-            this.groupBox2.Location = new System.Drawing.Point(224, 49);
+            this.groupBox2.Location = new System.Drawing.Point(235, 49);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox2.Size = new System.Drawing.Size(385, 123);
+            this.groupBox2.Size = new System.Drawing.Size(372, 123);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Параметры свойств материала";
@@ -797,7 +800,7 @@
             this.flowLayoutPanel6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.flowLayoutPanel6.Name = "flowLayoutPanel6";
             this.flowLayoutPanel6.Padding = new System.Windows.Forms.Padding(7, 7, 7, 7);
-            this.flowLayoutPanel6.Size = new System.Drawing.Size(379, 104);
+            this.flowLayoutPanel6.Size = new System.Drawing.Size(366, 104);
             this.flowLayoutPanel6.TabIndex = 0;
             // 
             // flowLayoutPanel7
@@ -810,7 +813,7 @@
             this.flowLayoutPanel7.Location = new System.Drawing.Point(10, 9);
             this.flowLayoutPanel7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.flowLayoutPanel7.Name = "flowLayoutPanel7";
-            this.flowLayoutPanel7.Size = new System.Drawing.Size(359, 26);
+            this.flowLayoutPanel7.Size = new System.Drawing.Size(346, 26);
             this.flowLayoutPanel7.TabIndex = 0;
             // 
             // densityLabel
@@ -838,7 +841,7 @@
             // 
             this.label9.Location = new System.Drawing.Point(272, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(84, 25);
+            this.label9.Size = new System.Drawing.Size(71, 25);
             this.label9.TabIndex = 2;
             this.label9.Text = "кг/м^3";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -853,7 +856,7 @@
             this.flowLayoutPanel8.Location = new System.Drawing.Point(10, 39);
             this.flowLayoutPanel8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.flowLayoutPanel8.Name = "flowLayoutPanel8";
-            this.flowLayoutPanel8.Size = new System.Drawing.Size(356, 26);
+            this.flowLayoutPanel8.Size = new System.Drawing.Size(346, 26);
             this.flowLayoutPanel8.TabIndex = 1;
             // 
             // specificHeatCapacityLabel
@@ -880,7 +883,7 @@
             // 
             this.label11.Location = new System.Drawing.Point(272, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(81, 25);
+            this.label11.Size = new System.Drawing.Size(71, 25);
             this.label11.TabIndex = 2;
             this.label11.Text = "Дж/(кг·°С)";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -895,7 +898,7 @@
             this.flowLayoutPanel9.Location = new System.Drawing.Point(10, 69);
             this.flowLayoutPanel9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.flowLayoutPanel9.Name = "flowLayoutPanel9";
-            this.flowLayoutPanel9.Size = new System.Drawing.Size(356, 26);
+            this.flowLayoutPanel9.Size = new System.Drawing.Size(346, 26);
             this.flowLayoutPanel9.TabIndex = 2;
             // 
             // meltingPointLabel
@@ -922,7 +925,7 @@
             // 
             this.label13.Location = new System.Drawing.Point(272, 0);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(81, 25);
+            this.label13.Size = new System.Drawing.Size(71, 25);
             this.label13.TabIndex = 2;
             this.label13.Text = "°С";
             this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -992,7 +995,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(215, 123);
+            this.groupBox1.Size = new System.Drawing.Size(225, 123);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Геометрические параметры";
@@ -1010,7 +1013,7 @@
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Padding = new System.Windows.Forms.Padding(7, 7, 7, 7);
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(209, 104);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(219, 104);
             this.flowLayoutPanel2.TabIndex = 0;
             // 
             // flowLayoutPanel3
@@ -1023,7 +1026,7 @@
             this.flowLayoutPanel3.Location = new System.Drawing.Point(10, 9);
             this.flowLayoutPanel3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(189, 26);
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(199, 26);
             this.flowLayoutPanel3.TabIndex = 0;
             // 
             // widthLabel
@@ -1052,7 +1055,7 @@
             // 
             this.label3.Location = new System.Drawing.Point(162, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(24, 25);
+            this.label3.Size = new System.Drawing.Size(34, 25);
             this.label3.TabIndex = 2;
             this.label3.Text = "м";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1087,7 +1090,7 @@
             this.depthTextBox.Name = "depthTextBox";
             this.depthTextBox.Size = new System.Drawing.Size(74, 22);
             this.depthTextBox.TabIndex = 101;
-            this.depthTextBox.Text = "0.002";
+            this.depthTextBox.Text = "0.015";
             this.depthTextBox.TextChanged += new System.EventHandler(this.replaceDecimalSeparator);
             this.depthTextBox.Leave += new System.EventHandler(this.textBoxLeave);
             // 
@@ -1179,7 +1182,7 @@
             this.Temperature,
             this.Visconsity});
             this.resultsTable.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.resultsTable.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.resultsTable.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.resultsTable.Location = new System.Drawing.Point(3, 2);
             this.resultsTable.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.resultsTable.Name = "resultsTable";
@@ -1206,15 +1209,15 @@
             this.Visconsity.MinimumWidth = 6;
             this.Visconsity.Name = "Visconsity";
             // 
-            // graph
+            // temperatureGraph
             // 
-            this.graph.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(246)))), ((int)(((byte)(246)))));
-            this.graph.Location = new System.Drawing.Point(4, 25);
-            this.graph.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.graph.Name = "graph";
-            this.graph.Size = new System.Drawing.Size(881, 549);
-            this.graph.TabIndex = 2;
-            this.graph.Text = "График";
+            this.temperatureGraph.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(246)))), ((int)(((byte)(246)))));
+            this.temperatureGraph.Location = new System.Drawing.Point(4, 25);
+            this.temperatureGraph.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.temperatureGraph.Name = "temperatureGraph";
+            this.temperatureGraph.Size = new System.Drawing.Size(881, 549);
+            this.temperatureGraph.TabIndex = 2;
+            this.temperatureGraph.Text = "График температуры";
             // 
             // toolTip1
             // 
@@ -1228,6 +1231,15 @@
             this.splitter1.Size = new System.Drawing.Size(875, 64);
             this.splitter1.TabIndex = 1;
             this.splitter1.TabStop = false;
+            // 
+            // viscosityGraph
+            // 
+            this.viscosityGraph.Location = new System.Drawing.Point(4, 25);
+            this.viscosityGraph.Name = "viscosityGraph";
+            this.viscosityGraph.Size = new System.Drawing.Size(881, 549);
+            this.viscosityGraph.TabIndex = 3;
+            this.viscosityGraph.Text = "График вязкости";
+            this.viscosityGraph.UseVisualStyleBackColor = true;
             // 
             // ResearcherInterface
             // 
@@ -1309,7 +1321,7 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage inputParameters;
         private System.Windows.Forms.TabPage valuesTable;
-        private System.Windows.Forms.TabPage graph;
+        private System.Windows.Forms.TabPage temperatureGraph;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox materialComboBox;
@@ -1400,6 +1412,7 @@
         private System.Windows.Forms.Button saveToExcelButton;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Splitter splitter1;
+        private System.Windows.Forms.TabPage viscosityGraph;
     }
 }
 

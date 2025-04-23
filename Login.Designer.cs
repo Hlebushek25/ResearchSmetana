@@ -35,6 +35,8 @@
             this.passwordLabel = new System.Windows.Forms.Label();
             this.passwordTextBox = new System.Windows.Forms.TextBox();
             this.avatarPictureBox = new System.Windows.Forms.PictureBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.avatarPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -125,12 +127,34 @@
             this.avatarPictureBox.TabIndex = 8;
             this.avatarPictureBox.TabStop = false;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(346, 276);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(111, 33);
+            this.button1.TabIndex = 9;
+            this.button1.Text = "Я админ";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(463, 276);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(109, 33);
+            this.button2.TabIndex = 10;
+            this.button2.Text = "Я лигущка";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(88)))), ((int)(((byte)(121)))), ((int)(((byte)(216)))));
             this.ClientSize = new System.Drawing.Size(800, 492);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.avatarPictureBox);
             this.Controls.Add(this.passwordLabel);
             this.Controls.Add(this.passwordTextBox);
@@ -156,5 +180,7 @@
         private System.Windows.Forms.Label passwordLabel;
         private System.Windows.Forms.TextBox passwordTextBox;
         private System.Windows.Forms.PictureBox avatarPictureBox;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }
