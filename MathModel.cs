@@ -20,11 +20,12 @@ namespace IssleduemSmetanu
         public double lidTemperature { get; set; }             //Температура крышки
         public double viscAtZeroShearAndRefTemp { get; set; }  //Вязкость материала при нулевой скорости деформации сдвига и температуре приведения
         public double viscThermCoeff { get; set; }             //Температурный коэффициент вязкости материала
-        public double ref_temp { get; set; }                   //Температура приведения
+        public double castingTemp { get; set; }                   //Температура приведения
         public double timeConstant { get; set; }               //Постоянная времени
         public double viscAnomalyFactor { get; set; }          //Показатель аномалии вязкости материала
         public double heatTransferCoefficient { get; set; }    //Коэффициент теплоотдачи от крышки канала к материалу
         public double step { get; set; }                       //Шаг
+
 
 
         public MathModel(double width, double height, double length, double density, double specificHeatCapacity, double meltingPoint, double lidSpeed, double lidTemperature,
@@ -40,7 +41,7 @@ namespace IssleduemSmetanu
             this.lidTemperature = lidTemperature;
             this.viscAtZeroShearAndRefTemp = viscAtZeroShearAndRefTemp;
             this.viscThermCoeff = viscThermCoeff;
-            this.ref_temp = ref_temp;
+            this.castingTemp = ref_temp;
             this.timeConstant = timeConstant;
             this.viscAnomalyFactor = viscAnomalyFactor;
             this.heatTransferCoefficient = heatTransferCoefficient;
@@ -68,7 +69,7 @@ namespace IssleduemSmetanu
             double part7 = Math.Pow(part5, part6);
             double qGamma = part1 * part2 * part7;
 
-            double qAlpha = width * heatTransferCoefficient * ((1/viscThermCoeff) - lidTemperature + ref_temp);
+            double qAlpha = width * heatTransferCoefficient * ((1/viscThermCoeff) - lidTemperature + castingTemp);
 
             int N = (int)Math.Round(length / step);
             
@@ -78,12 +79,12 @@ namespace IssleduemSmetanu
             {
                 combinedArray[0, i] = i * step;
 
-                double temperature = ref_temp + ((1 / viscThermCoeff) * Math.Log((((viscThermCoeff * qGamma) + (width * heatTransferCoefficient)) / (viscThermCoeff * qAlpha)) * 
+                double temperature = castingTemp + ((1 / viscThermCoeff) * Math.Log((((viscThermCoeff * qGamma) + (width * heatTransferCoefficient)) / (viscThermCoeff * qAlpha)) * 
                        (1 - Math.Exp((-viscThermCoeff * qAlpha) / (density * specificHeatCapacity * Qch) * combinedArray[0, i])) + 
-                       Math.Exp(viscThermCoeff * (meltingPoint - ref_temp - (qAlpha / (density * specificHeatCapacity * Qch) * combinedArray[0, i])))));
+                       Math.Exp(viscThermCoeff * (meltingPoint - castingTemp - (qAlpha / (density * specificHeatCapacity * Qch) * combinedArray[0, i])))));
                 combinedArray[1, i] = Math.Round(temperature, 2);
 
-                double viscosity = viscAtZeroShearAndRefTemp * Math.Exp(-viscThermCoeff * (temperature - ref_temp)) * part7;
+                double viscosity = viscAtZeroShearAndRefTemp * Math.Exp(-viscThermCoeff * (temperature - castingTemp)) * part7;
                 combinedArray[2, i] = Math.Round(viscosity);
             }
 

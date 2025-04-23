@@ -276,8 +276,8 @@ namespace IssleduemSmetanu
 
                 List<MaterialEmpericalCoef> empericalCoefs = LoadDB.GetEmpericalCoef(dbpath, materialId);
                 
-                viscosityTextBox.Clear();
-                tempRatioTextBox.Clear();
+                viscAtZeroShearAndRefTempTextBox.Clear();
+                viscThermCoeffTextBox.Clear();
                 castingTempTextBox.Clear();
                 timeConstTextBox.Clear();   
                 viscosityAnomalyTextBox.Clear();
@@ -288,10 +288,10 @@ namespace IssleduemSmetanu
                     switch (empericalCoef.IdEmpericalCoef)
                     {
                         case 1: 
-                            viscosityTextBox.Text = empericalCoef.ValueEmpericalCoef.ToString();
+                            viscAtZeroShearAndRefTempTextBox.Text = empericalCoef.ValueEmpericalCoef.ToString();
                             break;
                         case 2: 
-                            tempRatioTextBox.Text = empericalCoef.ValueEmpericalCoef.ToString();
+                            viscThermCoeffTextBox.Text = empericalCoef.ValueEmpericalCoef.ToString();
                             break;
                         case 3: 
                             castingTempTextBox.Text = empericalCoef.ValueEmpericalCoef.ToString();
@@ -445,7 +445,7 @@ namespace IssleduemSmetanu
                         worksheet.Cells[11, 9].Value = calc.lidTemperature;
                         worksheet.Cells[13, 9].Value = calc.viscAtZeroShearAndRefTemp;
                         worksheet.Cells[14, 9].Value = calc.viscThermCoeff;
-                        worksheet.Cells[15, 9].Value = calc.ref_temp;
+                        worksheet.Cells[15, 9].Value = calc.castingTemp;
                         worksheet.Cells[16, 9].Value = calc.timeConstant;
                         worksheet.Cells[17, 9].Value = calc.viscAnomalyFactor;
                         worksheet.Cells[18, 9].Value = calc.heatTransferCoefficient;
@@ -502,20 +502,20 @@ namespace IssleduemSmetanu
 
             bool success =
                 double.TryParse(widthTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out width) &&
-                double.TryParse(depthTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out depth) &&
+                double.TryParse(heightTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out depth) &&
                 double.TryParse(lenghtTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out lenght) &&
                 double.TryParse(densityTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out density) &&
                 double.TryParse(specificHeatCapacityTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out specificHeatCapacity) &&
                 double.TryParse(meltingPointTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out meltingPoint) &&
-                double.TryParse(capSpeedTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out capSpeed) &&
-                double.TryParse(capTempTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out capTemp) &&
-                double.TryParse(viscosityTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out viscosity) &&
-                double.TryParse(tempRatioTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out tempRatio) &&
+                double.TryParse(lidSpeedTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out capSpeed) &&
+                double.TryParse(lidTemperatureTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out capTemp) &&
+                double.TryParse(viscAtZeroShearAndRefTempTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out viscosity) &&
+                double.TryParse(viscThermCoeffTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out tempRatio) &&
                 double.TryParse(castingTempTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out castingTemp) &&
                 double.TryParse(timeConstTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out timeConst) &&
                 double.TryParse(viscosityAnomalyTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out viscosityAnomaly) &&
                 double.TryParse(heatTransferRatioTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out heatTransferRatio) &&
-                double.TryParse(tableStepTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out step);
+                double.TryParse(stepTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out step);
 
             if (success)
             {
@@ -538,7 +538,7 @@ namespace IssleduemSmetanu
 
         private void DisplayCombinedArrayInTable(DataGridView resultsTable, double[,] combinedArray)
         {
-            if (!int.TryParse(graphStepTextBox.Text, out int skipStep) || skipStep < 1)
+            if (!int.TryParse(missingStepTextBox.Text, out int skipStep) || skipStep < 1)
             {
                 Dialog error = new Dialog("Введите корректный шаг пропуска (целое число ≥ 1)", DialogType.Error);
                 error.ShowDialog();
