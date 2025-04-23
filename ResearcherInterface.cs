@@ -335,7 +335,7 @@ namespace IssleduemSmetanu
             {
                 int cursorPosition = textBox.SelectionStart;
 
-                textBox.Text = textBox.Text.Replace('.', ',');
+                textBox.Text = textBox.Text.Replace(',', '.');
 
                 textBox.SelectionStart = Math.Min(cursorPosition, textBox.Text.Length);
                 textBox.SelectionLength = 0;
@@ -408,21 +408,21 @@ namespace IssleduemSmetanu
                    castingTemp = 0, timeConst = 0, viscosityAnomaly = 0, heatTransferRatio = 0, step = 0;
 
             bool success =
-                double.TryParse(widthTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out width) &&
-                double.TryParse(depthTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out depth) &&
-                double.TryParse(lenghtTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out lenght) &&
-                double.TryParse(densityTextBox.Text, out density) &&
-                double.TryParse(specificHeatCapacityTextBox.Text, out specificHeatCapacity) &&
-                double.TryParse(meltingPointTextBox.Text, out meltingPoint) &&
-                double.TryParse(capSpeedTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out capSpeed) &&
-                double.TryParse(capTempTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out capTemp) &&
-                double.TryParse(viscosityTextBox.Text, out viscosity) &&
-                double.TryParse(tempRatioTextBox.Text, out tempRatio) &&
-                double.TryParse(castingTempTextBox.Text, out castingTemp) &&
-                double.TryParse(timeConstTextBox.Text, out timeConst) &&
-                double.TryParse(viscosityAnomalyTextBox.Text, out viscosityAnomaly) &&
-                double.TryParse(heatTransferRatioTextBox.Text, out heatTransferRatio) &&
-                double.TryParse(tableStepTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out step);
+                double.TryParse(widthTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out width) &&
+                double.TryParse(depthTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out depth) &&
+                double.TryParse(lenghtTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out lenght) &&
+                double.TryParse(densityTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out density) &&
+                double.TryParse(specificHeatCapacityTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out specificHeatCapacity) &&
+                double.TryParse(meltingPointTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out meltingPoint) &&
+                double.TryParse(capSpeedTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out capSpeed) &&
+                double.TryParse(capTempTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out capTemp) &&
+                double.TryParse(viscosityTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out viscosity) &&
+                double.TryParse(tempRatioTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out tempRatio) &&
+                double.TryParse(castingTempTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out castingTemp) &&
+                double.TryParse(timeConstTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out timeConst) &&
+                double.TryParse(viscosityAnomalyTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out viscosityAnomaly) &&
+                double.TryParse(heatTransferRatioTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out heatTransferRatio) &&
+                double.TryParse(tableStepTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out step);
 
             if (success)
             {

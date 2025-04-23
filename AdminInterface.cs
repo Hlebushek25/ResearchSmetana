@@ -33,11 +33,59 @@ namespace IssleduemSmetanu
         {
             InitializeComponent();
 
-            timeoutHoursTextBox.Text = (Properties.Settings.Default.LoginTimeout / 3600).ToString();
-            timeoutMinutesTextBox.Text = (Properties.Settings.Default.LoginTimeout % 3600 / 60).ToString();
-            timeoutSecondsTextBox.Text = (Properties.Settings.Default.LoginTimeout % 60).ToString();
-
             tryQuantityTextBox.Text = (Properties.Settings.Default.DefaultLoginTryQuantity + 1).ToString();
+
+            switch (Properties.Settings.Default.LoginTimeout)
+            {
+                case 60:
+                    comboBox1.SelectedIndex = 0;
+                    break;
+                case 120:
+                    comboBox1.SelectedIndex = 1;
+                    break;
+                case 300:
+                    comboBox1.SelectedIndex = 2;
+                    break;
+                case 600:
+                    comboBox1.SelectedIndex = 3;
+                    break;
+                case 900:
+                    comboBox1.SelectedIndex = 4;
+                    break;
+                case 1800:
+                    comboBox1.SelectedIndex = 5;
+                    break;
+                case 3600:
+                    comboBox1.SelectedIndex = 6;
+                    break;
+                case 7200:
+                    comboBox1.SelectedIndex = 7;
+                    break;
+                case 14400:
+                    comboBox1.SelectedIndex = 8;
+                    break;
+                case 43200:
+                    comboBox1.SelectedIndex = 9;
+                    break;
+                case 86400:
+                    comboBox1.SelectedIndex = 10;
+                    break;
+                case 259200:
+                    comboBox1.SelectedIndex = 11;
+                    break;
+                case 604800:
+                    comboBox1.SelectedIndex = 12;
+                    break;
+                case 2592000:
+                    comboBox1.SelectedIndex = 13;
+                    break;
+                case 31557600:
+                    comboBox1.SelectedIndex = 14;
+                    break;
+                case 157788000:
+                    comboBox1.SelectedIndex = 15;
+                    break;
+            }
 
             #region ---------- РАЗВЛЕЧЕНИЯ С РАМОЧКОЙ ----------
             this.Text = "Заведующий исследователями сметаны";
@@ -181,6 +229,88 @@ namespace IssleduemSmetanu
                 g.DrawString(this.Text, font, textBrush, new Point(6, 7));
             }
 
+        }
+
+        private void tryQuantityTextBox_Leave(object sender, EventArgs e)
+        {
+            if (uint.TryParse(tryQuantityTextBox.Text, out uint result))
+            {
+                if (result <= 50)
+                {
+                    Properties.Settings.Default.DefaultLoginTryQuantity = result - 1;
+                    Properties.Settings.Default.LoginTryQuantity = result - 1;
+                    Properties.Settings.Default.Save();
+                }
+                else
+                {
+                    Dialog dialog = new Dialog("Максимальное количество попыток 50", DialogType.Error);
+                    dialog.ShowDialog();
+                    tryQuantityTextBox.Focus();
+                }
+            }
+            else
+            {
+                Dialog dialog = new Dialog("Введённое значение некорректно", DialogType.Error);
+                dialog.ShowDialog();
+                tryQuantityTextBox.Focus();
+            }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (comboBox1.SelectedIndex)
+            {
+                case 0:
+                    Properties.Settings.Default.LoginTimeout = 60;
+                    break;
+                case 1:
+                    Properties.Settings.Default.LoginTimeout = 120;
+                    break;
+                case 2:
+                    Properties.Settings.Default.LoginTimeout = 300;
+                    break;
+                case 3:
+                    Properties.Settings.Default.LoginTimeout = 600;
+                    break;
+                case 4:
+                    Properties.Settings.Default.LoginTimeout = 900;
+                    break;
+                case 5:
+                    Properties.Settings.Default.LoginTimeout = 1800;
+                    break;
+                case 6:
+                    Properties.Settings.Default.LoginTimeout = 3600;
+                    break;
+                case 7:
+                    Properties.Settings.Default.LoginTimeout = 7200;
+                    break;
+                case 8:
+                    Properties.Settings.Default.LoginTimeout = 14400;
+                    break;
+                case 9:
+                    Properties.Settings.Default.LoginTimeout = 43200;
+                    break;
+                case 10:
+                    Properties.Settings.Default.LoginTimeout = 86400;
+                    break;
+                case 11:
+                    Properties.Settings.Default.LoginTimeout = 259200;
+                    break;
+                case 12:
+                    Properties.Settings.Default.LoginTimeout = 604800;
+                    break;
+                case 13:
+                    Properties.Settings.Default.LoginTimeout = 2592000;
+                    break;
+                case 14:
+                    Properties.Settings.Default.LoginTimeout = 31557600;
+                    break;
+                case 15:
+                    Properties.Settings.Default.LoginTimeout = 157788000;
+                    break;
+            }
+
+            Properties.Settings.Default.Save();
         }
     }
 }

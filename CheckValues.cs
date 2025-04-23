@@ -89,7 +89,7 @@ namespace IssleduemSmetanu
 
         public static double? checkDouble(string input)
         {
-            return double.TryParse(input, NumberStyles.Float, new CultureInfo("ru-RU"), out double result) ? result : (double?)null;
+            return double.TryParse(input, NumberStyles.Float, new CultureInfo("en-US"), out double result) ? result : (double?)null;
         }
 
         public static void checkPositive(double value, string parameterName, object sender)
