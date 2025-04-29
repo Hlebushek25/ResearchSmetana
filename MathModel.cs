@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -20,42 +21,90 @@ namespace IssleduemSmetanu
         public double lidTemperature { get; set; }             //Температура крышки
         public double viscAtZeroShearAndRefTemp { get; set; }  //Вязкость материала при нулевой скорости деформации сдвига и температуре приведения
         public double viscThermCoeff { get; set; }             //Температурный коэффициент вязкости материала
-        public double castingTemp { get; set; }                   //Температура приведения
+        public double castingTemp { get; set; }                //Температура приведения
         public double timeConstant { get; set; }               //Постоянная времени
         public double viscAnomalyFactor { get; set; }          //Показатель аномалии вязкости материала
         public double heatTransferCoefficient { get; set; }    //Коэффициент теплоотдачи от крышки канала к материалу
         public double step { get; set; }                       //Шаг
 
+        private static string dbpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "DB.db");
 
-
-        public MathModel(double width, double height, double length, double density, double specificHeatCapacity, double meltingPoint, double lidSpeed, double lidTemperature,
-                         double viscAtZeroShearAndRefTemp, double viscThermCoeff, double ref_temp, double timeConstant, double viscAnomalyFactor, double heatTransferCoefficient, double step)
+        public MathModel() 
         {
-            this.width = width;
-            this.height = height;
-            this.length = length;
-            this.density = density;
-            this.specificHeatCapacity = specificHeatCapacity;
-            this.meltingPoint = meltingPoint;
-            this.lidSpeed = lidSpeed;
-            this.lidTemperature = lidTemperature;
-            this.viscAtZeroShearAndRefTemp = viscAtZeroShearAndRefTemp;
-            this.viscThermCoeff = viscThermCoeff;
-            this.castingTemp = ref_temp;
-            this.timeConstant = timeConstant;
-            this.viscAnomalyFactor = viscAnomalyFactor;
-            this.heatTransferCoefficient = heatTransferCoefficient;
-            this.step = step;
+            width = 0.23;
+            height = 0.015;       
+            length = 7.5;        
+            lidSpeed = 1.1;      
+            lidTemperature = 180; 
+            step= 0.005;         
         }
 
-        public double CalculatePerformance(/*double width, double height, double lidSpeed*/)
+        public void LoadFromDatabase(int materialId)
         {
+            density = 0;
+            specificHeatCapacity = 0;
+            meltingPoint = 0;
+            viscAtZeroShearAndRefTemp = 0;
+            viscThermCoeff = 0;
+            castingTemp = 0;
+            timeConstant = 0;
+            viscAnomalyFactor = 0;
+            heatTransferCoefficient = 0;
+
+            List<MaterialCharacteristic> characteristics = LoadDB.GetMaterialCharacteristics(materialId);
+            List<MaterialEmpericalCoef> empericalCoefs = LoadDB.GetEmpericalCoef(materialId);
+            foreach (MaterialCharacteristic characteristic in characteristics)
+            {
+                switch (characteristic.IdCharacteristic) 
+                {
+                    case 1: // Плотность
+                        this.density = characteristic.ValueCharacteristic;
+                        break;
+                    case 2: // Удельная теплоемкость
+                        this.specificHeatCapacity = characteristic.ValueCharacteristic;
+                        break;
+                    case 3: // Температура плавления
+                        this.meltingPoint = characteristic.ValueCharacteristic;
+                        break;
+                }
+            }
+            foreach (MaterialEmpericalCoef empericalCoef in empericalCoefs)
+            {
+                switch (empericalCoef.IdEmpericalCoef)
+                {
+                    case 1: // Вязкость материала при нулевой скорости деформации сдвига и температуре приведения
+                        this.viscAtZeroShearAndRefTemp = empericalCoef.ValueEmpericalCoef;
+                        break;
+                    case 2: // Температурный коэффициент вязкости материала
+                        this.viscThermCoeff = empericalCoef.ValueEmpericalCoef;
+                        break;
+                    case 3:// Температура приведения
+                        this.castingTemp = empericalCoef.ValueEmpericalCoef;
+                        break;
+                    case 4: // Постоянная времени
+                        this.timeConstant = empericalCoef.ValueEmpericalCoef;
+                        break;
+                    case 5: // Показатель аномалии вязкости материала
+                        this.viscAnomalyFactor = empericalCoef.ValueEmpericalCoef;
+                        break;
+                    case 6: // Коэффициент теплоотдачи от крышки канала к материалу
+                        this.heatTransferCoefficient = empericalCoef.ValueEmpericalCoef;
+                        break;
+                }
+            }
+        }
+
+        public (double Result, long ElapsedTicks) CalculatePerformance()
+        {
+            Stopwatch stopwatch = Stopwatch.StartNew();
             double performance = 3600 * density * (((height * width * lidSpeed) / 2) * ((0.125 * Math.Pow(height / width, 2)) - (0.625 * (height / width)) + 1));
-            return Math.Round(performance);
+            stopwatch.Stop();
+            return (Math.Round(performance), stopwatch.ElapsedTicks);
         }
 
-        public double[,] CalculateTemperature()
+        public (double[,] Result, long ElapsedTicks) CalculateTemperature()
         {
+            var stopwatch = Stopwatch.StartNew();
             double Qch = (((height * width * lidSpeed) / 2) * ((0.125 * Math.Pow(height / width, 2)) - (0.625 * (height / width)) + 1));
 
             double gamma = lidSpeed / height;
@@ -87,17 +136,15 @@ namespace IssleduemSmetanu
                 double viscosity = viscAtZeroShearAndRefTemp * Math.Exp(-viscThermCoeff * (temperature - castingTemp)) * part7;
                 combinedArray[2, i] = Math.Round(viscosity);
             }
-
-            return combinedArray;
+            stopwatch.Stop();
+            return (combinedArray, stopwatch.ElapsedTicks);
         }
-
-        
     }
 
     public class LoadDB
     {
-        private static string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Databases", "DB.db");
-        public static List<Material> GetAllMaterials(string dbPath)
+        private static string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "DB.db");
+        public static List<Material> GetAllMaterials()
         {
             var users = new List<Material>();
 
@@ -124,7 +171,7 @@ namespace IssleduemSmetanu
             return users;
         }
 
-        public static List<MaterialCharacteristic> GetMaterialCharacteristics(string dbPath, int materialId)
+        public static List<MaterialCharacteristic> GetMaterialCharacteristics(int materialId)
         {
             List<MaterialCharacteristic> characteristics = new List<MaterialCharacteristic>();
 
@@ -154,7 +201,7 @@ namespace IssleduemSmetanu
             return characteristics;
         }
 
-        public static List<MaterialEmpericalCoef> GetEmpericalCoef(string dbPath, int materialId)
+        public static List<MaterialEmpericalCoef> GetEmpericalCoef(int materialId)
         {
             List<MaterialEmpericalCoef> empCoef = new List<MaterialEmpericalCoef>();
 

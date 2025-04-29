@@ -266,7 +266,7 @@ namespace IssleduemSmetanu
                     }
                     else
                     {
-                        this.ActionCode = user.Role.Equals("admin", StringComparison.OrdinalIgnoreCase)
+                        this.ActionCode = user.Role.Equals("1", StringComparison.OrdinalIgnoreCase)
                         ? "ContinueAsAdmin"
                         : "ContinueAsResearcher";
 
@@ -351,11 +351,11 @@ namespace IssleduemSmetanu
                     // Меняем аватар в зависимости от роли
                     switch (user.Role?.ToLower()) // Приводим роль к нижнему регистру для унификации
                     {
-                        case "researcher":
-                            avatarPictureBox.Image = Properties.Resources.Researcher;
-                            break;
-                        case "admin":
+                        case "1":
                             avatarPictureBox.Image = Properties.Resources.Admin;
+                            break;
+                        case "2":
+                            avatarPictureBox.Image = Properties.Resources.Researcher;
                             break;
                         default:
                             avatarPictureBox.Image = Properties.Resources.Doge;

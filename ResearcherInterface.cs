@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Entity.Infrastructure;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.Drawing;
@@ -28,8 +29,6 @@ namespace IssleduemSmetanu
         double temperature = 0;
         double productViscosity = 0;
 
-        MathModel calc = new MathModel(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn(
             int nLeftRect, int nTopRect, int nRightRect, int nBottomRect,
@@ -45,14 +44,39 @@ namespace IssleduemSmetanu
 
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HTCAPTION = 0x2;
-
         private bool isNavigateButton = false;
+        
+        MathModel smetana = new MathModel();
 
-        private static string dbpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "DB.db");
 
         public ResearcherInterface()
         {
             InitializeComponent();
+
+            #region ---------- Подписка на текстбоксы ----------
+            // Геометрические параметры
+            SubscribeTextBox(widthTextBox, v => smetana.width = v);
+            SubscribeTextBox(heightTextBox, v => smetana.height = v);
+            SubscribeTextBox(lengthTextBox, v => smetana.length = v);
+            SubscribeTextBox(stepTextBox, v => smetana.step = v);
+
+            // Режимные параметры
+            SubscribeTextBox(lidSpeedTextBox, v => smetana.lidSpeed = v);
+            SubscribeTextBox(lidTemperatureTextBox, v => smetana.lidTemperature = v);
+
+            // Свойства материала
+            SubscribeTextBox(densityTextBox, v => smetana.density = v);
+            SubscribeTextBox(specificHeatCapacityTextBox, v => smetana.specificHeatCapacity = v);
+            SubscribeTextBox(meltingPointTextBox, v => smetana.meltingPoint = v);
+
+            // Эмпирические коэффициенты
+            SubscribeTextBox(viscAtZeroShearAndRefTempTextBox, v => smetana.viscAtZeroShearAndRefTemp = v);
+            SubscribeTextBox(viscThermCoeffTextBox, v => smetana.viscThermCoeff = v);
+            SubscribeTextBox(castingTempTextBox, v => smetana.castingTemp = v);
+            SubscribeTextBox(timeConstTextBox, v => smetana.timeConstant = v);
+            SubscribeTextBox(viscosityAnomalyTextBox, v => smetana.viscAnomalyFactor = v);
+            SubscribeTextBox(heatTransferRatioTextBox, v => smetana.heatTransferCoefficient = v);
+            #endregion
 
             #region ---------- РАЗВЛЕЧЕНИЯ С РАМОЧКОЙ ----------
             this.Text = "Исследуем сметану";
@@ -191,7 +215,7 @@ namespace IssleduemSmetanu
 
             try
             {
-                List<Material> materials = LoadDB.GetAllMaterials(dbpath);
+                List<Material> materials = LoadDB.GetAllMaterials();
 
                 materialComboBox.DisplayMember = "NameMaterial";
                 materialComboBox.ValueMember = "IdMaterial";
@@ -208,7 +232,24 @@ namespace IssleduemSmetanu
             }
         }
 
+        #region ---------- Значения в текстбоксах ----------
+        private void SubscribeTextBox(TextBox textBox, Action<double> setter)
+        {
+            textBox.TextChanged += (s, e) => HandleDoubleTextChanged(textBox, setter);
+        }
 
+        private void HandleDoubleTextChanged(TextBox textBox, Action<double> setter)
+        {
+            if (double.TryParse(textBox.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out double value))
+            {
+                setter(value);
+            }
+            else if (!string.IsNullOrEmpty(textBox.Text))
+            {
+                textBox.Text = textBox.Text.Substring(0, textBox.Text.Length - 1);
+                textBox.SelectionStart = textBox.Text.Length;
+            }
+        }
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -242,78 +283,34 @@ namespace IssleduemSmetanu
             }
 
         }
+        #endregion
 
         private void materialComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (materialComboBox.SelectedItem == null) return;
 
-            var selectedMaterial = (Material)materialComboBox.SelectedItem;
-            int materialId = selectedMaterial.IdMaterial;
+            smetana.LoadFromDatabase(((Material)materialComboBox.SelectedItem).IdMaterial);
 
-            try
-            {
-                List<MaterialCharacteristic> characteristics = LoadDB.GetMaterialCharacteristics(dbpath, materialId);
+            UpdateTextBoxes();
+        }
 
-                densityTextBox.Clear();
-                specificHeatCapacityTextBox.Clear();
-                meltingPointTextBox.Clear();
-
-                foreach (var characteristic in characteristics)
-                {
-                    switch (characteristic.IdCharacteristic)
-                    {
-                        case 1: // Плотность
-                            densityTextBox.Text = characteristic.ValueCharacteristic.ToString();
-                            break;
-                        case 2: // Удельная теплоемкость
-                            specificHeatCapacityTextBox.Text = characteristic.ValueCharacteristic.ToString();
-                            break;
-                        case 3: // Температура плавления
-                            meltingPointTextBox.Text = characteristic.ValueCharacteristic.ToString();
-                            break;
-                    }
-                }
-
-                List<MaterialEmpericalCoef> empericalCoefs = LoadDB.GetEmpericalCoef(dbpath, materialId);
-                
-                viscAtZeroShearAndRefTempTextBox.Clear();
-                viscThermCoeffTextBox.Clear();
-                castingTempTextBox.Clear();
-                timeConstTextBox.Clear();   
-                viscosityAnomalyTextBox.Clear();
-                heatTransferRatioTextBox.Clear();
-
-                foreach (var empericalCoef in empericalCoefs)
-                {
-                    switch (empericalCoef.IdEmpericalCoef)
-                    {
-                        case 1: 
-                            viscAtZeroShearAndRefTempTextBox.Text = empericalCoef.ValueEmpericalCoef.ToString();
-                            break;
-                        case 2: 
-                            viscThermCoeffTextBox.Text = empericalCoef.ValueEmpericalCoef.ToString();
-                            break;
-                        case 3: 
-                            castingTempTextBox.Text = empericalCoef.ValueEmpericalCoef.ToString();
-                            break;
-                        case 4:
-                            timeConstTextBox.Text = empericalCoef.ValueEmpericalCoef.ToString();
-                            break;
-                        case 5:
-                            viscosityAnomalyTextBox.Text = empericalCoef.ValueEmpericalCoef.ToString();
-                            break;
-                        case 6:
-                            heatTransferRatioTextBox.Text = empericalCoef.ValueEmpericalCoef.ToString();
-                            break;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Dialog dialog = new Dialog($"Ошибка загрузки характеристик: {ex.Message}", DialogType.Error);
-                dialog.ShowDialog();
-            }
-
+        private void UpdateTextBoxes()
+        {
+            widthTextBox.Text = smetana.width.ToString();
+            heightTextBox.Text = smetana.height.ToString();
+            lengthTextBox.Text = smetana.length.ToString();
+            densityTextBox.Text = smetana.density.ToString();
+            specificHeatCapacityTextBox.Text = smetana.specificHeatCapacity.ToString();
+            meltingPointTextBox.Text = smetana.meltingPoint.ToString();
+            lidSpeedTextBox.Text = smetana.lidSpeed.ToString();
+            lidTemperatureTextBox.Text = smetana.lidTemperature.ToString();
+            viscAtZeroShearAndRefTempTextBox.Text = smetana.viscAtZeroShearAndRefTemp.ToString();
+            viscThermCoeffTextBox.Text = smetana.viscThermCoeff.ToString();
+            castingTempTextBox.Text = smetana.castingTemp.ToString();
+            timeConstTextBox.Text = smetana.timeConstant.ToString();
+            viscosityAnomalyTextBox.Text = smetana.viscAnomalyFactor.ToString();
+            heatTransferRatioTextBox.Text = smetana.heatTransferCoefficient.ToString();
+            stepTextBox.Text = smetana.step.ToString();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -435,21 +432,21 @@ namespace IssleduemSmetanu
                         worksheet.Cells[19, 8].Style.Font.Bold = true;
                         worksheet.Cells[20, 8].Value = "Шаг расчёта по длине канала, м";
 
-                        worksheet.Cells[2, 9].Value = calc.width;
-                        worksheet.Cells[3, 9].Value = calc.height;
-                        worksheet.Cells[4, 9].Value = calc.length;
-                        worksheet.Cells[6, 9].Value = calc.density;
-                        worksheet.Cells[7, 9].Value = calc.specificHeatCapacity;
-                        worksheet.Cells[8, 9].Value = calc.meltingPoint;
-                        worksheet.Cells[10, 9].Value = calc.lidSpeed;
-                        worksheet.Cells[11, 9].Value = calc.lidTemperature;
-                        worksheet.Cells[13, 9].Value = calc.viscAtZeroShearAndRefTemp;
-                        worksheet.Cells[14, 9].Value = calc.viscThermCoeff;
-                        worksheet.Cells[15, 9].Value = calc.castingTemp;
-                        worksheet.Cells[16, 9].Value = calc.timeConstant;
-                        worksheet.Cells[17, 9].Value = calc.viscAnomalyFactor;
-                        worksheet.Cells[18, 9].Value = calc.heatTransferCoefficient;
-                        worksheet.Cells[20, 9].Value = calc.step;
+                        worksheet.Cells[2, 9].Value = smetana.width;
+                        worksheet.Cells[3, 9].Value = smetana.height;
+                        worksheet.Cells[4, 9].Value = smetana.length;
+                        worksheet.Cells[6, 9].Value = smetana.density;
+                        worksheet.Cells[7, 9].Value = smetana.specificHeatCapacity;
+                        worksheet.Cells[8, 9].Value = smetana.meltingPoint;
+                        worksheet.Cells[10, 9].Value = smetana.lidSpeed;
+                        worksheet.Cells[11, 9].Value = smetana.lidTemperature;
+                        worksheet.Cells[13, 9].Value = smetana.viscAtZeroShearAndRefTemp;
+                        worksheet.Cells[14, 9].Value = smetana.viscThermCoeff;
+                        worksheet.Cells[15, 9].Value = smetana.castingTemp;
+                        worksheet.Cells[16, 9].Value = smetana.timeConstant;
+                        worksheet.Cells[17, 9].Value = smetana.viscAnomalyFactor;
+                        worksheet.Cells[18, 9].Value = smetana.heatTransferCoefficient;
+                        worksheet.Cells[20, 9].Value = smetana.step;
 
                         worksheet.Column(8).AutoFit();
                         worksheet.Column(9).AutoFit();
@@ -496,44 +493,15 @@ namespace IssleduemSmetanu
 
         private void calculateButton_Click(object sender, EventArgs e)
         {
-            double width = 0, depth = 0, lenght = 0, density = 0, specificHeatCapacity = 0,
-                   meltingPoint = 0, capSpeed = 0, capTemp = 0, viscosity = 0, tempRatio = 0,
-                   castingTemp = 0, timeConst = 0, viscosityAnomaly = 0, heatTransferRatio = 0, step = 0;
-
-            bool success =
-                double.TryParse(widthTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out width) &&
-                double.TryParse(heightTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out depth) &&
-                double.TryParse(lenghtTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out lenght) &&
-                double.TryParse(densityTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out density) &&
-                double.TryParse(specificHeatCapacityTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out specificHeatCapacity) &&
-                double.TryParse(meltingPointTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out meltingPoint) &&
-                double.TryParse(lidSpeedTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out capSpeed) &&
-                double.TryParse(lidTemperatureTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out capTemp) &&
-                double.TryParse(viscAtZeroShearAndRefTempTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out viscosity) &&
-                double.TryParse(viscThermCoeffTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out tempRatio) &&
-                double.TryParse(castingTempTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out castingTemp) &&
-                double.TryParse(timeConstTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out timeConst) &&
-                double.TryParse(viscosityAnomalyTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out viscosityAnomaly) &&
-                double.TryParse(heatTransferRatioTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out heatTransferRatio) &&
-                double.TryParse(stepTextBox.Text, NumberStyles.Float, new CultureInfo("en-US"), out step);
-
-            if (success)
-            {
-                calc = new MathModel(width, depth, lenght, density, specificHeatCapacity, meltingPoint,
-                                             capSpeed, capTemp, viscosity, tempRatio, castingTemp, timeConst,
-                                             viscosityAnomaly, heatTransferRatio, step);
-                double[,] tableData = calc.CalculateTemperature();
-                performance = calc.CalculatePerformance();
-                temperature = Math.Round(tableData[1, tableData.GetLength(1) - 1], 1);
-                productViscosity = tableData[2, tableData.GetLength(1) - 1];
-                DisplayCombinedArrayInTable(resultsTable, tableData);
-                criteriaIndicatorsLabel.Text = $"Производительность = {performance} [кг/ч]\nТемпература = {temperature} [°C]\nВязкость = {productViscosity} [Па*с]";
-            }
-            else
-            {
-                Dialog error = new Dialog("Хуйня твои значения", DialogType.Error);
-                error.ShowDialog();
-            }
+            var (performance, perfTime) = smetana.CalculatePerformance();
+            //performance = smetana.CalculatePerformance();
+            var (tableData, tempTime) = smetana.CalculateTemperature();
+            //double[,] tableData = smetana.CalculateTemperature();
+            temperature = Math.Round(tableData[1, tableData.GetLength(1) - 1], 1);
+            productViscosity = tableData[2, tableData.GetLength(1) - 1];
+            DisplayCombinedArrayInTable(resultsTable, tableData);
+            criteriaIndicatorsLabel.Text = $"Производительность = {performance} [кг/ч]\nТемпература = {temperature} [°C]\nВязкость = {productViscosity} [Па*с]";
+            efficiencyLabel.Text = $"Время расчета и визуализации результатов = {perfTime + tempTime} [нс]\nОбъем ОЗУ, необходимой для моделирования объекта = 0 мб\nК-во арифметических операций при расчете = 0";
         }
 
         private void DisplayCombinedArrayInTable(DataGridView resultsTable, double[,] combinedArray)
