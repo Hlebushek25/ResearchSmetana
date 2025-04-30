@@ -27,6 +27,8 @@ namespace IssleduemSmetanu
         public double heatTransferCoefficient { get; set; }    //Коэффициент теплоотдачи от крышки канала к материалу
         public double step { get; set; }                       //Шаг
 
+        public double QCH { get; set; }
+
         private static string dbpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "DB.db");
 
         public MathModel() 
@@ -97,7 +99,8 @@ namespace IssleduemSmetanu
         public (double Result, long ElapsedTicks) CalculatePerformance()
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
-            double performance = 3600 * density * (((height * width * lidSpeed) / 2) * ((0.125 * Math.Pow(height / width, 2)) - (0.625 * (height / width)) + 1));
+            QCH = (((height * width * lidSpeed) / 2) * ((0.125 * Math.Pow(height / width, 2)) - (0.625 * (height / width)) + 1));
+            double performance = 3600 * density * QCH;
             stopwatch.Stop();
             return (Math.Round(performance), stopwatch.ElapsedTicks);
         }
@@ -105,7 +108,7 @@ namespace IssleduemSmetanu
         public (double[,] Result, long ElapsedTicks) CalculateTemperature()
         {
             var stopwatch = Stopwatch.StartNew();
-            double Qch = (((height * width * lidSpeed) / 2) * ((0.125 * Math.Pow(height / width, 2)) - (0.625 * (height / width)) + 1));
+            //double Qch = (((height * width * lidSpeed) / 2) * ((0.125 * Math.Pow(height / width, 2)) - (0.625 * (height / width)) + 1));
 
             double gamma = lidSpeed / height;
             //double qGamma = height * width * viscAtZeroShearAndRefTemp * Math.Pow(gamma, 2) * (Math.Pow(1 + Math.Pow(timeConstant * gamma, 2), (viscAnomalyFactor - 1) / 2));
@@ -129,8 +132,8 @@ namespace IssleduemSmetanu
                 combinedArray[0, i] = i * step;
 
                 double temperature = castingTemp + ((1 / viscThermCoeff) * Math.Log((((viscThermCoeff * qGamma) + (width * heatTransferCoefficient)) / (viscThermCoeff * qAlpha)) * 
-                       (1 - Math.Exp((-viscThermCoeff * qAlpha) / (density * specificHeatCapacity * Qch) * combinedArray[0, i])) + 
-                       Math.Exp(viscThermCoeff * (meltingPoint - castingTemp - (qAlpha / (density * specificHeatCapacity * Qch) * combinedArray[0, i])))));
+                       (1 - Math.Exp((-viscThermCoeff * qAlpha) / (density * specificHeatCapacity * QCH) * combinedArray[0, i])) + 
+                       Math.Exp(viscThermCoeff * (meltingPoint - castingTemp - (qAlpha / (density * specificHeatCapacity * QCH) * combinedArray[0, i])))));
                 combinedArray[1, i] = Math.Round(temperature, 2);
 
                 double viscosity = viscAtZeroShearAndRefTemp * Math.Exp(-viscThermCoeff * (temperature - castingTemp)) * part7;
