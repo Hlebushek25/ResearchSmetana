@@ -16,6 +16,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 using System.Windows.Media.Media3D;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
@@ -23,6 +24,11 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace IssleduemSmetanu
 {
+    public enum ChartType
+    {
+        Temperature = 1,
+        Viscosity
+    };
     public partial class ResearcherInterface : Form
     {
         double performance = 0;
@@ -502,6 +508,7 @@ namespace IssleduemSmetanu
             temperature = Math.Round(tableData[1, tableData.GetLength(1) - 1], 1);
             productViscosity = tableData[2, tableData.GetLength(1) - 1];
             DisplayCombinedArrayInTable(resultsTable, tableData);
+            DisplayChart(temperatureChart, tableData, ChartType.Temperature);
             //long memoryAfter = GC.GetTotalMemory(true);
             //long memoryUsed = memoryAfter - memoryBefore;
             int N = (int)Math.Round(smetana.length / smetana.step);
@@ -543,6 +550,22 @@ namespace IssleduemSmetanu
                     combinedArray[1, numRecords - 1],
                     combinedArray[2, numRecords - 1]);
             }
+        }
+
+        private void DisplayChart(Chart chart, double[,] data, ChartType chartType)
+        {
+            Series series = chartType == ChartType.Temperature ? temperatureChart.Series[0] : temperatureChart.Series[0];
+            ChartArea chartArea = chartType == ChartType.Temperature ? temperatureChart.ChartAreas[0] : temperatureChart.ChartAreas[0];
+            for (int i = 0; i < data.GetLength(1); i++)
+            {
+                series.Points.Add(data[(int)chartType, i]);
+            }
+            if (chartType == ChartType.Temperature)
+            {
+                chartArea.AxisY.Minimum = data[1, 0];
+            }
+            
+
         }
     }
 }
