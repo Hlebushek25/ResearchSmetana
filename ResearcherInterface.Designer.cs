@@ -31,6 +31,8 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.inputParameters = new System.Windows.Forms.TabPage();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
@@ -124,9 +126,10 @@
             this.saveToExcelButton = new System.Windows.Forms.Button();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.temperatureGraph = new System.Windows.Forms.TabPage();
+            this.temperatureChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.viscosityGraph = new System.Windows.Forms.TabPage();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.temperatureChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.viscosityChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tabControl1.SuspendLayout();
             this.inputParameters.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -162,6 +165,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.resultsTable)).BeginInit();
             this.temperatureGraph.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.temperatureChart)).BeginInit();
+            this.viscosityGraph.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.viscosityChart)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -401,7 +406,7 @@
             this.flowLayoutPanel13.Location = new System.Drawing.Point(3, 17);
             this.flowLayoutPanel13.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.flowLayoutPanel13.Name = "flowLayoutPanel13";
-            this.flowLayoutPanel13.Padding = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.flowLayoutPanel13.Padding = new System.Windows.Forms.Padding(7);
             this.flowLayoutPanel13.Size = new System.Drawing.Size(859, 157);
             this.flowLayoutPanel13.TabIndex = 0;
             // 
@@ -685,7 +690,7 @@
             this.flowLayoutPanel10.Location = new System.Drawing.Point(3, 17);
             this.flowLayoutPanel10.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.flowLayoutPanel10.Name = "flowLayoutPanel10";
-            this.flowLayoutPanel10.Padding = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.flowLayoutPanel10.Padding = new System.Windows.Forms.Padding(7);
             this.flowLayoutPanel10.Size = new System.Drawing.Size(255, 116);
             this.flowLayoutPanel10.TabIndex = 0;
             // 
@@ -802,7 +807,7 @@
             this.flowLayoutPanel6.Location = new System.Drawing.Point(3, 17);
             this.flowLayoutPanel6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.flowLayoutPanel6.Name = "flowLayoutPanel6";
-            this.flowLayoutPanel6.Padding = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.flowLayoutPanel6.Padding = new System.Windows.Forms.Padding(7);
             this.flowLayoutPanel6.Size = new System.Drawing.Size(369, 104);
             this.flowLayoutPanel6.TabIndex = 0;
             // 
@@ -1015,7 +1020,7 @@
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 17);
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Padding = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.flowLayoutPanel2.Padding = new System.Windows.Forms.Padding(7);
             this.flowLayoutPanel2.Size = new System.Drawing.Size(220, 104);
             this.flowLayoutPanel2.TabIndex = 0;
             // 
@@ -1233,20 +1238,6 @@
             this.temperatureGraph.TabIndex = 2;
             this.temperatureGraph.Text = "График температуры";
             // 
-            // viscosityGraph
-            // 
-            this.viscosityGraph.Location = new System.Drawing.Point(4, 25);
-            this.viscosityGraph.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.viscosityGraph.Name = "viscosityGraph";
-            this.viscosityGraph.Size = new System.Drawing.Size(881, 549);
-            this.viscosityGraph.TabIndex = 3;
-            this.viscosityGraph.Text = "График вязкости";
-            this.viscosityGraph.UseVisualStyleBackColor = true;
-            // 
-            // toolTip1
-            // 
-            this.toolTip1.Tag = "Вектор Ч";
-            // 
             // temperatureChart
             // 
             this.temperatureChart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(246)))), ((int)(((byte)(246)))));
@@ -1267,12 +1258,54 @@
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
             series1.Color = System.Drawing.Color.Red;
             series1.Name = "temperatureSeries";
-            series1.ShadowColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            series1.ShadowOffset = 5;
+            series1.ShadowColor = System.Drawing.Color.FromArgb(((int)(((byte)(5)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            series1.ShadowOffset = 3;
             this.temperatureChart.Series.Add(series1);
             this.temperatureChart.Size = new System.Drawing.Size(881, 549);
             this.temperatureChart.TabIndex = 0;
             this.temperatureChart.Text = "chart1";
+            // 
+            // viscosityGraph
+            // 
+            this.viscosityGraph.Controls.Add(this.viscosityChart);
+            this.viscosityGraph.Location = new System.Drawing.Point(4, 25);
+            this.viscosityGraph.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.viscosityGraph.Name = "viscosityGraph";
+            this.viscosityGraph.Size = new System.Drawing.Size(881, 549);
+            this.viscosityGraph.TabIndex = 3;
+            this.viscosityGraph.Text = "График вязкости";
+            this.viscosityGraph.UseVisualStyleBackColor = true;
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.Tag = "Вектор Ч";
+            // 
+            // viscosityChart
+            // 
+            this.viscosityChart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(246)))), ((int)(((byte)(246)))));
+            chartArea2.Area3DStyle.WallWidth = 5;
+            chartArea2.AxisX.Title = "Координата по длине канала, м";
+            chartArea2.AxisX.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            chartArea2.AxisY.Title = "Вязкость, Па*с";
+            chartArea2.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            chartArea2.Name = "ChartArea1";
+            chartArea2.ShadowOffset = 10;
+            this.viscosityChart.ChartAreas.Add(chartArea2);
+            this.viscosityChart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.viscosityChart.Location = new System.Drawing.Point(0, 0);
+            this.viscosityChart.Name = "viscosityChart";
+            this.viscosityChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Berry;
+            series2.BorderWidth = 5;
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series2.Color = System.Drawing.Color.Red;
+            series2.Name = "temperatureSeries";
+            series2.ShadowColor = System.Drawing.Color.FromArgb(((int)(((byte)(5)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            series2.ShadowOffset = 3;
+            this.viscosityChart.Series.Add(series2);
+            this.viscosityChart.Size = new System.Drawing.Size(881, 549);
+            this.viscosityChart.TabIndex = 1;
+            this.viscosityChart.Text = "chart1";
             // 
             // ResearcherInterface
             // 
@@ -1347,6 +1380,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.resultsTable)).EndInit();
             this.temperatureGraph.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.temperatureChart)).EndInit();
+            this.viscosityGraph.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.viscosityChart)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1449,6 +1484,7 @@
         private System.Windows.Forms.Splitter splitter1;
         private System.Windows.Forms.TabPage viscosityGraph;
         private System.Windows.Forms.DataVisualization.Charting.Chart temperatureChart;
+        private System.Windows.Forms.DataVisualization.Charting.Chart viscosityChart;
     }
 }
 

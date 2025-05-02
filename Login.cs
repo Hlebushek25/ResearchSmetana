@@ -200,6 +200,8 @@ namespace IssleduemSmetanu
             this.Controls.Add(footerPanel);
             #endregion
 
+            checkBox1.Checked = Properties.Settings.Default.IsSoundsTurtedOff;
+
             closeButton.Click += (sender, e) =>
             {
                 this.ActionCode = "Exit";
@@ -391,6 +393,12 @@ namespace IssleduemSmetanu
         {
             this.ActionCode = "ContinueAsResearcher";
             this.Close();
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.IsSoundsTurtedOff = checkBox1.Checked;
+            Properties.Settings.Default.Save();
         }
     }
 

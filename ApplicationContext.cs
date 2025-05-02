@@ -24,34 +24,40 @@ namespace IssleduemSmetanu
                 switch (login.ActionCode)
                 {
                     case "ContinueAsResearcher":
-                        try
+                        if (!Properties.Settings.Default.IsSoundsTurtedOff)
                         {
-                            using (MemoryStream wavFile = new MemoryStream(Properties.Resources.Startup))
-                            using (SoundPlayer player = new SoundPlayer(wavFile))
+                            try
                             {
-                                player.Play(); // Воспроизведение звука
+                                using (MemoryStream wavFile = new MemoryStream(Properties.Resources.Startup))
+                                using (SoundPlayer player = new SoundPlayer(wavFile))
+                                {
+                                    player.Play(); // Воспроизведение звука
+                                }
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show($"Ошибка воспроизведения звука: {ex.Message}");
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show($"Ошибка воспроизведения звука: {ex.Message}");
+                            }
                         }
                         ResearcherInterface researcherInterface = new ResearcherInterface();
                         researcherInterface.FormClosed += (s, args) => ExitThread();
                         researcherInterface.Show();
                         break;
                     case "ContinueAsAdmin":
-                        try
+                        if (!Properties.Settings.Default.IsSoundsTurtedOff)
                         {
-                            using (MemoryStream wavFile = new MemoryStream(Properties.Resources.Startup))
-                            using (SoundPlayer player = new SoundPlayer(wavFile))
+                            try
                             {
-                                player.Play(); // Воспроизведение звука
+                                using (MemoryStream wavFile = new MemoryStream(Properties.Resources.Startup))
+                                using (SoundPlayer player = new SoundPlayer(wavFile))
+                                {
+                                    player.Play(); // Воспроизведение звука
+                                }
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show($"Ошибка воспроизведения звука: {ex.Message}");
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show($"Ошибка воспроизведения звука: {ex.Message}");
+                            }
                         }
                         AdminInterface adminInterface = new AdminInterface();
                         adminInterface.FormClosed += (s, args) => ExitThread();

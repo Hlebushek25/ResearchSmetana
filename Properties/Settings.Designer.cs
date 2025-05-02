@@ -69,5 +69,17 @@ namespace IssleduemSmetanu.Properties {
                 this["LoginTimeout"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsSoundsTurtedOff {
+            get {
+                return ((bool)(this["IsSoundsTurtedOff"]));
+            }
+            set {
+                this["IsSoundsTurtedOff"] = value;
+            }
+        }
     }
 }

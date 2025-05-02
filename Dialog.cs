@@ -147,17 +147,20 @@ namespace IssleduemSmetanu
                 case DialogType.Error:
                     this.Load += (sender, e) =>
                     {
-                        try
+                        if (!Properties.Settings.Default.IsSoundsTurtedOff)
                         {
-                            using (MemoryStream wavFile = new MemoryStream(Properties.Resources.Error))
-                            using (SoundPlayer player = new SoundPlayer(wavFile))
+                            try
                             {
-                                player.Play(); // Воспроизведение звука
+                                using (MemoryStream wavFile = new MemoryStream(Properties.Resources.Error))
+                                using (SoundPlayer player = new SoundPlayer(wavFile))
+                                {
+                                    player.Play(); // Воспроизведение звука
+                                }
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show($"Ошибка воспроизведения звука: {ex.Message}");
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show($"Ошибка воспроизведения звука: {ex.Message}");
+                            }
                         }
                     };
                     okButton.Visible = true;
@@ -169,17 +172,20 @@ namespace IssleduemSmetanu
                 case DialogType.ErrorWithTimer:
                     this.Load += (sender, e) =>
                     {
-                        try
+                        if (!Properties.Settings.Default.IsSoundsTurtedOff)
                         {
-                            using (MemoryStream wavFile = new MemoryStream(Properties.Resources.Error))
-                            using (SoundPlayer player = new SoundPlayer(wavFile))
+                            try
                             {
-                                player.Play(); // Воспроизведение звука
+                                using (MemoryStream wavFile = new MemoryStream(Properties.Resources.Error))
+                                using (SoundPlayer player = new SoundPlayer(wavFile))
+                                {
+                                    player.Play(); // Воспроизведение звука
+                                }
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show($"Ошибка воспроизведения звука: {ex.Message}");
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show($"Ошибка воспроизведения звука: {ex.Message}");
+                            }
                         }
                     };
                     okButton.Visible = true;
@@ -200,17 +206,20 @@ namespace IssleduemSmetanu
                 case DialogType.YesOrNo:
                     this.Load += (sender, e) =>
                     {
-                        try
+                        if (!Properties.Settings.Default.IsSoundsTurtedOff)
                         {
-                            using (MemoryStream wavFile = new MemoryStream(Properties.Resources.Exclamation))
-                            using (SoundPlayer player = new SoundPlayer(wavFile))
+                            try
                             {
-                                player.Play(); // Воспроизведение звука
+                                using (MemoryStream wavFile = new MemoryStream(Properties.Resources.Exclamation))
+                                using (SoundPlayer player = new SoundPlayer(wavFile))
+                                {
+                                    player.Play(); // Воспроизведение звука
+                                }
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show($"Ошибка воспроизведения звука: {ex.Message}");
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show($"Ошибка воспроизведения звука: {ex.Message}");
+                            }
                         }
                     };
                     yesButton.Visible = true;

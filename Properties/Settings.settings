@@ -14,5 +14,8 @@
     <Setting Name="LoginTimeout" Type="System.UInt32" Scope="User">
       <Value Profile="(Default)">60</Value>
     </Setting>
+    <Setting Name="IsSoundsTurtedOff" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

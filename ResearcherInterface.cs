@@ -509,6 +509,7 @@ namespace IssleduemSmetanu
             productViscosity = tableData[2, tableData.GetLength(1) - 1];
             DisplayCombinedArrayInTable(resultsTable, tableData);
             DisplayChart(temperatureChart, tableData, ChartType.Temperature);
+            DisplayChart(viscosityChart, tableData, ChartType.Viscosity);
             //long memoryAfter = GC.GetTotalMemory(true);
             //long memoryUsed = memoryAfter - memoryBefore;
             int N = (int)Math.Round(smetana.length / smetana.step);
@@ -554,8 +555,8 @@ namespace IssleduemSmetanu
 
         private void DisplayChart(Chart chart, double[,] data, ChartType chartType)
         {
-            Series series = chartType == ChartType.Temperature ? temperatureChart.Series[0] : temperatureChart.Series[0];
-            ChartArea chartArea = chartType == ChartType.Temperature ? temperatureChart.ChartAreas[0] : temperatureChart.ChartAreas[0];
+            Series series = chartType == ChartType.Temperature ? temperatureChart.Series[0] : viscosityChart.Series[0];
+            ChartArea chartArea = chartType == ChartType.Temperature ? temperatureChart.ChartAreas[0] : viscosityChart.ChartAreas[0];
             for (int i = 0; i < data.GetLength(1); i++)
             {
                 series.Points.Add(data[(int)chartType, i]);
@@ -563,9 +564,13 @@ namespace IssleduemSmetanu
             if (chartType == ChartType.Temperature)
             {
                 chartArea.AxisY.Minimum = data[1, 0];
+                chartArea.AxisY.Maximum = data[1, data.GetLength(1) - 1];
             }
-            
-
+            else
+            {
+                chartArea.AxisY.Maximum = data[2, 0];
+                chartArea.AxisY.Minimum = data[2, data.GetLength(1) - 1];
+            }
         }
     }
 }
