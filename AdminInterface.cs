@@ -395,9 +395,17 @@ namespace IssleduemSmetanu
         {
             if (selectedRow != null)
             {
-                DataGridView table = selectedRow.DataGridView;
-                table.Rows.Remove(selectedRow);
-                selectedRow = null;
+                try
+                {
+                    DataGridView table = selectedRow.DataGridView;
+                    table.Rows.Remove(selectedRow);
+                    selectedRow = null;
+                }
+                catch
+                {
+                    Dialog dialog = new Dialog("Ты кого удаляешь, дурында??", DialogType.Error);
+                    dialog.ShowDialog();
+                }
             }
         }
 
