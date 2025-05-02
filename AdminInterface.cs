@@ -29,9 +29,19 @@ namespace IssleduemSmetanu
 
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HTCAPTION = 0x2;
+
+        private ContextMenuStrip contextMenu;
+        private DataGridViewRow selectedRow;
+
         public AdminInterface()
         {
             InitializeComponent();
+
+            // меню для удаляшки строк
+            contextMenu = new ContextMenuStrip();
+            var deleteItem = new ToolStripMenuItem("Удалить строку");
+            deleteItem.Click += DeleteRow_Click;
+            contextMenu.Items.Add(deleteItem);
 
             tryQuantityTextBox.Text = (Properties.Settings.Default.DefaultLoginTryQuantity + 1).ToString();
 
@@ -312,5 +322,92 @@ namespace IssleduemSmetanu
 
             Properties.Settings.Default.Save();
         }
+
+        // Автоматическое заполнение ID
+        private void RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            DataGridView table = sender as DataGridView;
+            int maxValue = 0;
+
+            foreach (DataGridViewRow row in table.Rows)
+            {
+                if (row.Cells[0].Value != null)
+                {
+                    int value = Convert.ToInt32(row.Cells[0].Value);
+                    if (value > maxValue)
+                    {
+                        maxValue = value;
+                    }
+                }
+            }
+
+            table.Rows[table.RowCount - 2].Cells[0].Value = maxValue + 1;
+        }
+
+        // Ввод только чисел в некоторые столбцы
+        private void CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            DataGridView table = sender as DataGridView;
+            string columnName = table.Columns[e.ColumnIndex].Name;
+            switch (columnName)
+            {
+                case "materialID_inCharValues": case "characteristicID_inCharValues": case "materialID_inEmpCoefValue": case "empiricalCoefID_inEmpCoefValues":
+                    if (e.FormattedValue.ToString() != "")
+                    {
+                        if (!int.TryParse(e.FormattedValue.ToString(), out _))
+                        {
+                            e.Cancel = true;
+                            Dialog dialog = new Dialog("Значение в данном столбце должно быть целым числом.", DialogType.Error);
+                            dialog.ShowDialog();
+                        }
+                    }
+                break;
+                case "craracteristicValue": case "empiricalCoefValue":
+                    if (e.FormattedValue.ToString() != "")
+                    {
+                        if (!double.TryParse(e.FormattedValue.ToString(), out _))
+                        {
+                            e.Cancel = true;
+                            Dialog dialog = new Dialog("Значение в данном столбце должно быть числом.", DialogType.Error);
+                            dialog.ShowDialog();
+                        }
+                    }
+                break;
+            }
+        }
+
+        #region Удаляшка строчек
+        private void TableMouseDown(object sender, MouseEventArgs e)
+        {
+            DataGridView table = sender as DataGridView;
+            if (e.Button == MouseButtons.Right)
+            {
+                var hitTestInfo = table.HitTest(e.X, e.Y);
+                if (hitTestInfo.RowIndex >= 0)
+                {
+                    selectedRow = table.Rows[hitTestInfo.RowIndex];
+                    contextMenu.Show(table, e.Location);
+                }
+            }
+        }
+
+        private void DeleteRow_Click(object sender, EventArgs e)
+        {
+            if (selectedRow != null)
+            {
+                DataGridView table = selectedRow.DataGridView;
+                table.Rows.Remove(selectedRow);
+                selectedRow = null;
+            }
+        }
+
+        private void EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            if (e.Control is TextBox textBox)
+            {
+                textBox.ContextMenuStrip = new ContextMenuStrip();
+            }
+        }
+        #endregion
     }
 }

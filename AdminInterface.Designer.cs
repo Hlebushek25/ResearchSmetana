@@ -167,6 +167,10 @@
             this.materialTable.RowTemplate.Height = 24;
             this.materialTable.Size = new System.Drawing.Size(778, 354);
             this.materialTable.TabIndex = 0;
+            this.materialTable.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.CellValidating);
+            this.materialTable.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.EditingControlShowing);
+            this.materialTable.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.RowsAdded);
+            this.materialTable.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TableMouseDown);
             // 
             // materialID
             // 
@@ -231,6 +235,10 @@
             this.materialCharacteristicsTable.RowTemplate.Height = 24;
             this.materialCharacteristicsTable.Size = new System.Drawing.Size(784, 360);
             this.materialCharacteristicsTable.TabIndex = 1;
+            this.materialCharacteristicsTable.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.CellValidating);
+            this.materialCharacteristicsTable.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.EditingControlShowing);
+            this.materialCharacteristicsTable.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.RowsAdded);
+            this.materialCharacteristicsTable.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TableMouseDown);
             // 
             // MaterialCharacteristicValues
             // 
@@ -283,6 +291,10 @@
             this.materialCharacteristicsValuesTable.RowTemplate.Height = 24;
             this.materialCharacteristicsValuesTable.Size = new System.Drawing.Size(784, 360);
             this.materialCharacteristicsValuesTable.TabIndex = 2;
+            this.materialCharacteristicsValuesTable.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.CellValidating);
+            this.materialCharacteristicsValuesTable.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.EditingControlShowing);
+            this.materialCharacteristicsValuesTable.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.RowsAdded);
+            this.materialCharacteristicsValuesTable.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TableMouseDown);
             // 
             // Users
             // 
@@ -326,6 +338,9 @@
             this.userTable.RowTemplate.Height = 24;
             this.userTable.Size = new System.Drawing.Size(778, 354);
             this.userTable.TabIndex = 1;
+            this.userTable.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.CellValidating);
+            this.userTable.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.EditingControlShowing);
+            this.userTable.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TableMouseDown);
             // 
             // Username
             // 
@@ -479,6 +494,10 @@
             this.empiricalCoefTable.RowTemplate.Height = 24;
             this.empiricalCoefTable.Size = new System.Drawing.Size(784, 360);
             this.empiricalCoefTable.TabIndex = 3;
+            this.empiricalCoefTable.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.CellValidating);
+            this.empiricalCoefTable.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.EditingControlShowing);
+            this.empiricalCoefTable.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.RowsAdded);
+            this.empiricalCoefTable.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TableMouseDown);
             // 
             // EmpiricalCoefValues
             // 
@@ -531,6 +550,10 @@
             this.empiricalCoefValuesTable.RowTemplate.Height = 24;
             this.empiricalCoefValuesTable.Size = new System.Drawing.Size(784, 360);
             this.empiricalCoefValuesTable.TabIndex = 3;
+            this.empiricalCoefValuesTable.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.CellValidating);
+            this.empiricalCoefValuesTable.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.EditingControlShowing);
+            this.empiricalCoefValuesTable.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.RowsAdded);
+            this.empiricalCoefValuesTable.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TableMouseDown);
             // 
             // empiricalCoefValueID
             // 
