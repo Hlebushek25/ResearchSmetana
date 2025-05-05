@@ -128,8 +128,9 @@
             this.temperatureGraph = new System.Windows.Forms.TabPage();
             this.temperatureChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.viscosityGraph = new System.Windows.Forms.TabPage();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.viscosityChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.button3 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.inputParameters.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -185,6 +186,7 @@
             // inputParameters
             // 
             this.inputParameters.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(246)))), ((int)(((byte)(246)))));
+            this.inputParameters.Controls.Add(this.button3);
             this.inputParameters.Controls.Add(this.groupBox7);
             this.inputParameters.Controls.Add(this.groupBox6);
             this.inputParameters.Controls.Add(this.groupBox5);
@@ -941,23 +943,23 @@
             // button2
             // 
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button2.Location = new System.Drawing.Point(729, 12);
+            this.button2.Location = new System.Drawing.Point(616, 12);
             this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(143, 26);
+            this.button2.Size = new System.Drawing.Size(95, 26);
             this.button2.TabIndex = 4;
-            this.button2.Text = "Призвать BSOD";
+            this.button2.Text = "BSOD";
             this.button2.UseVisualStyleBackColor = true;
             // 
             // button1
             // 
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button1.Location = new System.Drawing.Point(580, 12);
+            this.button1.Location = new System.Drawing.Point(515, 12);
             this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(143, 26);
+            this.button1.Size = new System.Drawing.Size(95, 26);
             this.button1.TabIndex = 3;
-            this.button1.Text = "Призвать ошибку";
+            this.button1.Text = "Ошибка";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -1276,10 +1278,6 @@
             this.viscosityGraph.Text = "График вязкости";
             this.viscosityGraph.UseVisualStyleBackColor = true;
             // 
-            // toolTip1
-            // 
-            this.toolTip1.Tag = "Вектор Ч";
-            // 
             // viscosityChart
             // 
             this.viscosityChart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(246)))), ((int)(((byte)(246)))));
@@ -1306,6 +1304,22 @@
             this.viscosityChart.Size = new System.Drawing.Size(881, 549);
             this.viscosityChart.TabIndex = 1;
             this.viscosityChart.Text = "chart1";
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.Tag = "Вектор Ч";
+            // 
+            // button3
+            // 
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button3.Location = new System.Drawing.Point(717, 12);
+            this.button3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(155, 26);
+            this.button3.TabIndex = 11;
+            this.button3.Text = "Разлогиниться";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // ResearcherInterface
             // 
@@ -1485,6 +1499,7 @@
         private System.Windows.Forms.TabPage viscosityGraph;
         private System.Windows.Forms.DataVisualization.Charting.Chart temperatureChart;
         private System.Windows.Forms.DataVisualization.Charting.Chart viscosityChart;
+        private System.Windows.Forms.Button button3;
     }
 }
 

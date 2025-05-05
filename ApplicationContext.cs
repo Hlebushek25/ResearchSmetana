@@ -40,7 +40,7 @@ namespace IssleduemSmetanu
                             }
                         }
                         ResearcherInterface researcherInterface = new ResearcherInterface();
-                        researcherInterface.FormClosed += (s, args) => ExitThread();
+                        researcherInterface.FormClosed += onResearcherInterfaceClosed;
                         researcherInterface.Show();
                         break;
                     case "ContinueAsAdmin":
@@ -60,7 +60,7 @@ namespace IssleduemSmetanu
                             }
                         }
                         AdminInterface adminInterface = new AdminInterface();
-                        adminInterface.FormClosed += (s, args) => ExitThread();
+                        adminInterface.FormClosed += onAdminInterfaceClosed;
                         adminInterface.Show();
                         break;
                     case "Exit":
@@ -78,6 +78,76 @@ namespace IssleduemSmetanu
 
                         await Task.Delay(1000);
                         error.Close();
+                        break;
+                }
+            }
+        }
+
+        private async void onAdminInterfaceClosed(object sender, FormClosedEventArgs e)
+        {
+            AdminInterface adminInterface = sender as AdminInterface;
+
+            if (adminInterface != null)
+            {
+                switch (adminInterface.ActionCode)
+                {
+                    case "Logout":
+                        if (!Properties.Settings.Default.IsSoundsTurtedOff)
+                        {
+                            try
+                            {
+                                using (MemoryStream wavFile = new MemoryStream(Properties.Resources.Logout))
+                                using (SoundPlayer player = new SoundPlayer(wavFile))
+                                {
+                                    player.Play(); // Воспроизведение звука
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show($"Ошибка воспроизведения звука: {ex.Message}");
+                            }
+                        }
+                        Login login = new Login();
+                        login.FormClosed += onLoginClosed;
+                        login.Show();
+                        break;
+                    default:
+                        ExitThread();
+                        break;
+                }
+            }
+        }
+
+        private async void onResearcherInterfaceClosed(object sender, FormClosedEventArgs e)
+        {
+            ResearcherInterface researcherInterface = sender as ResearcherInterface;
+
+            if (researcherInterface != null)
+            {
+                switch (researcherInterface.ActionCode)
+                {
+                    case "Logout":
+                        if (!Properties.Settings.Default.IsSoundsTurtedOff)
+                        {
+                            try
+                            {
+                                using (MemoryStream wavFile = new MemoryStream(Properties.Resources.Logout))
+                                using (SoundPlayer player = new SoundPlayer(wavFile))
+                                {
+                                    player.Play(); // Воспроизведение звука
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show($"Ошибка воспроизведения звука: {ex.Message}");
+                            }
+                        }
+                        Login login = new Login();
+                        login.FormClosed += onLoginClosed;
+                        login.Show();
+                        break;
+                    default:
+                        ExitThread();
                         break;
                 }
             }

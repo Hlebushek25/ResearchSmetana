@@ -14,6 +14,8 @@ namespace IssleduemSmetanu
 {
     public partial class AdminInterface: Form
     {
+        public string ActionCode { get; private set; }
+
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn(
             int nLeftRect, int nTopRect, int nRightRect, int nBottomRect,
@@ -417,5 +419,11 @@ namespace IssleduemSmetanu
             }
         }
         #endregion
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.ActionCode = "Logout";
+            this.Close();
+        }
     }
 }

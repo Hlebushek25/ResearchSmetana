@@ -31,6 +31,8 @@ namespace IssleduemSmetanu
     };
     public partial class ResearcherInterface : Form
     {
+        public string ActionCode { get; private set; }
+
         double performance = 0;
         double temperature = 0;
         double productViscosity = 0;
@@ -571,6 +573,12 @@ namespace IssleduemSmetanu
                 chartArea.AxisY.Maximum = data[2, 0];
                 chartArea.AxisY.Minimum = data[2, data.GetLength(1) - 1];
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this.ActionCode = "Logout";
+            this.Close();
         }
     }
 }
