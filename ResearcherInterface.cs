@@ -61,6 +61,16 @@ namespace IssleduemSmetanu
         {
             InitializeComponent();
 
+            label10.Location = new Point(
+                temperatureChart.Location.X + (temperatureChart.Width - label10.Width) / 2,
+                temperatureChart.Location.Y + (temperatureChart.Height - label10.Height) / 2
+            );
+
+            label12.Location = new Point(
+                viscosityChart.Location.X + (viscosityChart.Width - label12.Width) / 2,
+                viscosityChart.Location.Y + (viscosityChart.Height - label12.Height) / 2
+            );
+
             #region ---------- Подписка на текстбоксы ----------
             // Геометрические параметры
             SubscribeTextBox(widthTextBox, v => smetana.width = v);
@@ -559,19 +569,20 @@ namespace IssleduemSmetanu
         {
             Series series = chartType == ChartType.Temperature ? temperatureChart.Series[0] : viscosityChart.Series[0];
             ChartArea chartArea = chartType == ChartType.Temperature ? temperatureChart.ChartAreas[0] : viscosityChart.ChartAreas[0];
-            for (int i = 0; i < data.GetLength(1); i++)
+            Label noChartLabel = chartType == ChartType.Temperature ? label10 : label12;
+            try
             {
-                series.Points.Add(data[(int)chartType, i]);
+                for (int i = 0; i < data.GetLength(1); i++)
+                {
+                    series.Points.Add(data[(int)chartType, i]);
+                }
+                chartArea.AxisY.Minimum = chartType == ChartType.Temperature ? data[1, 0] : data[2, data.GetLength(1) - 1];
+                chartArea.AxisY.Maximum = chartType == ChartType.Temperature ? data[1, data.GetLength(1) - 1] : data[2, 0];
+                noChartLabel.Visible = false;
             }
-            if (chartType == ChartType.Temperature)
+            catch
             {
-                chartArea.AxisY.Minimum = data[1, 0];
-                chartArea.AxisY.Maximum = data[1, data.GetLength(1) - 1];
-            }
-            else
-            {
-                chartArea.AxisY.Maximum = data[2, 0];
-                chartArea.AxisY.Minimum = data[2, data.GetLength(1) - 1];
+                noChartLabel.Text = "Не удалось построить график (ಥ﹏ಥ)";
             }
         }
 

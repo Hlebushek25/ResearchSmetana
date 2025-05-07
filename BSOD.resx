@@ -118,26 +118,26 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="label1.Text" xml:space="preserve">
-    <value>A problem has been detected and Windows has been shut down to prevent damage to your computer.
+    <value>A critical issue has been detected: your computer has consumed too much smetana.
 
 C:\Windows\System32\IssleduemSmetanu.sys
 
 If this is the first time you've seen this stop error screen, restart your computer. If this screen appears again, follow these steps:
-check to be sure you have adaquate disk space. If a driver is identified in the Stop message, disable the driver or check with the manufacturer for driver updates. Try changing video adapters.
-check with your hardware vendor for any BIOS updates. Disable BIOS memory options such as caching or shadowing.
+Check to be sure you have adaquate disk space. If a driver is identified in the Stop message, disable the driver or check with the manufacturer for driver updates.
+Try changing video adapters.
+Reduce smetana consumption or embrace creamy destiny.
+Check with your hardware vendor for any BIOS updates.
+Disable BIOS memory options such as caching or shadowing.
+
 If you need to use safe mode to remove or disable components, restart your computer, press F8 to select Advanced Startup options, and then select safe Mode.
 
 Technical information:
 STOP : Ox0000007E COXC0000005,Ox8056CDCE, OXFDIH834E)
-Address F8F35B9C base at F8F35B9C,
-parport.sys -
-- Address FDIH834E base at FDIH834E,
-Parport. SYS
-Beginning dump of physical memory
-physical memory dump complete.
-Datestamp 00000000
-Datestamp 00000000
+Parport.sys - Address F8F35B9C base at F8F35B9C, Datestamp 00000000
+Parport.sys - Address FDIH834E base at FDIH834E, Datestamp 00000000
+
+Beginning dump of physical memory physical memory dump complete.
 Contact your system administrator or technical support group for further
-assi stance .</value>
+assistance.</value>
   </data>
 </root>
