@@ -160,7 +160,7 @@
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
-            // Login
+            // login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -178,8 +178,8 @@
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Name = "Login";
-            this.Text = "Login";
+            this.Name = "login";
+            this.Text = "login";
             ((System.ComponentModel.ISupportInitialize)(this.avatarPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

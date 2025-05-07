@@ -36,40 +36,7 @@ namespace IssleduemSmetanu
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HTCAPTION = 0x2;
 
-        ////
-        private static string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "Users.db");
-
-        public static List<User> GetAllUsers(string dbPath)
-        {
-            var users = new List<User>();
-
-            using (var connection = new SQLiteConnection($"Data Source={dbPath}"))
-            {
-                connection.Open();
-
-                var command = connection.CreateCommand();
-                command.CommandText = "SELECT id_user, login, pass, role FROM user";
-
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        users.Add(new User
-                        {
-                            IdUser = reader.GetInt32(0),
-                            Login = reader.GetString(1),
-                            Password = reader.GetString(2),
-                            Role = reader.GetString(3)
-                        });
-                    }
-                }
-            }
-
-            return users;
-        }
-               
-        List<User> users = GetAllUsers(dbPath);
-////
+        List<User> users = LoadDB.GetAllUsers();
 
         public Login()
         {
@@ -222,7 +189,7 @@ namespace IssleduemSmetanu
 
                 try
                 {
-                    User user = users.FirstOrDefault(u => u.Login.Equals(username, StringComparison.OrdinalIgnoreCase) && u.Password == password);
+                    User user = users.FirstOrDefault(u => u.login.Equals(username, StringComparison.OrdinalIgnoreCase) && u.password == password);
 
                     uint loginTryQuantity = Properties.Settings.Default.LoginTryQuantity;
                     if (user == null && loginTryQuantity > 0)
@@ -268,7 +235,7 @@ namespace IssleduemSmetanu
                     }
                     else
                     {
-                        this.ActionCode = user.Role.Equals("1", StringComparison.OrdinalIgnoreCase)
+                        this.ActionCode = user.role.Equals("1", StringComparison.OrdinalIgnoreCase)
                         ? "ContinueAsAdmin"
                         : "ContinueAsResearcher";
 
@@ -346,17 +313,17 @@ namespace IssleduemSmetanu
             try
             {
                 //// Ищем пользователя в базе данных
-                var user = users.FirstOrDefault(u => u.Login.Equals(usernameTextBox.Text, StringComparison.OrdinalIgnoreCase));
+                var user = users.FirstOrDefault(u => u.login.Equals(usernameTextBox.Text, StringComparison.OrdinalIgnoreCase));
 
                 if (user != null)
                 {
                     // Меняем аватар в зависимости от роли
-                    switch (user.Role?.ToLower()) // Приводим роль к нижнему регистру для унификации
+                    switch (user.role?.ToLower()) // Приводим роль к нижнему регистру для унификации
                     {
-                        case "1":
+                        case "admin":
                             avatarPictureBox.Image = Properties.Resources.Admin;
                             break;
-                        case "2":
+                        case "researcher":
                             avatarPictureBox.Image = Properties.Resources.Researcher;
                             break;
                         default:
@@ -402,11 +369,4 @@ namespace IssleduemSmetanu
         }
     }
 
-    public class User
-    {
-        public int IdUser { get; set; }
-        public string Login { get; set; }
-        public string Password { get; set; }
-        public string Role { get; set; }
-    }
 }

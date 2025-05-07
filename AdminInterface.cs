@@ -45,6 +45,11 @@ namespace IssleduemSmetanu
             deleteItem.Click += DeleteRow_Click;
             contextMenu.Items.Add(deleteItem);
 
+            LoadUsersToTable();
+            LoadMaterialsToTable();
+            LoadMaterialCharacteristicsToTable();
+            LoadEmpericalCoefToTable();
+
             tryQuantityTextBox.Text = (Properties.Settings.Default.DefaultLoginTryQuantity + 1).ToString();
 
             switch (Properties.Settings.Default.LoginTimeout)
@@ -424,6 +429,80 @@ namespace IssleduemSmetanu
         {
             this.ActionCode = "Logout";
             this.Close();
+        }
+
+
+        private void LoadUsersToTable()
+        {
+            try
+            {
+                List<User> users = LoadDB.GetAllUsers();
+                foreach (User user in users)
+                {
+                    userTable.Rows.Add(user.login, user.password);
+                }
+            }
+            catch (Exception ex)
+            {
+                Dialog dialog = new Dialog($"Ошибка при загрузке данных: {ex.Message}", DialogType.Error);
+                dialog.ShowDialog();
+            }
+        }
+
+        private void LoadMaterialsToTable()
+        {
+            try
+            {
+                List<Material> materials = LoadDB.GetAllMaterials();
+                foreach (Material material in materials)
+                {
+                    int rowIndex = materialTable.Rows.Add();
+                    materialTable.Rows[rowIndex].Cells[1].Value = material.nameMaterial;
+                }
+            }
+            catch (Exception ex)
+            {
+                Dialog dialog = new Dialog($"Ошибка при загрузке данных: {ex.Message}", DialogType.Error);
+                dialog.ShowDialog();
+            }
+        }
+
+        private void LoadMaterialCharacteristicsToTable()
+        {
+            try
+            {
+                List<MaterialCharacteristic> characteristics = LoadDB.GetAllMaterialCharacteristics();
+                foreach (MaterialCharacteristic characteristic in characteristics)
+                {
+                    int rowIndex = materialCharacteristicsTable.Rows.Add();
+                    materialCharacteristicsTable.Rows[rowIndex].Cells[1].Value = characteristic.name;
+                    materialCharacteristicsTable.Rows[rowIndex].Cells[2].Value = characteristic.unit;
+                }
+            }
+            catch (Exception ex)
+            {
+                Dialog dialog = new Dialog($"Ошибка при загрузке данных: {ex.Message}", DialogType.Error);
+                dialog.ShowDialog();
+            }
+        }
+
+        private void LoadEmpericalCoefToTable()
+        {
+            try
+            {
+                List<EmpericalCoef> coefs = LoadDB.GetAllEmpericalCoef();
+                foreach (EmpericalCoef coef in coefs)
+                {
+                    int rowIndex = empiricalCoefTable.Rows.Add();
+                    empiricalCoefTable.Rows[rowIndex].Cells[1].Value = coef.name;
+                    empiricalCoefTable.Rows[rowIndex].Cells[2].Value = coef.unit;
+                }
+            }
+            catch (Exception ex)
+            {
+                Dialog dialog = new Dialog($"Ошибка при загрузке данных: {ex.Message}", DialogType.Error);
+                dialog.ShowDialog();
+            }
         }
     }
 }

@@ -235,12 +235,12 @@ namespace IssleduemSmetanu
             {
                 List<Material> materials = LoadDB.GetAllMaterials();
 
-                materialComboBox.DisplayMember = "NameMaterial";
-                materialComboBox.ValueMember = "IdMaterial";
+                materialComboBox.DisplayMember = "nameMaterial";
+                materialComboBox.ValueMember = "idMaterial";
                 materialComboBox.DataSource = materials;
 
                 //// Опционально: добавить пустой элемент
-                //materialComboBox.Items.Insert(0, new Material { IdMaterial = 0, NameMaterial = "Выберите материал" });
+                //materialComboBox.Items.Insert(0, new Material { idMaterial = 0, nameMaterial = "Выберите материал" });
                 //materialComboBox.SelectedIndex = 0;
             }
             catch (Exception ex)
@@ -307,7 +307,7 @@ namespace IssleduemSmetanu
         {
             if (materialComboBox.SelectedItem == null) return;
 
-            smetana.LoadFromDatabase(((Material)materialComboBox.SelectedItem).IdMaterial);
+            smetana.LoadFromDatabase(((Material)materialComboBox.SelectedItem).idMaterial);
 
             UpdateTextBoxes();
         }

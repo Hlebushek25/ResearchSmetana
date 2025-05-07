@@ -390,11 +390,11 @@
             this.Username.MinimumWidth = 6;
             this.Username.Name = "Username";
             // 
-            // Password
+            // password
             // 
             this.Password.HeaderText = "Пароль";
             this.Password.MinimumWidth = 6;
-            this.Password.Name = "Password";
+            this.Password.Name = "password";
             // 
             // Settings
             // 

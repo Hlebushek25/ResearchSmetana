@@ -53,44 +53,44 @@ namespace IssleduemSmetanu
             viscAnomalyFactor = 0;
             heatTransferCoefficient = 0;
 
-            List<MaterialCharacteristic> characteristics = LoadDB.GetMaterialCharacteristics(materialId);
-            List<MaterialEmpericalCoef> empericalCoefs = LoadDB.GetEmpericalCoef(materialId);
-            foreach (MaterialCharacteristic characteristic in characteristics)
+            List<MaterialCharacteristicValue> characteristics = LoadDB.GetMaterialCharacteristicsValues(materialId);
+            List<EmpericalCoefValue> empericalCoefs = LoadDB.GetEmpericalCoefValues(materialId);
+            foreach (MaterialCharacteristicValue characteristic in characteristics)
             {
-                switch (characteristic.IdCharacteristic) 
+                switch (characteristic.idCharacteristic) 
                 {
                     case 1: // Плотность
-                        this.density = characteristic.ValueCharacteristic;
+                        this.density = characteristic.value;
                         break;
                     case 2: // Удельная теплоемкость
-                        this.specificHeatCapacity = characteristic.ValueCharacteristic;
+                        this.specificHeatCapacity = characteristic.value;
                         break;
                     case 3: // Температура плавления
-                        this.meltingPoint = characteristic.ValueCharacteristic;
+                        this.meltingPoint = characteristic.value;
                         break;
                 }
             }
-            foreach (MaterialEmpericalCoef empericalCoef in empericalCoefs)
+            foreach (EmpericalCoefValue empericalCoef in empericalCoefs)
             {
-                switch (empericalCoef.IdEmpericalCoef)
+                switch (empericalCoef.idEmpericalCoef)
                 {
                     case 1: // Вязкость материала при нулевой скорости деформации сдвига и температуре приведения
-                        this.viscAtZeroShearAndRefTemp = empericalCoef.ValueEmpericalCoef;
+                        this.viscAtZeroShearAndRefTemp = empericalCoef.value;
                         break;
                     case 2: // Температурный коэффициент вязкости материала
-                        this.viscThermCoeff = empericalCoef.ValueEmpericalCoef;
+                        this.viscThermCoeff = empericalCoef.value;
                         break;
                     case 3:// Температура приведения
-                        this.castingTemp = empericalCoef.ValueEmpericalCoef;
+                        this.castingTemp = empericalCoef.value;
                         break;
                     case 4: // Постоянная времени
-                        this.timeConstant = empericalCoef.ValueEmpericalCoef;
+                        this.timeConstant = empericalCoef.value;
                         break;
                     case 5: // Показатель аномалии вязкости материала
-                        this.viscAnomalyFactor = empericalCoef.ValueEmpericalCoef;
+                        this.viscAnomalyFactor = empericalCoef.value;
                         break;
                     case 6: // Коэффициент теплоотдачи от крышки канала к материалу
-                        this.heatTransferCoefficient = empericalCoef.ValueEmpericalCoef;
+                        this.heatTransferCoefficient = empericalCoef.value;
                         break;
                 }
             }
@@ -147,9 +147,41 @@ namespace IssleduemSmetanu
     public class LoadDB
     {
         private static string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "DB.db");
+        private static string dbPathUser = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "Users.db");
+
+        public static List<User> GetAllUsers()
+        {
+            var users = new List<User>();
+
+            using (var connection = new SQLiteConnection($"Data Source={dbPathUser}"))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText = @"
+                                        SELECT u.id_user, u.login, u.pass, r.name_role 
+                                        FROM user u
+                                        JOIN role r ON u.role = r.id_role";
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        users.Add(new User
+                        {
+                            idUser = reader.GetInt32(0),
+                            login = reader.GetString(1),
+                            password = reader.GetString(2),
+                            role = reader.GetString(3)
+                        });
+                    }
+                }
+            }
+            return users;
+        }
         public static List<Material> GetAllMaterials()
         {
-            var users = new List<Material>();
+            List<Material> users = new List<Material>();
 
             using (var connection = new SQLiteConnection($"Data Source={dbPath}"))
             {
@@ -164,8 +196,8 @@ namespace IssleduemSmetanu
                     {
                         users.Add(new Material
                         {
-                            IdMaterial = reader.GetInt32(0),
-                            NameMaterial = reader.GetString(1),
+                            idMaterial = reader.GetInt32(0),
+                            nameMaterial = reader.GetString(1),
                         });
                     }
                 }
@@ -173,10 +205,63 @@ namespace IssleduemSmetanu
 
             return users;
         }
-
-        public static List<MaterialCharacteristic> GetMaterialCharacteristics(int materialId)
+        public static List<MaterialCharacteristic> GetAllMaterialCharacteristics()
         {
             List<MaterialCharacteristic> characteristics = new List<MaterialCharacteristic>();
+            using (var connection = new SQLiteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText = "SELECT id_characteristic, name_characteristic, unit FROM characteristic_material";
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        characteristics.Add(new MaterialCharacteristic
+                        {
+                            id = reader.GetInt32(0),
+                            name = reader.GetString(1),
+                            unit = reader.GetString(2)
+                        });
+                    }
+                }
+            }
+
+            return characteristics;
+        }
+
+        public static List<EmpericalCoef> GetAllEmpericalCoef()
+        {
+            List<EmpericalCoef> coefs = new List<EmpericalCoef>();
+            using (var connection = new SQLiteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText = "SELECT id_empirical_coef, name_empirical_coef, unit FROM empirical_coef";
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        coefs.Add(new EmpericalCoef
+                        {
+                            id = reader.GetInt32(0),
+                            name = reader.GetString(1),
+                            unit = reader.GetString(2)
+                        });
+                    }
+                }
+            }
+
+            return coefs;
+        }
+
+        public static List<MaterialCharacteristicValue> GetMaterialCharacteristicsValues(int materialId)
+        {
+            List<MaterialCharacteristicValue> characteristics = new List<MaterialCharacteristicValue>();
 
             using (var connection = new SQLiteConnection($"Data Source={dbPath}"))
             {
@@ -190,12 +275,12 @@ namespace IssleduemSmetanu
                 {
                     while (reader.Read())
                     {
-                        characteristics.Add(new MaterialCharacteristic
+                        characteristics.Add(new MaterialCharacteristicValue
                         {
-                            Id = reader.GetInt32(0),
-                            IdMaterial = reader.GetInt32(1),
-                            IdCharacteristic = reader.GetInt32(2),
-                            ValueCharacteristic = reader.GetDouble(3)
+                            id = reader.GetInt32(0),
+                            idMaterial = reader.GetInt32(1),
+                            idCharacteristic = reader.GetInt32(2),
+                            value = reader.GetDouble(3)
                         });
                     }
                 }
@@ -204,9 +289,9 @@ namespace IssleduemSmetanu
             return characteristics;
         }
 
-        public static List<MaterialEmpericalCoef> GetEmpericalCoef(int materialId)
+        public static List<EmpericalCoefValue> GetEmpericalCoefValues(int materialId)
         {
-            List<MaterialEmpericalCoef> empCoef = new List<MaterialEmpericalCoef>();
+            List<EmpericalCoefValue> empCoef = new List<EmpericalCoefValue>();
 
             using (var connection = new SQLiteConnection($"Data Source={dbPath}"))
             {
@@ -220,12 +305,12 @@ namespace IssleduemSmetanu
                 {
                     while (reader.Read())
                     {
-                        empCoef.Add(new MaterialEmpericalCoef
+                        empCoef.Add(new EmpericalCoefValue
                         {
-                            Id = reader.GetInt32(0),
-                            IdMaterial = reader.GetInt32(1),
-                            IdEmpericalCoef = reader.GetInt32(2),
-                            ValueEmpericalCoef = reader.GetDouble(3)
+                            id = reader.GetInt32(0),
+                            idMaterial = reader.GetInt32(1),
+                            idEmpericalCoef = reader.GetInt32(2),
+                            value = reader.GetDouble(3)
                         });
                     }
                 }
@@ -237,23 +322,44 @@ namespace IssleduemSmetanu
 
     public class Material
     {
-        public int IdMaterial { get; set; }
-        public string NameMaterial { get; set; }
+        public int idMaterial { get; set; }
+        public string nameMaterial { get; set; }
+    }
+
+    public class MaterialCharacteristicValue
+    {
+        public int id { get; set; }
+        public int idMaterial { get; set; }
+        public int idCharacteristic { get; set; }
+        public double value { get; set; }
+    }
+    public class EmpericalCoefValue
+    {
+        public int id { get; set; }
+        public int idMaterial { get; set; }
+        public int idEmpericalCoef { get; set; }
+        public double value { get; set; }
+    }
+    public class User
+    {
+        public int idUser { get; set; }
+        public string login { get; set; }
+        public string password { get; set; }
+        public string role { get; set; }
+    }
+
+    public class EmpericalCoef
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+        public string unit { get; set; }
     }
 
     public class MaterialCharacteristic
     {
-        public int Id { get; set; }
-        public int IdMaterial { get; set; }
-        public int IdCharacteristic { get; set; }
-        public double ValueCharacteristic { get; set; }
-    }
-    public class MaterialEmpericalCoef
-    {
-        public int Id { get; set; }
-        public int IdMaterial { get; set; }
-        public int IdEmpericalCoef { get; set; }
-        public double ValueEmpericalCoef { get; set; }
+        public int id { get; set; }
+        public string name { get; set; }
+        public string unit { get; set; }
     }
 
 
