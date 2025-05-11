@@ -49,6 +49,9 @@ namespace IssleduemSmetanu
             LoadMaterialsToTable();
             LoadMaterialCharacteristicsToTable();
             LoadEmpericalCoefToTable();
+            LoadMaterialCharacteristicsValuesToTable();
+            LoadEmpericalCoefValuesToTable();
+
 
             tryQuantityTextBox.Text = (Properties.Settings.Default.DefaultLoginTryQuantity + 1).ToString();
 
@@ -436,7 +439,7 @@ namespace IssleduemSmetanu
         {
             try
             {
-                List<User> users = LoadDB.GetAllUsers();
+                List<User> users = InteractionDB.GetAllUsers();
                 foreach (User user in users)
                 {
                     userTable.Rows.Add(user.login, user.password);
@@ -453,7 +456,7 @@ namespace IssleduemSmetanu
         {
             try
             {
-                List<Material> materials = LoadDB.GetAllMaterials();
+                List<Material> materials = InteractionDB.GetAllMaterials();
                 foreach (Material material in materials)
                 {
                     int rowIndex = materialTable.Rows.Add();
@@ -471,7 +474,7 @@ namespace IssleduemSmetanu
         {
             try
             {
-                List<MaterialCharacteristic> characteristics = LoadDB.GetAllMaterialCharacteristics();
+                List<MaterialCharacteristic> characteristics = InteractionDB.GetAllMaterialCharacteristics();
                 foreach (MaterialCharacteristic characteristic in characteristics)
                 {
                     int rowIndex = materialCharacteristicsTable.Rows.Add();
@@ -486,16 +489,62 @@ namespace IssleduemSmetanu
             }
         }
 
+        private void LoadMaterialCharacteristicsValuesToTable()
+        {
+            try
+            {
+                List<MaterialCharacteristicValue> characteristicValues = InteractionDB.GetAllMaterialCharacteristicsValues();
+                //foreach (MaterialCharacteristicValue characteristicValue in characteristicValues)
+                //{
+                //    int rowIndex = materialCharacteristicsValuesTable.Rows.Add();
+                //    materialCharacteristicsValuesTable.Rows[rowIndex].Cells[1].Value = characteristicValue.nameMaterial;
+                //    materialCharacteristicsValuesTable.Rows[rowIndex].Cells[2].Value = characteristicValue.nameCharacteristic;
+                //    materialCharacteristicsValuesTable.Rows[rowIndex].Cells[3].Value = characteristicValue.value;
+                //}
+                foreach (MaterialCharacteristicValue characteristicValue in characteristicValues)
+                {
+                    int rowIndex = materialCharacteristicsValuesTable.Rows.Add();
+                    materialCharacteristicsValuesTable.Rows[rowIndex].Cells[1].Value = characteristicValue.idMaterial;
+                    materialCharacteristicsValuesTable.Rows[rowIndex].Cells[2].Value = characteristicValue.idCharacteristic;
+                    materialCharacteristicsValuesTable.Rows[rowIndex].Cells[3].Value = characteristicValue.value;
+                }
+            }
+            catch (Exception ex)
+            {
+                Dialog dialog = new Dialog($"Ошибка при загрузке данных: {ex.Message}", DialogType.Error);
+                dialog.ShowDialog();
+            }
+        }
+
         private void LoadEmpericalCoefToTable()
         {
             try
             {
-                List<EmpericalCoef> coefs = LoadDB.GetAllEmpericalCoef();
+                List<EmpericalCoef> coefs = InteractionDB.GetAllEmpericalCoef();
                 foreach (EmpericalCoef coef in coefs)
                 {
                     int rowIndex = empiricalCoefTable.Rows.Add();
                     empiricalCoefTable.Rows[rowIndex].Cells[1].Value = coef.name;
                     empiricalCoefTable.Rows[rowIndex].Cells[2].Value = coef.unit;
+                }
+            }
+            catch (Exception ex)
+            {
+                Dialog dialog = new Dialog($"Ошибка при загрузке данных: {ex.Message}", DialogType.Error);
+                dialog.ShowDialog();
+            }
+        }
+        private void LoadEmpericalCoefValuesToTable()
+        {
+            try
+            {
+                List<EmpericalCoefValue> coefValues = InteractionDB.GetAllEmpericalCoefValues();
+                foreach (EmpericalCoefValue coefValue in coefValues)
+                {
+                    int rowIndex = empiricalCoefValuesTable.Rows.Add();
+                    empiricalCoefValuesTable.Rows[rowIndex].Cells[1].Value = coefValue.idMaterial;
+                    empiricalCoefValuesTable.Rows[rowIndex].Cells[2].Value = coefValue.idEmpericalCoef;
+                    empiricalCoefValuesTable.Rows[rowIndex].Cells[3].Value = coefValue.value;
                 }
             }
             catch (Exception ex)

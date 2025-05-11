@@ -36,7 +36,7 @@ namespace IssleduemSmetanu
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HTCAPTION = 0x2;
 
-        List<User> users = LoadDB.GetAllUsers();
+        List<User> users = InteractionDB.GetAllUsers();
 
         public Login()
         {

@@ -120,6 +120,7 @@
     <Compile Include="Dialog.Designer.cs">
       <DependentUpon>Dialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="InteractionDB.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -127,6 +128,7 @@
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
     <Compile Include="MathModel.cs" />
+    <Compile Include="Parameters.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

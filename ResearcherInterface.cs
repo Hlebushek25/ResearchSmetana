@@ -233,15 +233,10 @@ namespace IssleduemSmetanu
 
             try
             {
-                List<Material> materials = LoadDB.GetAllMaterials();
-
+                List<Material> materials = InteractionDB.GetAllMaterials();
                 materialComboBox.DisplayMember = "nameMaterial";
                 materialComboBox.ValueMember = "idMaterial";
                 materialComboBox.DataSource = materials;
-
-                //// Опционально: добавить пустой элемент
-                //materialComboBox.Items.Insert(0, new Material { idMaterial = 0, nameMaterial = "Выберите материал" });
-                //materialComboBox.SelectedIndex = 0;
             }
             catch (Exception ex)
             {
@@ -362,6 +357,7 @@ namespace IssleduemSmetanu
             }
         }
 
+        #region ---------- Сохранение отчета ----------
         private void saveToExcelButton_Click(object sender, EventArgs e)
         {
             bool isContinue = true;
@@ -508,9 +504,31 @@ namespace IssleduemSmetanu
                 }
             }
         }
+        #endregion
 
         private void calculateButton_Click(object sender, EventArgs e)
         {
+            List<TextBox> textBoxesToCheck = new List<TextBox>
+            {
+                widthTextBox, heightTextBox, lengthTextBox, stepTextBox,
+                lidSpeedTextBox, lidTemperatureTextBox,
+                densityTextBox, specificHeatCapacityTextBox, meltingPointTextBox,
+                viscAtZeroShearAndRefTempTextBox, viscThermCoeffTextBox,
+                castingTempTextBox, timeConstTextBox, viscosityAnomalyTextBox,
+                heatTransferRatioTextBox
+            };
+
+            // Проверка на пустые поля
+            foreach (var textBox in textBoxesToCheck)
+            {
+                if (string.IsNullOrWhiteSpace(textBox.Text))
+                {
+                    Dialog error = new Dialog("Не все поля заполнены!\nПожалуйста, проверьте введенные данные.", DialogType.Error);
+                    error.ShowDialog();
+                    return;
+                }
+            }
+
             long memoryBefore = GC.GetTotalMemory(true);
             var (performance, perfTime) = smetana.CalculatePerformance();
             var (tableData, tempTime) = smetana.CalculateTemperature();
