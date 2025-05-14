@@ -58,13 +58,14 @@
             this.MaterialCharacteristicValues = new System.Windows.Forms.TabPage();
             this.materialCharacteristicsValuesTable = new System.Windows.Forms.DataGridView();
             this.characteristicValueID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.materialID_inCharValues = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.characteristicID_inCharValues = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.materialID_inCharValues = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.characteristicID_inCharValues = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.craracteristicValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Users = new System.Windows.Forms.TabPage();
             this.userTable = new System.Windows.Forms.DataGridView();
             this.Username = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.password = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Password = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Role = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Settings = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -81,8 +82,8 @@
             this.EmpiricalCoefValues = new System.Windows.Forms.TabPage();
             this.empiricalCoefValuesTable = new System.Windows.Forms.DataGridView();
             this.empiricalCoefValueID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.materialID_inEmpCoefValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.empiricalCoefID_inEmpCoefValues = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.materialID_inEmpCoefValue = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.empiricalCoefID_inEmpCoefValues = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.empiricalCoefValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.Materials.SuspendLayout();
@@ -112,20 +113,21 @@
             this.tabControl1.Controls.Add(this.EmpiricalCoef);
             this.tabControl1.Controls.Add(this.EmpiricalCoefValues);
             this.tabControl1.Location = new System.Drawing.Point(3, 29);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(594, 333);
             this.tabControl1.TabIndex = 0;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // Materials
             // 
             this.Materials.Controls.Add(this.materialTable);
             this.Materials.Location = new System.Drawing.Point(4, 40);
-            this.Materials.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Materials.Margin = new System.Windows.Forms.Padding(2);
             this.Materials.Name = "Materials";
-            this.Materials.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Materials.Padding = new System.Windows.Forms.Padding(2);
             this.Materials.Size = new System.Drawing.Size(586, 289);
             this.Materials.TabIndex = 0;
             this.Materials.Text = "Материалы";
@@ -157,7 +159,7 @@
             this.materialTable.DefaultCellStyle = dataGridViewCellStyle2;
             this.materialTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.materialTable.Location = new System.Drawing.Point(2, 2);
-            this.materialTable.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.materialTable.Margin = new System.Windows.Forms.Padding(2);
             this.materialTable.Name = "materialTable";
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
@@ -171,6 +173,7 @@
             this.materialTable.RowTemplate.Height = 24;
             this.materialTable.Size = new System.Drawing.Size(582, 285);
             this.materialTable.TabIndex = 0;
+            this.materialTable.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.incompleteRowsCheck);
             this.materialTable.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.CellValidating);
             this.materialTable.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.EditingControlShowing);
             this.materialTable.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.RowsAdded);
@@ -192,10 +195,10 @@
             // MaterialCharacteristics
             // 
             this.MaterialCharacteristics.Controls.Add(this.materialCharacteristicsTable);
-            this.MaterialCharacteristics.Location = new System.Drawing.Point(4, 22);
-            this.MaterialCharacteristics.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.MaterialCharacteristics.Location = new System.Drawing.Point(4, 40);
+            this.MaterialCharacteristics.Margin = new System.Windows.Forms.Padding(2);
             this.MaterialCharacteristics.Name = "MaterialCharacteristics";
-            this.MaterialCharacteristics.Size = new System.Drawing.Size(415, 307);
+            this.MaterialCharacteristics.Size = new System.Drawing.Size(586, 289);
             this.MaterialCharacteristics.TabIndex = 3;
             this.MaterialCharacteristics.Text = "Параметры свойств";
             this.MaterialCharacteristics.UseVisualStyleBackColor = true;
@@ -227,7 +230,7 @@
             this.materialCharacteristicsTable.DefaultCellStyle = dataGridViewCellStyle5;
             this.materialCharacteristicsTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.materialCharacteristicsTable.Location = new System.Drawing.Point(0, 0);
-            this.materialCharacteristicsTable.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.materialCharacteristicsTable.Margin = new System.Windows.Forms.Padding(2);
             this.materialCharacteristicsTable.Name = "materialCharacteristicsTable";
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
@@ -239,8 +242,9 @@
             this.materialCharacteristicsTable.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.materialCharacteristicsTable.RowHeadersWidth = 51;
             this.materialCharacteristicsTable.RowTemplate.Height = 24;
-            this.materialCharacteristicsTable.Size = new System.Drawing.Size(415, 307);
+            this.materialCharacteristicsTable.Size = new System.Drawing.Size(586, 289);
             this.materialCharacteristicsTable.TabIndex = 1;
+            this.materialCharacteristicsTable.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.incompleteRowsCheck);
             this.materialCharacteristicsTable.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.CellValidating);
             this.materialCharacteristicsTable.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.EditingControlShowing);
             this.materialCharacteristicsTable.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.RowsAdded);
@@ -267,10 +271,10 @@
             // MaterialCharacteristicValues
             // 
             this.MaterialCharacteristicValues.Controls.Add(this.materialCharacteristicsValuesTable);
-            this.MaterialCharacteristicValues.Location = new System.Drawing.Point(4, 22);
-            this.MaterialCharacteristicValues.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.MaterialCharacteristicValues.Location = new System.Drawing.Point(4, 40);
+            this.MaterialCharacteristicValues.Margin = new System.Windows.Forms.Padding(2);
             this.MaterialCharacteristicValues.Name = "MaterialCharacteristicValues";
-            this.MaterialCharacteristicValues.Size = new System.Drawing.Size(415, 307);
+            this.MaterialCharacteristicValues.Size = new System.Drawing.Size(586, 289);
             this.MaterialCharacteristicValues.TabIndex = 4;
             this.MaterialCharacteristicValues.Text = "Значения параметров свойств";
             this.MaterialCharacteristicValues.UseVisualStyleBackColor = true;
@@ -303,7 +307,7 @@
             this.materialCharacteristicsValuesTable.DefaultCellStyle = dataGridViewCellStyle8;
             this.materialCharacteristicsValuesTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.materialCharacteristicsValuesTable.Location = new System.Drawing.Point(0, 0);
-            this.materialCharacteristicsValuesTable.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.materialCharacteristicsValuesTable.Margin = new System.Windows.Forms.Padding(2);
             this.materialCharacteristicsValuesTable.Name = "materialCharacteristicsValuesTable";
             dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
@@ -315,9 +319,11 @@
             this.materialCharacteristicsValuesTable.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.materialCharacteristicsValuesTable.RowHeadersWidth = 51;
             this.materialCharacteristicsValuesTable.RowTemplate.Height = 24;
-            this.materialCharacteristicsValuesTable.Size = new System.Drawing.Size(415, 307);
+            this.materialCharacteristicsValuesTable.Size = new System.Drawing.Size(586, 289);
             this.materialCharacteristicsValuesTable.TabIndex = 2;
+            this.materialCharacteristicsValuesTable.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.incompleteRowsCheck);
             this.materialCharacteristicsValuesTable.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.CellValidating);
+            this.materialCharacteristicsValuesTable.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.materialCharacteristicsValuesTable_DataError);
             this.materialCharacteristicsValuesTable.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.EditingControlShowing);
             this.materialCharacteristicsValuesTable.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.RowsAdded);
             this.materialCharacteristicsValuesTable.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TableMouseDown);
@@ -334,11 +340,15 @@
             this.materialID_inCharValues.HeaderText = "id материала";
             this.materialID_inCharValues.MinimumWidth = 6;
             this.materialID_inCharValues.Name = "materialID_inCharValues";
+            this.materialID_inCharValues.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.materialID_inCharValues.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // characteristicID_inCharValues
             // 
             this.characteristicID_inCharValues.HeaderText = "id свойства";
             this.characteristicID_inCharValues.Name = "characteristicID_inCharValues";
+            this.characteristicID_inCharValues.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.characteristicID_inCharValues.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // craracteristicValue
             // 
@@ -349,10 +359,10 @@
             // 
             this.Users.Controls.Add(this.userTable);
             this.Users.Location = new System.Drawing.Point(4, 40);
-            this.Users.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Users.Margin = new System.Windows.Forms.Padding(2);
             this.Users.Name = "Users";
-            this.Users.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.Users.Size = new System.Drawing.Size(415, 289);
+            this.Users.Padding = new System.Windows.Forms.Padding(2);
+            this.Users.Size = new System.Drawing.Size(586, 289);
             this.Users.TabIndex = 1;
             this.Users.Text = "Пользователи";
             this.Users.UseVisualStyleBackColor = true;
@@ -372,7 +382,8 @@
             this.userTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.userTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Username,
-            this.password});
+            this.Password,
+            this.Role});
             dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -383,13 +394,15 @@
             this.userTable.DefaultCellStyle = dataGridViewCellStyle11;
             this.userTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.userTable.Location = new System.Drawing.Point(2, 2);
-            this.userTable.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.userTable.Margin = new System.Windows.Forms.Padding(2);
             this.userTable.Name = "userTable";
             this.userTable.RowHeadersWidth = 51;
             this.userTable.RowTemplate.Height = 24;
-            this.userTable.Size = new System.Drawing.Size(411, 285);
+            this.userTable.Size = new System.Drawing.Size(582, 285);
             this.userTable.TabIndex = 1;
+            this.userTable.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.incompleteRowsCheck);
             this.userTable.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.CellValidating);
+            this.userTable.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.userTable_DataError);
             this.userTable.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.EditingControlShowing);
             this.userTable.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TableMouseDown);
             // 
@@ -399,11 +412,18 @@
             this.Username.MinimumWidth = 6;
             this.Username.Name = "Username";
             // 
-            // password
+            // Password
             // 
-            this.password.HeaderText = "Пароль";
-            this.password.MinimumWidth = 6;
-            this.password.Name = "password";
+            this.Password.HeaderText = "Пароль";
+            this.Password.MinimumWidth = 6;
+            this.Password.Name = "Password";
+            // 
+            // Role
+            // 
+            this.Role.HeaderText = "Роль";
+            this.Role.Name = "Role";
+            this.Role.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Role.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // Settings
             // 
@@ -412,9 +432,9 @@
             this.Settings.Controls.Add(this.flowLayoutPanel1);
             this.Settings.Controls.Add(this.flowLayoutPanel8);
             this.Settings.Location = new System.Drawing.Point(4, 40);
-            this.Settings.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Settings.Margin = new System.Windows.Forms.Padding(2);
             this.Settings.Name = "Settings";
-            this.Settings.Size = new System.Drawing.Size(415, 289);
+            this.Settings.Size = new System.Drawing.Size(586, 289);
             this.Settings.TabIndex = 2;
             this.Settings.Text = "Настройки";
             // 
@@ -422,7 +442,7 @@
             // 
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button1.Location = new System.Drawing.Point(10, 71);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(118, 26);
             this.button1.TabIndex = 4;
@@ -437,7 +457,7 @@
             this.flowLayoutPanel1.Controls.Add(this.label1);
             this.flowLayoutPanel1.Controls.Add(this.comboBox1);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(10, 34);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(252, 25);
             this.flowLayoutPanel1.TabIndex = 3;
@@ -474,7 +494,7 @@
             "1 год",
             "5 лет"});
             this.comboBox1.Location = new System.Drawing.Point(136, 2);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(114, 21);
             this.comboBox1.TabIndex = 1;
@@ -487,7 +507,7 @@
             this.flowLayoutPanel8.Controls.Add(this.specificHeatCapacityLabel);
             this.flowLayoutPanel8.Controls.Add(this.tryQuantityTextBox);
             this.flowLayoutPanel8.Location = new System.Drawing.Point(10, 10);
-            this.flowLayoutPanel8.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel8.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel8.Name = "flowLayoutPanel8";
             this.flowLayoutPanel8.Size = new System.Drawing.Size(249, 24);
             this.flowLayoutPanel8.TabIndex = 2;
@@ -506,7 +526,7 @@
             // 
             this.tryQuantityTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tryQuantityTextBox.Location = new System.Drawing.Point(191, 2);
-            this.tryQuantityTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tryQuantityTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.tryQuantityTextBox.Name = "tryQuantityTextBox";
             this.tryQuantityTextBox.Size = new System.Drawing.Size(56, 20);
             this.tryQuantityTextBox.TabIndex = 104;
@@ -516,9 +536,9 @@
             // 
             this.EmpiricalCoef.Controls.Add(this.empiricalCoefTable);
             this.EmpiricalCoef.Location = new System.Drawing.Point(4, 40);
-            this.EmpiricalCoef.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.EmpiricalCoef.Margin = new System.Windows.Forms.Padding(2);
             this.EmpiricalCoef.Name = "EmpiricalCoef";
-            this.EmpiricalCoef.Size = new System.Drawing.Size(415, 289);
+            this.EmpiricalCoef.Size = new System.Drawing.Size(586, 289);
             this.EmpiricalCoef.TabIndex = 5;
             this.EmpiricalCoef.Text = "Эмпирические коэффициенты";
             this.EmpiricalCoef.UseVisualStyleBackColor = true;
@@ -550,7 +570,7 @@
             this.empiricalCoefTable.DefaultCellStyle = dataGridViewCellStyle13;
             this.empiricalCoefTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.empiricalCoefTable.Location = new System.Drawing.Point(0, 0);
-            this.empiricalCoefTable.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.empiricalCoefTable.Margin = new System.Windows.Forms.Padding(2);
             this.empiricalCoefTable.Name = "empiricalCoefTable";
             dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Control;
@@ -562,8 +582,9 @@
             this.empiricalCoefTable.RowHeadersDefaultCellStyle = dataGridViewCellStyle14;
             this.empiricalCoefTable.RowHeadersWidth = 51;
             this.empiricalCoefTable.RowTemplate.Height = 24;
-            this.empiricalCoefTable.Size = new System.Drawing.Size(415, 289);
+            this.empiricalCoefTable.Size = new System.Drawing.Size(586, 289);
             this.empiricalCoefTable.TabIndex = 3;
+            this.empiricalCoefTable.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.incompleteRowsCheck);
             this.empiricalCoefTable.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.CellValidating);
             this.empiricalCoefTable.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.EditingControlShowing);
             this.empiricalCoefTable.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.RowsAdded);
@@ -590,10 +611,10 @@
             // EmpiricalCoefValues
             // 
             this.EmpiricalCoefValues.Controls.Add(this.empiricalCoefValuesTable);
-            this.EmpiricalCoefValues.Location = new System.Drawing.Point(4, 58);
-            this.EmpiricalCoefValues.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.EmpiricalCoefValues.Location = new System.Drawing.Point(4, 40);
+            this.EmpiricalCoefValues.Margin = new System.Windows.Forms.Padding(2);
             this.EmpiricalCoefValues.Name = "EmpiricalCoefValues";
-            this.EmpiricalCoefValues.Size = new System.Drawing.Size(415, 271);
+            this.EmpiricalCoefValues.Size = new System.Drawing.Size(586, 289);
             this.EmpiricalCoefValues.TabIndex = 6;
             this.EmpiricalCoefValues.Text = "Значения эмпирических коэффициентов";
             this.EmpiricalCoefValues.UseVisualStyleBackColor = true;
@@ -626,7 +647,7 @@
             this.empiricalCoefValuesTable.DefaultCellStyle = dataGridViewCellStyle16;
             this.empiricalCoefValuesTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.empiricalCoefValuesTable.Location = new System.Drawing.Point(0, 0);
-            this.empiricalCoefValuesTable.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.empiricalCoefValuesTable.Margin = new System.Windows.Forms.Padding(2);
             this.empiricalCoefValuesTable.Name = "empiricalCoefValuesTable";
             dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle17.BackColor = System.Drawing.SystemColors.Control;
@@ -638,9 +659,11 @@
             this.empiricalCoefValuesTable.RowHeadersDefaultCellStyle = dataGridViewCellStyle17;
             this.empiricalCoefValuesTable.RowHeadersWidth = 51;
             this.empiricalCoefValuesTable.RowTemplate.Height = 24;
-            this.empiricalCoefValuesTable.Size = new System.Drawing.Size(415, 271);
+            this.empiricalCoefValuesTable.Size = new System.Drawing.Size(586, 289);
             this.empiricalCoefValuesTable.TabIndex = 3;
+            this.empiricalCoefValuesTable.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.incompleteRowsCheck);
             this.empiricalCoefValuesTable.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.CellValidating);
+            this.empiricalCoefValuesTable.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.empiricalCoefValuesTable_DataError);
             this.empiricalCoefValuesTable.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.EditingControlShowing);
             this.empiricalCoefValuesTable.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.RowsAdded);
             this.empiricalCoefValuesTable.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TableMouseDown);
@@ -657,11 +680,15 @@
             this.materialID_inEmpCoefValue.HeaderText = "id материала";
             this.materialID_inEmpCoefValue.MinimumWidth = 6;
             this.materialID_inEmpCoefValue.Name = "materialID_inEmpCoefValue";
+            this.materialID_inEmpCoefValue.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.materialID_inEmpCoefValue.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // empiricalCoefID_inEmpCoefValues
             // 
             this.empiricalCoefID_inEmpCoefValues.HeaderText = "id коэффициента";
             this.empiricalCoefID_inEmpCoefValues.Name = "empiricalCoefID_inEmpCoefValues";
+            this.empiricalCoefID_inEmpCoefValues.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.empiricalCoefID_inEmpCoefValues.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // empiricalCoefValue
             // 
@@ -675,7 +702,7 @@
             this.ClientSize = new System.Drawing.Size(600, 366);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "AdminInterface";
             this.Text = "AdminInterface";
             this.tabControl1.ResumeLayout(false);
@@ -719,28 +746,28 @@
         private System.Windows.Forms.TabPage EmpiricalCoef;
         private System.Windows.Forms.TabPage EmpiricalCoefValues;
         private System.Windows.Forms.DataGridView materialCharacteristicsTable;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Username;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Password;
         private System.Windows.Forms.DataGridView materialCharacteristicsValuesTable;
         private System.Windows.Forms.DataGridView empiricalCoefTable;
         private System.Windows.Forms.DataGridView empiricalCoefValuesTable;
         private System.Windows.Forms.DataGridViewTextBoxColumn materialID;
         private System.Windows.Forms.DataGridViewTextBoxColumn materialName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn empiricalCoefValueID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn materialID_inEmpCoefValue;
-        private System.Windows.Forms.DataGridViewTextBoxColumn empiricalCoefID_inEmpCoefValues;
-        private System.Windows.Forms.DataGridViewTextBoxColumn empiricalCoefValue;
         private System.Windows.Forms.DataGridViewTextBoxColumn characteristicID;
         private System.Windows.Forms.DataGridViewTextBoxColumn characteristicName;
         private System.Windows.Forms.DataGridViewTextBoxColumn characteristicUnit;
-        private System.Windows.Forms.DataGridViewTextBoxColumn characteristicValueID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn materialID_inCharValues;
-        private System.Windows.Forms.DataGridViewTextBoxColumn characteristicID_inCharValues;
-        private System.Windows.Forms.DataGridViewTextBoxColumn craracteristicValue;
         private System.Windows.Forms.DataGridViewTextBoxColumn empiricalCoefID;
         private System.Windows.Forms.DataGridViewTextBoxColumn empiricalCoefName;
         private System.Windows.Forms.DataGridViewTextBoxColumn empiricalCoefUnit;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn password;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Username;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Password;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Role;
+        private System.Windows.Forms.DataGridViewTextBoxColumn characteristicValueID;
+        private System.Windows.Forms.DataGridViewComboBoxColumn materialID_inCharValues;
+        private System.Windows.Forms.DataGridViewComboBoxColumn characteristicID_inCharValues;
+        private System.Windows.Forms.DataGridViewTextBoxColumn craracteristicValue;
+        private System.Windows.Forms.DataGridViewTextBoxColumn empiricalCoefValueID;
+        private System.Windows.Forms.DataGridViewComboBoxColumn materialID_inEmpCoefValue;
+        private System.Windows.Forms.DataGridViewComboBoxColumn empiricalCoefID_inEmpCoefValues;
+        private System.Windows.Forms.DataGridViewTextBoxColumn empiricalCoefValue;
     }
 }

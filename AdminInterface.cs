@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Media.Media3D;
 
 namespace IssleduemSmetanu
 {
@@ -35,9 +36,71 @@ namespace IssleduemSmetanu
         private ContextMenuStrip contextMenu;
         private DataGridViewRow selectedRow;
 
+        // Штука для обработки ошибки загрузки данных в таблицу с пользователями
+        private bool isErrorHandled = false;
+        private int previousTabIndex = 0;
+        private bool emptyRowsHandled = false;
+
+        // Массивы с данными для таблиц
+        List<User> users = InteractionDB.GetAllUsers();
+        List<Material> materials = InteractionDB.GetAllMaterials();
+        List<MaterialCharacteristic> characteristics = InteractionDB.GetAllMaterialCharacteristics();
+        List<MaterialCharacteristicValue> characteristicValues = InteractionDB.GetAllMaterialCharacteristicsValues();
+        List<EmpericalCoef> coefs = InteractionDB.GetAllEmpericalCoef();
+        List<EmpericalCoefValue> coefValues = InteractionDB.GetAllEmpericalCoefValues();
+
         public AdminInterface()
         {
             InitializeComponent();
+
+            try
+            {
+                DataGridViewComboBoxColumn comboColumn = (DataGridViewComboBoxColumn)userTable.Columns["Role"];
+                comboColumn.Items.AddRange("Исследователь", "Администратор", "");
+            }
+            catch
+            {
+                Dialog dialog = new Dialog("В таблице \"Пользователи\" отсутствует столбец \"Роль\"", DialogType.Error);
+                dialog.ShowDialog();
+            }
+
+            try
+            {
+                DataGridViewComboBoxColumn comboColumn2 = (DataGridViewComboBoxColumn)materialCharacteristicsValuesTable.Columns["materialID_inCharValues"];
+                foreach (var material in materials)
+                {
+                    comboColumn2.Items.Add(material.idMaterial.ToString());
+                }
+                DataGridViewComboBoxColumn comboColumn3 = (DataGridViewComboBoxColumn)materialCharacteristicsValuesTable.Columns["characteristicID_inCharValues"];
+                foreach (var characteristic in characteristics)
+                {
+                    comboColumn3.Items.Add(characteristic.id.ToString());
+                }
+            }
+            catch
+            {
+                Dialog dialog = new Dialog("В таблице \"Значения параметров свойств\" отсутствуют столбцы \"id материала\" и/или \"id свойства\"", DialogType.Error);
+                dialog.ShowDialog();
+            }
+
+            try
+            {
+                DataGridViewComboBoxColumn comboColumn4 = (DataGridViewComboBoxColumn)empiricalCoefValuesTable.Columns["materialID_inEmpCoefValue"];
+                foreach (var material in materials)
+                {
+                    comboColumn4.Items.Add(material.idMaterial.ToString());
+                }
+                DataGridViewComboBoxColumn comboColumn5 = (DataGridViewComboBoxColumn)empiricalCoefValuesTable.Columns["empiricalCoefID_inEmpCoefValues"];
+                foreach (var coef in coefs)
+                {
+                    comboColumn5.Items.Add(coef.id.ToString());
+                }
+            }
+            catch
+            {
+                Dialog dialog = new Dialog("В таблице \"Значения параметров свойств\" отсутствуют столбцы \"id материала\" и/или \"id коэффициента\"", DialogType.Error);
+                dialog.ShowDialog();
+            }
 
             // меню для удаляшки строк
             contextMenu = new ContextMenuStrip();
@@ -251,6 +314,13 @@ namespace IssleduemSmetanu
 
         }
 
+        public string callDialog(string message, DialogType type)
+        {
+            Dialog error = new Dialog(message, type);
+            error.ShowDialog();
+            return error.ActionCode;
+        }
+
         private void tryQuantityTextBox_Leave(object sender, EventArgs e)
         {
             if (uint.TryParse(tryQuantityTextBox.Text, out uint result))
@@ -439,10 +509,23 @@ namespace IssleduemSmetanu
         {
             try
             {
-                List<User> users = InteractionDB.GetAllUsers();
+                //List<User> users = InteractionDB.GetAllUsers();
                 foreach (User user in users)
                 {
-                    userTable.Rows.Add(user.login, user.password);
+                    switch (user.role)
+                    {
+                        case "admin":
+                            user.role = "Администратор";
+                            break;
+                        case "researcher":
+                            user.role = "Исследователь";
+                            break;
+                        default:
+                            Dialog dialog = new Dialog($"Ошибка при загрузке данных: Неизвестная роль {user.role}", DialogType.Error);
+                            dialog.ShowDialog();
+                            break;
+                    }
+                    userTable.Rows.Add(user.login, user.password, user.role);
                 }
             }
             catch (Exception ex)
@@ -456,7 +539,7 @@ namespace IssleduemSmetanu
         {
             try
             {
-                List<Material> materials = InteractionDB.GetAllMaterials();
+                //List<Material> materials = InteractionDB.GetAllMaterials();
                 foreach (Material material in materials)
                 {
                     int rowIndex = materialTable.Rows.Add();
@@ -474,7 +557,7 @@ namespace IssleduemSmetanu
         {
             try
             {
-                List<MaterialCharacteristic> characteristics = InteractionDB.GetAllMaterialCharacteristics();
+                //List<MaterialCharacteristic> characteristics = InteractionDB.GetAllMaterialCharacteristics();
                 foreach (MaterialCharacteristic characteristic in characteristics)
                 {
                     int rowIndex = materialCharacteristicsTable.Rows.Add();
@@ -493,7 +576,8 @@ namespace IssleduemSmetanu
         {
             try
             {
-                List<MaterialCharacteristicValue> characteristicValues = InteractionDB.GetAllMaterialCharacteristicsValues();
+                //List<MaterialCharacteristicValue> characteristicValues = InteractionDB.GetAllMaterialCharacteristicsValues();
+
                 //foreach (MaterialCharacteristicValue characteristicValue in characteristicValues)
                 //{
                 //    int rowIndex = materialCharacteristicsValuesTable.Rows.Add();
@@ -504,8 +588,8 @@ namespace IssleduemSmetanu
                 foreach (MaterialCharacteristicValue characteristicValue in characteristicValues)
                 {
                     int rowIndex = materialCharacteristicsValuesTable.Rows.Add();
-                    materialCharacteristicsValuesTable.Rows[rowIndex].Cells[1].Value = characteristicValue.idMaterial;
-                    materialCharacteristicsValuesTable.Rows[rowIndex].Cells[2].Value = characteristicValue.idCharacteristic;
+                    materialCharacteristicsValuesTable.Rows[rowIndex].Cells[1].Value = characteristicValue.idMaterial.ToString();
+                    materialCharacteristicsValuesTable.Rows[rowIndex].Cells[2].Value = characteristicValue.idCharacteristic.ToString();
                     materialCharacteristicsValuesTable.Rows[rowIndex].Cells[3].Value = characteristicValue.value;
                 }
             }
@@ -520,7 +604,7 @@ namespace IssleduemSmetanu
         {
             try
             {
-                List<EmpericalCoef> coefs = InteractionDB.GetAllEmpericalCoef();
+                //List<EmpericalCoef> coefs = InteractionDB.GetAllEmpericalCoef();
                 foreach (EmpericalCoef coef in coefs)
                 {
                     int rowIndex = empiricalCoefTable.Rows.Add();
@@ -538,12 +622,12 @@ namespace IssleduemSmetanu
         {
             try
             {
-                List<EmpericalCoefValue> coefValues = InteractionDB.GetAllEmpericalCoefValues();
+                //List<EmpericalCoefValue> coefValues = InteractionDB.GetAllEmpericalCoefValues();
                 foreach (EmpericalCoefValue coefValue in coefValues)
                 {
                     int rowIndex = empiricalCoefValuesTable.Rows.Add();
-                    empiricalCoefValuesTable.Rows[rowIndex].Cells[1].Value = coefValue.idMaterial;
-                    empiricalCoefValuesTable.Rows[rowIndex].Cells[2].Value = coefValue.idEmpericalCoef;
+                    empiricalCoefValuesTable.Rows[rowIndex].Cells[1].Value = coefValue.idMaterial.ToString();
+                    empiricalCoefValuesTable.Rows[rowIndex].Cells[2].Value = coefValue.idEmpericalCoef.ToString();
                     empiricalCoefValuesTable.Rows[rowIndex].Cells[3].Value = coefValue.value;
                 }
             }
@@ -551,6 +635,146 @@ namespace IssleduemSmetanu
             {
                 Dialog dialog = new Dialog($"Ошибка при загрузке данных: {ex.Message}", DialogType.Error);
                 dialog.ShowDialog();
+            }
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (emptyRowsHandled)
+            {
+                emptyRowsHandled = false;
+                previousTabIndex = tabControl1.SelectedIndex;
+
+                return;
+            }
+            isErrorHandled = false;
+            DataGridView table = null;
+            switch (previousTabIndex)
+            {
+                case 0:
+                    table = materialTable;
+                    break;
+                case 1:
+                    table = materialCharacteristicsTable;
+                    break;
+                case 2:
+                    table = materialCharacteristicsValuesTable;
+                    break;
+                case 3:
+                    table = userTable;
+                    break;
+                case 5:
+                    table = empiricalCoefTable;
+                    break;
+                case 6:
+                    table = empiricalCoefValuesTable;
+                    break;
+            }
+            if (table == null)
+            {
+                previousTabIndex = tabControl1.SelectedIndex;
+                return;
+            }
+            else
+            {
+                
+                if (table.Rows.Count >= 2)
+                {
+                    List<int> emptyRows = new List<int>();
+                    for (int i = table.Rows.Count - 2; i >= 0; i--) // Проходим по строкам с конца
+                    {
+                        foreach (DataGridViewCell cell in table.Rows[i].Cells)
+                        {
+                            if (cell.Value == null || string.IsNullOrWhiteSpace(cell.Value.ToString()))
+                            {
+                                emptyRows.Add(i); // Добавляем индекс пустой строки в список
+                                break; // Можно сразу выйти, если найдена пустая ячейка
+                            }
+                        }
+                    }
+
+                    if (emptyRows.Count != 0)
+                    {
+                        if (callDialog("У Вас остались незаполненные строки!\nПри переходе в другую вкладку они удалятся.\nУверены, что хотите перейти?", DialogType.YesOrNo) == "yes")
+                        {
+                            foreach (int rowIndex in emptyRows)
+                            {
+                                table.Rows.RemoveAt(rowIndex);
+                            }
+                            
+                        }
+                        else
+                        {
+                            emptyRowsHandled = true;
+                            tabControl1.SelectedIndex = previousTabIndex; // Возвращаемся на предыдущую вкладку
+                            foreach (int rowIndex in emptyRows)
+                            {
+                                table.Rows[rowIndex].DefaultCellStyle.BackColor = Color.Yellow;
+                            }
+                            return;
+                        }
+                    }
+                }
+            }
+            previousTabIndex = tabControl1.SelectedIndex;
+        }
+
+        private void userTable_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            if (!isErrorHandled)
+            {
+                Dialog dialog = new Dialog($"Ошибка при загрузке данных (ಥ﹏ಥ)\nУбедитесь, что столбцы расположены в правильном порядке (логин, пароль, роль) и роли пользователей указаны корректно!\nСтроки с ошибками были выделены красным, а все пользователям с некорректными ролями была выдана роль \"Исследователь\"", DialogType.Error);
+                dialog.ShowDialog();
+                isErrorHandled = true;
+            }
+            userTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Red;
+            e.Cancel = true;
+        }
+
+        private void materialCharacteristicsValuesTable_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            if (!isErrorHandled)
+            {
+                Dialog dialog = new Dialog($"Ошибка при загрузке данных (ಥ﹏ಥ)\nУбедитесь, что столбцы расположены в правильном порядке (логин, пароль, роль) и роли пользователей указаны корректно!\nСтроки с ошибками были выделены красным, а все поля с ошибками заполнены значениями по умолчанию", DialogType.Error);
+                dialog.ShowDialog();
+                isErrorHandled = true;
+            }
+            materialCharacteristicsValuesTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Red;
+            e.Cancel = true;
+        }
+
+        private void empiricalCoefValuesTable_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            if (!isErrorHandled)
+            {
+                Dialog dialog = new Dialog($"Ошибка при загрузке данных (ಥ﹏ಥ)\nУбедитесь, что столбцы расположены в правильном порядке (логин, пароль, роль) и роли пользователей указаны корректно!\nСтроки с ошибками были выделены красным, а все поля с ошибками заполнены значениями по умолчанию", DialogType.Error);
+                dialog.ShowDialog();
+                isErrorHandled = true;
+            }
+            empiricalCoefValuesTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Red;
+            e.Cancel = true;
+        }
+
+        private void incompleteRowsCheck(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            DataGridView table = sender as DataGridView;
+            int lastRowIndex = table.AllowUserToAddRows ? table.Rows.Count - 2 : table.Rows.Count - 1;
+
+            for (int i = 0; i <= lastRowIndex; i++) // Исключаем последнюю строку
+            {
+                DataGridViewRow row = table.Rows[i];
+                bool isRowComplete = true;
+
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    if (cell.Value == null || string.IsNullOrWhiteSpace(cell.Value.ToString()))
+                    {
+                        isRowComplete = false;
+                        break;
+                    }
+                }
+
+                row.DefaultCellStyle.BackColor = isRowComplete ? Color.White : Color.Yellow;
             }
         }
     }
