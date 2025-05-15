@@ -528,6 +528,9 @@ namespace IssleduemSmetanu
 
         private void calculateButton_Click(object sender, EventArgs e)
         {
+            temperatureChart.Series[0].Points.Clear();
+            viscosityChart.Series[0].Points.Clear();
+
             List<TextBox> textBoxesToCheck = new List<TextBox>
             {
                 widthTextBox, heightTextBox, lengthTextBox, stepTextBox,
@@ -564,7 +567,7 @@ namespace IssleduemSmetanu
             //long memoryUsed = memoryAfter - memoryBefore;
             int N = (int)Math.Round(smetana.length / smetana.step);
             criteriaIndicatorsLabel.Text = $"Производительность = {performance} [кг/ч]\nТемпература = {temperature} [°C]\nВязкость = {productViscosity} [Па*с]";
-            efficiencyLabel.Text = $"Время расчета и визуализации результатов = {perfTime + tempTime} [нс]\nОбъем ОЗУ, необходимой для моделирования объекта = {memoryUsed / 1024.0:F2} КБ\nК-во арифметических операций при расчете = {39+34*N}";
+            efficiencyLabel.Text = $"Время расчета и визуализации результатов = {Math.Round((double)(perfTime + tempTime) / 1000000, 4)} [мс]\nОбъем ОЗУ, необходимой для моделирования объекта = {memoryUsed / 1024.0:F2} КБ\nК-во арифметических операций при расчете = {39+34*N}";
         }
 
         private void DisplayCombinedArrayInTable(DataGridView resultsTable, double[,] combinedArray)

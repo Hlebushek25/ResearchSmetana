@@ -200,7 +200,7 @@ namespace IssleduemSmetanu
                         Random rand = new Random();
                         string errorMessage = default(string);
                         string errorEnd = default(string);
-                        if (username == previousUsername && password == previousPassword && rand.Next(1, 1) == 1)
+                        if (username == previousUsername && password == previousPassword && rand.Next(1, 6) == 3)
                         {
                             errorMessage = "Ты совсем дурында?\nВведи что-нибудь другое\n(осталось ";
                             switch (loginTryQuantity % 10)
@@ -290,7 +290,7 @@ namespace IssleduemSmetanu
                     }
                     else
                     {
-                        this.ActionCode = user.role.Equals("1", StringComparison.OrdinalIgnoreCase)
+                        this.ActionCode = user.role.Equals("admin", StringComparison.OrdinalIgnoreCase)
                         ? "ContinueAsAdmin"
                         : "ContinueAsResearcher";
 

@@ -33,10 +33,10 @@ namespace IssleduemSmetanu
                     case "widthTextBox":
                         checkPositive((double)textBoxValue, "Ширина", sender);
                         break;
-                    case "depthTextBox":
+                    case "heightTextBox":
                         checkPositive((double)textBoxValue, "Глубина", sender);
                         break;
-                    case "lenghtTextBox":
+                    case "lengthTextBox":
                         checkPositive((double)textBoxValue, "Длина", sender);
                         break;
                     case "densityTextBox":
@@ -48,35 +48,35 @@ namespace IssleduemSmetanu
                     case "meltingPointTextBox":
                         CheckValues.checkCelsius((double)textBoxValue, "Температура плавления", sender);
                         break;
-                    case "capSpeedTextBox":
+                    case "lidSpeedTextBox":
                         checkPositive((double)textBoxValue, "Скорость крышки", sender);
                         break;
-                    case "capTempTextBox":
+                    case "lidTempTextBox":
                         checkCelsius((double)textBoxValue, "Температура крышки", sender);
                         break;
-                    case "viscosityTextBox":
-
+                    case "viscAtZeroShearAndRefTempTextBox":
+                        checkPositive((double)textBoxValue, "Вязкость материала при нулевой скорости деформации сдвига и температуре приведения", sender);
                         break;
-                    case "tempRatioTextBox":
-
+                    case "viscThermCoeffTextBox":
+                        checkPositive((double)textBoxValue, "Температурный коэффициент вязкости материала", sender);
                         break;
                     case "castingTempTextBox":
                         checkCelsius((double)textBoxValue, "Температура приведения", sender);
                         break;
                     case "timeConstTextBox":
-
+                        checkPositive((double)textBoxValue, "Постоянная времени", sender);
                         break;
                     case "viscosityAnomalyTextBox":
-
+                        checkPositive((double)textBoxValue, "Показатель аномалии вязкости материала", sender);
                         break;
                     case "heatTransferRatioTextBox":
-
+                        checkPositive((double)textBoxValue, "Коэффициент теплоотдачи от крышки канала к материалу", sender);
                         break;
-                    case "tableStepTextBox":
-
+                    case "stepTextBox":
+                        checkPositive((double)textBoxValue, "Шаг расчёта по длине канала", sender);
                         break;
-                    case "graphStepTextBox":
-
+                    case "missingStepTextBox":
+                        checkPositive((int)textBoxValue, "Количество пропусков шагов", sender);
                         break;
                     default:
                         break;
@@ -96,7 +96,7 @@ namespace IssleduemSmetanu
         {
             if (value <= 0)
             {
-                callDialog($"Значение параметра {parameterName} должно быть положительным", DialogType.Error);
+                callDialog($"Значение параметра \"{parameterName}\" должно быть положительным", DialogType.Error);
                 (sender as TextBox).Focus();
                 return;
             }

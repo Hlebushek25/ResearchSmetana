@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.inputParameters = new System.Windows.Forms.TabPage();
             this.button3 = new System.Windows.Forms.Button();
@@ -213,7 +213,7 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(155, 26);
             this.button3.TabIndex = 11;
-            this.button3.Text = "Разлогиниться";
+            this.button3.Text = "Выйти из системы";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -962,6 +962,7 @@
             this.button2.TabIndex = 4;
             this.button2.Text = "BSOD";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Visible = false;
             // 
             // button1
             // 
@@ -973,6 +974,7 @@
             this.button1.TabIndex = 3;
             this.button1.Text = "Ошибка";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // flowLayoutPanel1
@@ -1266,26 +1268,26 @@
             // temperatureChart
             // 
             this.temperatureChart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(246)))), ((int)(((byte)(246)))));
-            chartArea5.Area3DStyle.WallWidth = 5;
-            chartArea5.AxisX.Title = "Координата по длине канала, м";
-            chartArea5.AxisX.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            chartArea5.AxisY.Title = "Температура, °С";
-            chartArea5.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            chartArea5.Name = "ChartArea1";
-            chartArea5.ShadowOffset = 10;
-            this.temperatureChart.ChartAreas.Add(chartArea5);
+            chartArea3.Area3DStyle.WallWidth = 5;
+            chartArea3.AxisX.Title = "Координата по длине канала, м";
+            chartArea3.AxisX.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            chartArea3.AxisY.Title = "Температура, °С";
+            chartArea3.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            chartArea3.Name = "ChartArea1";
+            chartArea3.ShadowOffset = 10;
+            this.temperatureChart.ChartAreas.Add(chartArea3);
             this.temperatureChart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.temperatureChart.Location = new System.Drawing.Point(0, 0);
             this.temperatureChart.Name = "temperatureChart";
             this.temperatureChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Berry;
-            series5.BorderWidth = 5;
-            series5.ChartArea = "ChartArea1";
-            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series5.Color = System.Drawing.Color.Red;
-            series5.Name = "temperatureSeries";
-            series5.ShadowColor = System.Drawing.Color.FromArgb(((int)(((byte)(5)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            series5.ShadowOffset = 3;
-            this.temperatureChart.Series.Add(series5);
+            series3.BorderWidth = 5;
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series3.Color = System.Drawing.Color.Red;
+            series3.Name = "temperatureSeries";
+            series3.ShadowColor = System.Drawing.Color.FromArgb(((int)(((byte)(5)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            series3.ShadowOffset = 3;
+            this.temperatureChart.Series.Add(series3);
             this.temperatureChart.Size = new System.Drawing.Size(881, 549);
             this.temperatureChart.TabIndex = 0;
             this.temperatureChart.Text = "chart1";
@@ -1315,26 +1317,26 @@
             // viscosityChart
             // 
             this.viscosityChart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(246)))), ((int)(((byte)(246)))));
-            chartArea6.Area3DStyle.WallWidth = 5;
-            chartArea6.AxisX.Title = "Координата по длине канала, м";
-            chartArea6.AxisX.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            chartArea6.AxisY.Title = "Вязкость, Па*с";
-            chartArea6.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            chartArea6.Name = "ChartArea1";
-            chartArea6.ShadowOffset = 10;
-            this.viscosityChart.ChartAreas.Add(chartArea6);
+            chartArea4.Area3DStyle.WallWidth = 5;
+            chartArea4.AxisX.Title = "Координата по длине канала, м";
+            chartArea4.AxisX.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            chartArea4.AxisY.Title = "Вязкость, Па*с";
+            chartArea4.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            chartArea4.Name = "ChartArea1";
+            chartArea4.ShadowOffset = 10;
+            this.viscosityChart.ChartAreas.Add(chartArea4);
             this.viscosityChart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.viscosityChart.Location = new System.Drawing.Point(0, 0);
             this.viscosityChart.Name = "viscosityChart";
             this.viscosityChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Berry;
-            series6.BorderWidth = 5;
-            series6.ChartArea = "ChartArea1";
-            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series6.Color = System.Drawing.Color.Red;
-            series6.Name = "temperatureSeries";
-            series6.ShadowColor = System.Drawing.Color.FromArgb(((int)(((byte)(5)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            series6.ShadowOffset = 3;
-            this.viscosityChart.Series.Add(series6);
+            series4.BorderWidth = 5;
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series4.Color = System.Drawing.Color.Red;
+            series4.Name = "temperatureSeries";
+            series4.ShadowColor = System.Drawing.Color.FromArgb(((int)(((byte)(5)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            series4.ShadowOffset = 3;
+            this.viscosityChart.Series.Add(series4);
             this.viscosityChart.Size = new System.Drawing.Size(881, 549);
             this.viscosityChart.TabIndex = 1;
             this.viscosityChart.Text = "chart1";
