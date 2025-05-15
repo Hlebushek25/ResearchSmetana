@@ -56,10 +56,30 @@ namespace IssleduemSmetanu
         
         MathModel smetana = new MathModel();
 
+        private ToolTip geometryToolTip = new ToolTip();
+        private ToolTip characteristicToolTip = new ToolTip();
+        private ToolTip modeToolTip = new ToolTip();
+        private ToolTip empCoefToolTip = new ToolTip();
+        private ToolTip stepToolTip = new ToolTip();
 
         public ResearcherInterface()
         {
             InitializeComponent();
+
+            geometryToolTip.SetToolTip(groupBox1, "Вектор входных\nпараметров процесса (X)");
+            characteristicToolTip.SetToolTip(groupBox2, "Вектор входных\nпараметров процесса (X)");
+            modeToolTip.SetToolTip(groupBox3, "Вектор варьируемых\nпараметров процесса (U)");
+            empCoefToolTip.SetToolTip(groupBox4, "Вектор параметров\nматематической модели (A)");
+            stepToolTip.SetToolTip(groupBox5, "Вектор параметров\nматематической модели (A)");
+
+
+            // В конструкторе ResearcherInterface после инициализации ToolTip:
+            ConfigureToolTip(geometryToolTip);
+            ConfigureToolTip(characteristicToolTip);
+            ConfigureToolTip(modeToolTip);
+            ConfigureToolTip(empCoefToolTip);
+            ConfigureToolTip(stepToolTip);
+
 
             label10.Location = new Point(
                 temperatureChart.Location.X + (temperatureChart.Width - label10.Width) / 2,
@@ -608,6 +628,46 @@ namespace IssleduemSmetanu
         {
             this.ActionCode = "Logout";
             this.Close();
+        }
+        // Общий метод настройки ToolTip
+        private void ConfigureToolTip(ToolTip tooltip)
+        {
+            tooltip.OwnerDraw = true;
+            tooltip.Draw += (s, e) =>
+            {
+                int radius = 8; // Радиус скругления
+                Rectangle rect = e.Bounds;
+                using (GraphicsPath path = new GraphicsPath())
+                {
+                    path.AddArc(rect.X, rect.Y, radius, radius, 180, 90);
+                    path.AddArc(rect.Right - radius, rect.Y, radius, radius, 270, 90);
+                    path.AddArc(rect.Right - radius, rect.Bottom - radius, radius, radius, 0, 90);
+                    path.AddArc(rect.X, rect.Bottom - radius, radius, radius, 90, 90);
+                    path.CloseFigure();
+
+                    using (SolidBrush backBrush = new SolidBrush(Color.FromArgb(247, 247, 219)))
+                    using (SolidBrush textBrush = new SolidBrush(Color.Black))
+                    using (Pen borderPen = new Pen(Color.Black))
+                    using (Font font = new Font("Arial", 9))
+                    {
+                        // Заливка скруглённого фона
+                        e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                        e.Graphics.FillPath(backBrush, path);
+                        // Рисуем текст
+                        e.Graphics.DrawString(e.ToolTipText, font, textBrush, new RectangleF(rect.X + 6, rect.Y + 4, rect.Width - 12, rect.Height - 8));
+                        // Обводка
+                        e.Graphics.DrawPath(borderPen, path);
+                    }
+                }
+            };
+            tooltip.Popup += (s, e) =>
+            {
+                using (Font font = new Font("Arial", 9))
+                {
+                    Size textSize = TextRenderer.MeasureText(tooltip.GetToolTip(e.AssociatedControl), font);
+                    e.ToolTipSize = new Size(textSize.Width + 16, textSize.Height + 12);
+                }
+            };
         }
     }
 }

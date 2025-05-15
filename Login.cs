@@ -38,6 +38,9 @@ namespace IssleduemSmetanu
 
         List<User> users = InteractionDB.GetAllUsers();
 
+        string previousUsername = default(string);
+        string previousPassword = default(string);
+
         public Login()
         {
             InitializeComponent();
@@ -194,30 +197,71 @@ namespace IssleduemSmetanu
                     uint loginTryQuantity = Properties.Settings.Default.LoginTryQuantity;
                     if (user == null && loginTryQuantity > 0)
                     {
-                        string errorMessage = "Неверный логин или пароль!\nОсталось ";
-                        switch (loginTryQuantity % 10)
+                        Random rand = new Random();
+                        string errorMessage = default(string);
+                        string errorEnd = default(string);
+                        if (username == previousUsername && password == previousPassword && rand.Next(1, 1) == 1)
                         {
-                            case 1:
-                                if (loginTryQuantity % 100 / 10 == 1)
-                                    errorMessage += $"{loginTryQuantity} попыток.";
-                                else
-                                    errorMessage += $"{loginTryQuantity} попытка.";
-                                break;
-                            case 2: case 3: case 4:
-                                if (loginTryQuantity % 100 / 10 == 1)
-                                    errorMessage += $"{loginTryQuantity} попыток.";
-                                else
-                                    errorMessage += $"{loginTryQuantity} попытки.";
-                                break;
-                            default:
-                                errorMessage += $"{loginTryQuantity} попыток.";
-                                break;
+                            errorMessage = "Ты совсем дурында?\nВведи что-нибудь другое\n(осталось ";
+                            switch (loginTryQuantity % 10)
+                            {
+                                case 1:
+                                    if (loginTryQuantity % 100 / 10 == 1)
+                                        errorMessage += $"{loginTryQuantity} попыток)";
+                                    else
+                                        errorMessage += $"{loginTryQuantity} попытка)";
+                                    break;
+                                case 2:
+                                case 3:
+                                case 4:
+                                    if (loginTryQuantity % 100 / 10 == 1)
+                                        errorMessage += $"{loginTryQuantity} попыток)";
+                                    else
+                                        errorMessage += $"{loginTryQuantity} попытки)";
+                                    break;
+                                default:
+                                    errorMessage += $"{loginTryQuantity} попыток)";
+                                    break;
+                            }
+                            if (callDialog(errorMessage, DialogType.YesOrNo) == "yes")
+                            {
+                                Dialog error = new Dialog("Пизда", DialogType.Error);
+                                error.ShowDialog();
+                            }
                         }
-                        Dialog error = new Dialog(errorMessage, DialogType.Error);
-                        error.ShowDialog();
+                        else
+                        {
+                            errorMessage = "Неверный логин или пароль!\nОсталось ";
+                            switch (loginTryQuantity % 10)
+                            {
+                                case 1:
+                                    if (loginTryQuantity % 100 / 10 == 1)
+                                        errorMessage += $"{loginTryQuantity} попыток.";
+                                    else
+                                        errorMessage += $"{loginTryQuantity} попытка.";
+                                    break;
+                                case 2:
+                                case 3:
+                                case 4:
+                                    if (loginTryQuantity % 100 / 10 == 1)
+                                        errorMessage += $"{loginTryQuantity} попыток.";
+                                    else
+                                        errorMessage += $"{loginTryQuantity} попытки.";
+                                    break;
+                                default:
+                                    errorMessage += $"{loginTryQuantity} попыток.";
+                                    break;
+                            }
+                            Dialog error = new Dialog(errorMessage, DialogType.Error);
+                            error.ShowDialog();
+                        }
+
+                        
                         loginTryQuantity -= 1;
                         Properties.Settings.Default.LoginTryQuantity = loginTryQuantity;
                         Properties.Settings.Default.Save();
+                        previousUsername = username;
+                        previousPassword = password;
                         return;
                     }
                     else if (loginTryQuantity <= 0)
@@ -230,7 +274,18 @@ namespace IssleduemSmetanu
                         }
 
                         Dialog error = new Dialog("Вам здесь больше не рады!\nВозвращайтесь через ", DialogType.ErrorWithTimer);
-                        error.ShowDialog();
+                        
+                        Random random = new Random();
+                        if (random.Next(1, 11) == 1)
+                        {
+                            error.Show();
+                            this.ActionCode = "error";
+                            this.Close();
+                        }
+                        else
+                        {
+                            error.ShowDialog();
+                        }
                         return;
                     }
                     else
@@ -244,7 +299,7 @@ namespace IssleduemSmetanu
 
                         // ----- НЕРЕАЛЬНЫЙ РАНДОМ -----
                         Random random = new Random();
-                        if (random.Next(1, 51) == 1)
+                        if (random.Next(1, 21) == 1)
                         {
                             this.ActionCode = "error";
                         }
@@ -293,6 +348,13 @@ namespace IssleduemSmetanu
             g.SmoothingMode = SmoothingMode.AntiAlias; // Сглаживание для круга
             
 
+        }
+
+        public string callDialog(string message, DialogType type)
+        {
+            Dialog error = new Dialog(message, type);
+            error.ShowDialog();
+            return error.ActionCode;
         }
 
         private void usernameTextBox_Enter(object sender, EventArgs e)

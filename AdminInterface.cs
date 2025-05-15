@@ -840,7 +840,7 @@ namespace IssleduemSmetanu
                             {
                                 table.Rows.RemoveAt(rowIndex);
                             }
-                            
+                            // ТУТА НАДА УДАЛЯШКУ 1111111111111!!!!!!!!!!
                         }
                         else
                         {
