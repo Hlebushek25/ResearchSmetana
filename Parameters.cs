@@ -38,6 +38,12 @@ namespace IssleduemSmetanu
         public string role { get; set; }
     }
 
+    public class Role
+    {
+        public int idRole { get; set; }
+        public string nameRole { get; set; }
+    }
+
     public class EmpericalCoef
     {
         public int id { get; set; }

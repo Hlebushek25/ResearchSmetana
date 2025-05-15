@@ -43,6 +43,34 @@ namespace IssleduemSmetanu
             }
             return users;
         }
+
+        public static List<Role> GetAllRoles()
+        {
+            List<Role> roles = new List<Role>();
+
+            using (var connection = new SQLiteConnection($"Data Source={dbPathUser}"))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+                command.CommandText = "SELECT id_role, name_role FROM role";
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        roles.Add(new Role
+                        {
+                            idRole = reader.GetInt32(0),
+                            nameRole = reader.GetString(1),
+                        });
+                    }
+                }
+            }
+
+            return roles;
+        }
+
         public static List<Material> GetAllMaterials()
         {
             List<Material> users = new List<Material>();
@@ -265,6 +293,215 @@ namespace IssleduemSmetanu
             }
 
             return empCoef;
+        }
+
+        /////////
+        // Методы для работы с пользователями
+        public static void AddUser(User user, List<Role> roles)
+        {
+            using (var connection = new SQLiteConnection($"Data Source={dbPathUser}"))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = "INSERT INTO user (login, pass, role) VALUES (@login, @pass, @role)";
+                command.Parameters.AddWithValue("@login", user.login);
+                command.Parameters.AddWithValue("@pass", user.password);
+                command.Parameters.AddWithValue("@role", roles.First(r => r.nameRole == user.role).idRole);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public static void UpdateUser(User user, List<Role> roles)
+        {
+            using (var connection = new SQLiteConnection($"Data Source={dbPathUser}"))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = "UPDATE user SET login = @login, pass = @pass, role = @role WHERE id_user = @id";
+                command.Parameters.AddWithValue("@id", user.idUser);
+                command.Parameters.AddWithValue("@login", user.login);
+                command.Parameters.AddWithValue("@pass", user.password);
+                command.Parameters.AddWithValue("@role", roles.First(r => r.nameRole == user.role).idRole);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public static void DeleteUser(int userId)
+        {
+            using (var connection = new SQLiteConnection($"Data Source={dbPathUser}"))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = "DELETE FROM user WHERE id_user = @id";
+                command.Parameters.AddWithValue("@id", userId);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        // Методы для работы с материалами
+        public static void AddMaterial(Material material)
+        {
+            using (var connection = new SQLiteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = "INSERT INTO material (name_material) VALUES (@name)";
+                command.Parameters.AddWithValue("@name", material.nameMaterial);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public static void UpdateMaterial(Material material)
+        {
+            using (var connection = new SQLiteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = "UPDATE material SET name_material = @name WHERE id_material = @id";
+                command.Parameters.AddWithValue("@id", material.idMaterial);
+                command.Parameters.AddWithValue("@name", material.nameMaterial);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        // Методы для работы с характеристиками материалов
+        public static void AddMaterialCharacteristic(MaterialCharacteristic characteristic)
+        {
+            using (var connection = new SQLiteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = "INSERT INTO characteristic_material (name_characteristic, unit) VALUES (@name, @unit)";
+                command.Parameters.AddWithValue("@name", characteristic.name);
+                command.Parameters.AddWithValue("@unit", characteristic.unit);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public static void UpdateMaterialCharacteristic(MaterialCharacteristic characteristic)
+        {
+            using (var connection = new SQLiteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = "UPDATE characteristic_material SET name_characteristic = @name, unit = @unit WHERE id_characteristic = @id";
+                command.Parameters.AddWithValue("@id", characteristic.id);
+                command.Parameters.AddWithValue("@name", characteristic.name);
+                command.Parameters.AddWithValue("@unit", characteristic.unit);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        // Методы для работы с эмпирическими коэффициентами
+        public static void AddEmpericalCoef(EmpericalCoef coef)
+        {
+            using (var connection = new SQLiteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = "INSERT INTO empirical_coef (name_empirical_coef, unit) VALUES (@name, @unit)";
+                command.Parameters.AddWithValue("@name", coef.name);
+                command.Parameters.AddWithValue("@unit", coef.unit);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public static void UpdateEmpericalCoef(EmpericalCoef coef)
+        {
+            using (var connection = new SQLiteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = "UPDATE empirical_coef SET name_empirical_coef = @name, unit = @unit WHERE id_empirical_coef = @id";
+                command.Parameters.AddWithValue("@id", coef.id);
+                command.Parameters.AddWithValue("@name", coef.name);
+                command.Parameters.AddWithValue("@unit", coef.unit);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        // Методы для работы со значениями характеристик материалов
+        public static void AddMaterialCharacteristicValue(MaterialCharacteristicValue value)
+        {
+            using (var connection = new SQLiteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = "INSERT INTO value_characteristic_material (id_material, id_characteristic, value_characteristic) VALUES (@materialId, @charId, @value)";
+                command.Parameters.AddWithValue("@materialId", value.idMaterial);
+                command.Parameters.AddWithValue("@charId", value.idCharacteristic);
+                command.Parameters.AddWithValue("@value", value.value);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public static void UpdateMaterialCharacteristicValue(MaterialCharacteristicValue value)
+        {
+            using (var connection = new SQLiteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = "UPDATE value_characteristic_material SET id_material = @materialId, id_characteristic = @charId, value_characteristic = @value WHERE id = @id";
+                command.Parameters.AddWithValue("@id", value.id);
+                command.Parameters.AddWithValue("@materialId", value.idMaterial);
+                command.Parameters.AddWithValue("@charId", value.idCharacteristic);
+                command.Parameters.AddWithValue("@value", value.value);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public static void DeleteMaterialCharacteristicValue(int id)
+        {
+            using (var connection = new SQLiteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = "DELETE FROM value_characteristic_material WHERE id = @id";
+                command.Parameters.AddWithValue("@id", id);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        // Методы для работы со значениями эмпирических коэффициентов
+        public static void AddEmpericalCoefValue(EmpericalCoefValue value)
+        {
+            using (var connection = new SQLiteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = "INSERT INTO value_empirical_coef (id_material, id_empirical_coef, value_empirical_coef) VALUES (@materialId, @coefId, @value)";
+                command.Parameters.AddWithValue("@materialId", value.idMaterial);
+                command.Parameters.AddWithValue("@coefId", value.idEmpericalCoef);
+                command.Parameters.AddWithValue("@value", value.value);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public static void UpdateEmpericalCoefValue(EmpericalCoefValue value)
+        {
+            using (var connection = new SQLiteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = "UPDATE value_empirical_coef SET id_material = @materialId, id_empirical_coef = @coefId, value_empirical_coef = @value WHERE id = @id";
+                command.Parameters.AddWithValue("@id", value.id);
+                command.Parameters.AddWithValue("@materialId", value.idMaterial);
+                command.Parameters.AddWithValue("@coefId", value.idEmpericalCoef);
+                command.Parameters.AddWithValue("@value", value.value);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public static void DeleteEmpericalCoefValue(int id)
+        {
+            using (var connection = new SQLiteConnection($"Data Source={dbPath}"))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = "DELETE FROM value_empirical_coef WHERE id = @id";
+                command.Parameters.AddWithValue("@id", id);
+                command.ExecuteNonQuery();
+            }
         }
     }
 }

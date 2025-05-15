@@ -43,6 +43,7 @@ namespace IssleduemSmetanu
 
         // Массивы с данными для таблиц
         List<User> users = InteractionDB.GetAllUsers();
+        List<Role> roles = InteractionDB.GetAllRoles();
         List<Material> materials = InteractionDB.GetAllMaterials();
         List<MaterialCharacteristic> characteristics = InteractionDB.GetAllMaterialCharacteristics();
         List<MaterialCharacteristicValue> characteristicValues = InteractionDB.GetAllMaterialCharacteristicsValues();
@@ -53,10 +54,21 @@ namespace IssleduemSmetanu
         {
             InitializeComponent();
 
+            userTable.CellValueChanged += (sender, e) => SaveChanges();
+            materialTable.CellValueChanged += (sender, e) => SaveChanges();
+            materialCharacteristicsTable.CellValueChanged += (sender, e) => SaveChanges();
+            materialCharacteristicsValuesTable.CellValueChanged += (sender, e) => SaveChanges();
+            empiricalCoefTable.CellValueChanged += (sender, e) => SaveChanges();
+            empiricalCoefValuesTable.CellValueChanged += (sender, e) => SaveChanges();
+
             try
             {
                 DataGridViewComboBoxColumn comboColumn = (DataGridViewComboBoxColumn)userTable.Columns["Role"];
-                comboColumn.Items.AddRange("Исследователь", "Администратор", "");
+                //comboColumn.Items.AddRange("Исследователь", "Администратор", "");
+                foreach (var role in roles)
+                {
+                    comboColumn.Items.Add(role.nameRole);
+                }
             }
             catch
             {
@@ -69,12 +81,12 @@ namespace IssleduemSmetanu
                 DataGridViewComboBoxColumn comboColumn2 = (DataGridViewComboBoxColumn)materialCharacteristicsValuesTable.Columns["materialID_inCharValues"];
                 foreach (var material in materials)
                 {
-                    comboColumn2.Items.Add(material.idMaterial.ToString());
+                    comboColumn2.Items.Add(material.nameMaterial.ToString());
                 }
                 DataGridViewComboBoxColumn comboColumn3 = (DataGridViewComboBoxColumn)materialCharacteristicsValuesTable.Columns["characteristicID_inCharValues"];
                 foreach (var characteristic in characteristics)
                 {
-                    comboColumn3.Items.Add(characteristic.id.ToString());
+                    comboColumn3.Items.Add(characteristic.name.ToString());
                 }
             }
             catch
@@ -88,12 +100,12 @@ namespace IssleduemSmetanu
                 DataGridViewComboBoxColumn comboColumn4 = (DataGridViewComboBoxColumn)empiricalCoefValuesTable.Columns["materialID_inEmpCoefValue"];
                 foreach (var material in materials)
                 {
-                    comboColumn4.Items.Add(material.idMaterial.ToString());
+                    comboColumn4.Items.Add(material.nameMaterial.ToString());
                 }
                 DataGridViewComboBoxColumn comboColumn5 = (DataGridViewComboBoxColumn)empiricalCoefValuesTable.Columns["empiricalCoefID_inEmpCoefValues"];
                 foreach (var coef in coefs)
                 {
-                    comboColumn5.Items.Add(coef.id.ToString());
+                    comboColumn5.Items.Add(coef.name.ToString());
                 }
             }
             catch
@@ -427,32 +439,109 @@ namespace IssleduemSmetanu
         // Ввод только чисел в некоторые столбцы
         private void CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
+            //DataGridView table = sender as DataGridView;
+            //string columnName = table.Columns[e.ColumnIndex].Name;
+            //switch (columnName)
+            //{
+            //    //case "materialID_inCharValues": case "characteristicID_inCharValues": case "materialID_inEmpCoefValue": case "empiricalCoefID_inEmpCoefValues":
+            //    //    if (e.FormattedValue.ToString() != "")
+            //    //    {
+            //    //        if (!int.TryParse(e.FormattedValue.ToString(), out _))
+            //    //        {
+            //    //            e.Cancel = true;
+            //    //            Dialog dialog = new Dialog("Значение в данном столбце должно быть целым числом.", DialogType.Error);
+            //    //            dialog.ShowDialog();
+            //    //        }
+            //    //    }
+            //    //    break;
+            //    case "craracteristicValue": case "empiricalCoefValue":
+            //        if (e.FormattedValue.ToString() != "")
+            //        {
+            //            if (!double.TryParse(e.FormattedValue.ToString(), out _))
+            //            {
+            //                e.Cancel = true;
+            //                Dialog dialog = new Dialog("Значение в данном столбце должно быть числом.", DialogType.Error);
+            //                dialog.ShowDialog();
+            //            }
+            //        }
+            //    break;
+            //}
+
             DataGridView table = sender as DataGridView;
             string columnName = table.Columns[e.ColumnIndex].Name;
-            switch (columnName)
+
+            try
             {
-                case "materialID_inCharValues": case "characteristicID_inCharValues": case "materialID_inEmpCoefValue": case "empiricalCoefID_inEmpCoefValues":
-                    if (e.FormattedValue.ToString() != "")
-                    {
-                        if (!int.TryParse(e.FormattedValue.ToString(), out _))
+                switch (columnName)
+                {
+                    case "craracteristicValue":
+                    case "empiricalCoefValue":
+                        if (e.FormattedValue.ToString() != "")
                         {
-                            e.Cancel = true;
-                            Dialog dialog = new Dialog("Значение в данном столбце должно быть целым числом.", DialogType.Error);
-                            dialog.ShowDialog();
+                            if (!double.TryParse(e.FormattedValue.ToString(), out _))
+                            {
+                                e.Cancel = true;
+                                Dialog dialog = new Dialog("Значение в данном столбце должно быть числом.", DialogType.Error);
+                                dialog.ShowDialog();
+                            }
                         }
-                    }
-                break;
-                case "craracteristicValue": case "empiricalCoefValue":
-                    if (e.FormattedValue.ToString() != "")
-                    {
-                        if (!double.TryParse(e.FormattedValue.ToString(), out _))
+                        break;
+
+                    case "Role":
+                        if (e.FormattedValue.ToString() != "")
                         {
-                            e.Cancel = true;
-                            Dialog dialog = new Dialog("Значение в данном столбце должно быть числом.", DialogType.Error);
-                            dialog.ShowDialog();
+                            if (!roles.Any(r => r.nameRole == e.FormattedValue.ToString()))
+                            {
+                                e.Cancel = true;
+                                Dialog dialog = new Dialog("Указанной роли не существует.", DialogType.Error);
+                                dialog.ShowDialog();
+                            }
                         }
-                    }
-                break;
+                        break;
+
+                    case "materialID_inCharValues":
+                    case "materialID_inEmpCoefValue":
+                        if (e.FormattedValue.ToString() != "")
+                        {
+                            if (!materials.Any(m => m.nameMaterial == e.FormattedValue.ToString()))
+                            {
+                                e.Cancel = true;
+                                Dialog dialog = new Dialog("Указанного материала не существует.", DialogType.Error);
+                                dialog.ShowDialog();
+                            }
+                        }
+                        break;
+
+                    case "characteristicID_inCharValues":
+                        if (e.FormattedValue.ToString() != "")
+                        {
+                            if (!characteristics.Any(c => c.name == e.FormattedValue.ToString()))
+                            {
+                                e.Cancel = true;
+                                Dialog dialog = new Dialog("Указанной характеристики не существует.", DialogType.Error);
+                                dialog.ShowDialog();
+                            }
+                        }
+                        break;
+
+                    case "empiricalCoefID_inEmpCoefValues":
+                        if (e.FormattedValue.ToString() != "")
+                        {
+                            if (!coefs.Any(c => c.name == e.FormattedValue.ToString()))
+                            {
+                                e.Cancel = true;
+                                Dialog dialog = new Dialog("Указанного коэффициента не существует.", DialogType.Error);
+                                dialog.ShowDialog();
+                            }
+                        }
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Dialog dialog = new Dialog($"Ошибка при проверке данных: {ex.Message}", DialogType.Error);
+                dialog.ShowDialog();
+                e.Cancel = true;
             }
         }
 
@@ -473,17 +562,62 @@ namespace IssleduemSmetanu
 
         private void DeleteRow_Click(object sender, EventArgs e)
         {
+            //if (selectedRow != null)
+            //{
+            //    try
+            //    {
+            //        DataGridView table = selectedRow.DataGridView;
+            //        table.Rows.Remove(selectedRow);
+            //        selectedRow = null;
+            //    }
+            //    catch
+            //    {
+            //        Dialog dialog = new Dialog("Ты кого удаляешь, дурында??", DialogType.Error);
+            //        dialog.ShowDialog();
+            //    }
+            //}
+
             if (selectedRow != null)
             {
                 try
                 {
                     DataGridView table = selectedRow.DataGridView;
+
+                    // Проверяем, можно ли удалять из этой таблицы
+                    if (table != userTable && table != materialCharacteristicsValuesTable && table != empiricalCoefValuesTable)
+                    {
+                        Dialog dialog = new Dialog("Удаление записей из этой таблицы запрещено!", DialogType.Error);
+                        dialog.ShowDialog();
+                        return;
+                    }
+
+                    // Получаем ID удаляемой записи
+                    int id = Convert.ToInt32(selectedRow.Cells[0].Value);
+
+                    // Удаляем из базы данных
+                    if (table == userTable)
+                    {
+                        InteractionDB.DeleteUser(id);
+                        users = InteractionDB.GetAllUsers(); // Обновляем список пользователей
+                    }
+                    else if (table == materialCharacteristicsValuesTable)
+                    {
+                        InteractionDB.DeleteMaterialCharacteristicValue(id);
+                        characteristicValues = InteractionDB.GetAllMaterialCharacteristicsValues(); // Обновляем список
+                    }
+                    else if (table == empiricalCoefValuesTable)
+                    {
+                        InteractionDB.DeleteEmpericalCoefValue(id);
+                        coefValues = InteractionDB.GetAllEmpericalCoefValues(); // Обновляем список
+                    }
+
+                    // Удаляем из таблицы
                     table.Rows.Remove(selectedRow);
                     selectedRow = null;
                 }
-                catch
+                catch (Exception ex)
                 {
-                    Dialog dialog = new Dialog("Ты кого удаляешь, дурында??", DialogType.Error);
+                    Dialog dialog = new Dialog($"Ошибка при удалении: {ex.Message}", DialogType.Error);
                     dialog.ShowDialog();
                 }
             }
@@ -512,19 +646,19 @@ namespace IssleduemSmetanu
                 //List<User> users = InteractionDB.GetAllUsers();
                 foreach (User user in users)
                 {
-                    switch (user.role)
-                    {
-                        case "admin":
-                            user.role = "Администратор";
-                            break;
-                        case "researcher":
-                            user.role = "Исследователь";
-                            break;
-                        default:
-                            Dialog dialog = new Dialog($"Ошибка при загрузке данных: Неизвестная роль {user.role}", DialogType.Error);
-                            dialog.ShowDialog();
-                            break;
-                    }
+                    //switch (user.role)
+                    //{
+                    //    case "admin":
+                    //        user.role = "Администратор";
+                    //        break;
+                    //    case "researcher":
+                    //        user.role = "Исследователь";
+                    //        break;
+                    //    default:
+                    //        Dialog dialog = new Dialog($"Ошибка при загрузке данных: Неизвестная роль {user.role}", DialogType.Error);
+                    //        dialog.ShowDialog();
+                    //        break;
+                    //}
                     userTable.Rows.Add(user.login, user.password, user.role);
                 }
             }
@@ -543,6 +677,7 @@ namespace IssleduemSmetanu
                 foreach (Material material in materials)
                 {
                     int rowIndex = materialTable.Rows.Add();
+                    materialTable.Rows[rowIndex].Cells[0].Value = material.idMaterial;
                     materialTable.Rows[rowIndex].Cells[1].Value = material.nameMaterial;
                 }
             }
@@ -561,6 +696,7 @@ namespace IssleduemSmetanu
                 foreach (MaterialCharacteristic characteristic in characteristics)
                 {
                     int rowIndex = materialCharacteristicsTable.Rows.Add();
+                    materialCharacteristicsTable.Rows[rowIndex].Cells[0].Value = characteristic.id;
                     materialCharacteristicsTable.Rows[rowIndex].Cells[1].Value = characteristic.name;
                     materialCharacteristicsTable.Rows[rowIndex].Cells[2].Value = characteristic.unit;
                 }
@@ -588,8 +724,9 @@ namespace IssleduemSmetanu
                 foreach (MaterialCharacteristicValue characteristicValue in characteristicValues)
                 {
                     int rowIndex = materialCharacteristicsValuesTable.Rows.Add();
-                    materialCharacteristicsValuesTable.Rows[rowIndex].Cells[1].Value = characteristicValue.idMaterial.ToString();
-                    materialCharacteristicsValuesTable.Rows[rowIndex].Cells[2].Value = characteristicValue.idCharacteristic.ToString();
+                    materialCharacteristicsValuesTable.Rows[rowIndex].Cells[0].Value = characteristicValue.id;
+                    materialCharacteristicsValuesTable.Rows[rowIndex].Cells[1].Value = characteristicValue.nameMaterial;
+                    materialCharacteristicsValuesTable.Rows[rowIndex].Cells[2].Value = characteristicValue.nameCharacteristic;
                     materialCharacteristicsValuesTable.Rows[rowIndex].Cells[3].Value = characteristicValue.value;
                 }
             }
@@ -608,6 +745,7 @@ namespace IssleduemSmetanu
                 foreach (EmpericalCoef coef in coefs)
                 {
                     int rowIndex = empiricalCoefTable.Rows.Add();
+                    empiricalCoefTable.Rows[rowIndex].Cells[0].Value = coef.id;
                     empiricalCoefTable.Rows[rowIndex].Cells[1].Value = coef.name;
                     empiricalCoefTable.Rows[rowIndex].Cells[2].Value = coef.unit;
                 }
@@ -626,8 +764,9 @@ namespace IssleduemSmetanu
                 foreach (EmpericalCoefValue coefValue in coefValues)
                 {
                     int rowIndex = empiricalCoefValuesTable.Rows.Add();
-                    empiricalCoefValuesTable.Rows[rowIndex].Cells[1].Value = coefValue.idMaterial.ToString();
-                    empiricalCoefValuesTable.Rows[rowIndex].Cells[2].Value = coefValue.idEmpericalCoef.ToString();
+                    empiricalCoefValuesTable.Rows[rowIndex].Cells[0].Value = coefValue.id;
+                    empiricalCoefValuesTable.Rows[rowIndex].Cells[1].Value = coefValue.nameMaterial;
+                    empiricalCoefValuesTable.Rows[rowIndex].Cells[2].Value = coefValue.nameEmpericalCoef;
                     empiricalCoefValuesTable.Rows[rowIndex].Cells[3].Value = coefValue.value;
                 }
             }
@@ -776,6 +915,343 @@ namespace IssleduemSmetanu
 
                 row.DefaultCellStyle.BackColor = isRowComplete ? Color.White : Color.Yellow;
             }
+        }
+
+        ////////////
+        private void SaveChanges()
+        {
+            try
+            {
+                if (tabControl1.SelectedTab == Users) 
+                {
+                    SaveUsersChanges();
+                }
+                else if (tabControl1.SelectedTab == Materials) 
+                {
+                    SaveMaterialsChanges();
+                }
+                else if (tabControl1.SelectedTab == MaterialCharacteristics) 
+                {
+                    SaveMaterialCharacteristicsChanges();
+                }
+                else if (tabControl1.SelectedTab == MaterialCharacteristicValues) 
+                {
+                    SaveMaterialCharacteristicsValuesChanges();
+                }
+                else if (tabControl1.SelectedTab == EmpiricalCoef) 
+                {
+                    SaveEmpericalCoefChanges();
+                }
+                else if (tabControl1.SelectedTab == EmpiricalCoefValues) 
+                {
+                    SaveEmpericalCoefValuesChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                Dialog dialog = new Dialog($"Ошибка при сохранении данных: {ex.Message}", DialogType.Error);
+                dialog.ShowDialog();
+            }
+        }
+
+        private void SaveUsersChanges()
+        {
+            List<User> currentUsers = InteractionDB.GetAllUsers();
+
+            foreach (DataGridViewRow row in userTable.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                string login = row.Cells[0].Value?.ToString();
+                string password = row.Cells[1].Value?.ToString();
+                string role = row.Cells[2].Value?.ToString();
+
+                if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(role))
+                    continue;
+
+                var existingUser = currentUsers.FirstOrDefault(u => u.login == login);
+
+                if (existingUser != null)
+                {
+                    existingUser.password = password;
+                    existingUser.role = role;
+                    InteractionDB.UpdateUser(existingUser, roles);
+                }
+                else
+                {
+                    User newUser = new User
+                    {
+                        login = login,
+                        password = password,
+                        role = role
+                    };
+                    InteractionDB.AddUser(newUser, roles);
+                }
+            }
+
+            var tableLogins = new List<string>();
+            foreach (DataGridViewRow row in userTable.Rows)
+            {
+                if (row.IsNewRow) continue;
+                if (row.Cells[0].Value != null)
+                    tableLogins.Add(row.Cells[0].Value.ToString());
+            }
+
+            foreach (var user in currentUsers)
+            {
+                if (!tableLogins.Contains(user.login))
+                {
+                    InteractionDB.DeleteUser(user.idUser);
+                }
+            }
+
+            users = InteractionDB.GetAllUsers();
+        }
+
+        private void SaveMaterialsChanges()
+        {
+            List<Material> currentMaterials = InteractionDB.GetAllMaterials();
+
+            foreach (DataGridViewRow row in materialTable.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                int id = Convert.ToInt32(row.Cells[0].Value);
+                string name = row.Cells[1].Value?.ToString();
+
+                if (string.IsNullOrEmpty(name))
+                    continue;
+
+                var existingMaterial = currentMaterials.FirstOrDefault(m => m.idMaterial == id);
+
+                if (existingMaterial != null)
+                {
+                    if (existingMaterial.nameMaterial != name)
+                    {
+                        existingMaterial.nameMaterial = name;
+                        InteractionDB.UpdateMaterial(existingMaterial);
+                    }
+                }
+                else
+                {
+                    Material newMaterial = new Material
+                    {
+                        idMaterial = id,
+                        nameMaterial = name
+                    };
+                    InteractionDB.AddMaterial(newMaterial);
+                }
+            }
+
+            materials = InteractionDB.GetAllMaterials();
+        }
+
+        private void SaveMaterialCharacteristicsChanges()
+        {
+            List<MaterialCharacteristic> currentCharacteristics = InteractionDB.GetAllMaterialCharacteristics();
+
+            foreach (DataGridViewRow row in materialCharacteristicsTable.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                int id = Convert.ToInt32(row.Cells[0].Value);
+                string name = row.Cells[1].Value?.ToString();
+                string unit = row.Cells[2].Value?.ToString();
+
+                if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(unit))
+                    continue;
+
+                var existingChar = currentCharacteristics.FirstOrDefault(c => c.id == id);
+
+                if (existingChar != null)
+                {
+                    if (existingChar.name != name || existingChar.unit != unit)
+                    {
+                        existingChar.name = name;
+                        existingChar.unit = unit;
+                        InteractionDB.UpdateMaterialCharacteristic(existingChar);
+                    }
+                }
+                else
+                {
+                    MaterialCharacteristic newChar = new MaterialCharacteristic
+                    {
+                        id = id,
+                        name = name,
+                        unit = unit
+                    };
+                    InteractionDB.AddMaterialCharacteristic(newChar);
+                }
+            }
+
+            characteristics = InteractionDB.GetAllMaterialCharacteristics();
+        }
+
+        private void SaveMaterialCharacteristicsValuesChanges()
+        {
+            List<MaterialCharacteristicValue> currentValues = InteractionDB.GetAllMaterialCharacteristicsValues();
+
+            foreach (DataGridViewRow row in materialCharacteristicsValuesTable.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                int id = Convert.ToInt32(row.Cells[0].Value);
+                string materialName = row.Cells[1].Value?.ToString();
+                string charName = row.Cells[2].Value?.ToString();
+                double value = Convert.ToDouble(row.Cells[3].Value);
+
+                if (string.IsNullOrEmpty(materialName) || string.IsNullOrEmpty(charName))
+                    continue;
+
+                int materialId = materials.First(m => m.nameMaterial == materialName).idMaterial;
+                int charId = characteristics.First(c => c.name == charName).id;
+
+                var existingValue = currentValues.FirstOrDefault(v => v.id == id);
+
+                if (existingValue != null)
+                {
+                    if (existingValue.idMaterial != materialId || existingValue.idCharacteristic != charId || existingValue.value != value)
+                    {
+                        existingValue.idMaterial = materialId;
+                        existingValue.idCharacteristic = charId;
+                        existingValue.value = value;
+                        InteractionDB.UpdateMaterialCharacteristicValue(existingValue);
+                    }
+                }
+                else
+                {
+                    MaterialCharacteristicValue newValue = new MaterialCharacteristicValue
+                    {
+                        id = id,
+                        idMaterial = materialId,
+                        idCharacteristic = charId,
+                        value = value
+                    };
+                    InteractionDB.AddMaterialCharacteristicValue(newValue);
+                }
+            }
+
+            var tableIds = new List<int>();
+            foreach (DataGridViewRow row in materialCharacteristicsValuesTable.Rows)
+            {
+                if (row.IsNewRow) continue;
+                if (row.Cells[0].Value != null)
+                    tableIds.Add(Convert.ToInt32(row.Cells[0].Value));
+            }
+
+            foreach (var value in currentValues)
+            {
+                if (!tableIds.Contains(value.id))
+                {
+                    InteractionDB.DeleteMaterialCharacteristicValue(value.id);
+                }
+            }
+
+            characteristicValues = InteractionDB.GetAllMaterialCharacteristicsValues();
+        }
+
+        private void SaveEmpericalCoefChanges()
+        {
+            List<EmpericalCoef> currentCoefs = InteractionDB.GetAllEmpericalCoef();
+
+            foreach (DataGridViewRow row in empiricalCoefTable.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                int id = Convert.ToInt32(row.Cells[0].Value);
+                string name = row.Cells[1].Value?.ToString();
+                string unit = row.Cells[2].Value?.ToString();
+
+                if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(unit))
+                    continue;
+
+                var existingCoef = currentCoefs.FirstOrDefault(c => c.id == id);
+
+                if (existingCoef != null)
+                {
+                    if (existingCoef.name != name || existingCoef.unit != unit)
+                    {
+                        existingCoef.name = name;
+                        existingCoef.unit = unit;
+                        InteractionDB.UpdateEmpericalCoef(existingCoef);
+                    }
+                }
+                else
+                {
+                    EmpericalCoef newCoef = new EmpericalCoef
+                    {
+                        id = id,
+                        name = name,
+                        unit = unit
+                    };
+                    InteractionDB.AddEmpericalCoef(newCoef);
+                }
+            }
+
+            coefs = InteractionDB.GetAllEmpericalCoef();
+        }
+
+        private void SaveEmpericalCoefValuesChanges()
+        {
+            List<EmpericalCoefValue> currentValues = InteractionDB.GetAllEmpericalCoefValues();
+
+            foreach (DataGridViewRow row in empiricalCoefValuesTable.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                int id = Convert.ToInt32(row.Cells[0].Value);
+                string materialName = row.Cells[1].Value?.ToString();
+                string coefName = row.Cells[2].Value?.ToString();
+                double value = Convert.ToDouble(row.Cells[3].Value);
+
+                if (string.IsNullOrEmpty(materialName) || string.IsNullOrEmpty(coefName))
+                    continue;
+
+                int materialId = materials.First(m => m.nameMaterial == materialName).idMaterial;
+                int coefId = coefs.First(c => c.name == coefName).id;
+
+                var existingValue = currentValues.FirstOrDefault(v => v.id == id);
+
+                if (existingValue != null)
+                {
+                    if (existingValue.idMaterial != materialId || existingValue.idEmpericalCoef != coefId || existingValue.value != value)
+                    {
+                        existingValue.idMaterial = materialId;
+                        existingValue.idEmpericalCoef = coefId;
+                        existingValue.value = value;
+                        InteractionDB.UpdateEmpericalCoefValue(existingValue);
+                    }
+                }
+                else
+                {
+                    EmpericalCoefValue newValue = new EmpericalCoefValue
+                    {
+                        id = id,
+                        idMaterial = materialId,
+                        idEmpericalCoef = coefId,
+                        value = value
+                    };
+                    InteractionDB.AddEmpericalCoefValue(newValue);
+                }
+            }
+
+            var tableIds = new List<int>();
+            foreach (DataGridViewRow row in empiricalCoefValuesTable.Rows)
+            {
+                if (row.IsNewRow) continue;
+                if (row.Cells[0].Value != null)
+                    tableIds.Add(Convert.ToInt32(row.Cells[0].Value));
+            }
+
+            foreach (var value in currentValues)
+            {
+                if (!tableIds.Contains(value.id))
+                {
+                    InteractionDB.DeleteEmpericalCoefValue(value.id);
+                }
+            }
+
+            coefValues = InteractionDB.GetAllEmpericalCoefValues();
         }
     }
 }
