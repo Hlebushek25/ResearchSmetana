@@ -403,7 +403,7 @@ namespace IssleduemSmetanu
                         ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Результаты расчётов");
 
                         worksheet.Cells[1, 1].Value = "Материал";
-                        worksheet.Cells[2, 1].Value = TIPA_MATERIAL;
+                        worksheet.Cells[2, 1].Value = ((Material)materialComboBox.SelectedItem).nameMaterial;
 
                         worksheet.Cells[4, 1].Value = "Координата по длине канала, м";
                         worksheet.Cells[4, 2].Value = "Температура, °С";
