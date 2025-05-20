@@ -102,6 +102,7 @@ namespace IssleduemSmetanu
             QCH = (((height * width * lidSpeed) / 2) * ((0.125 * Math.Pow(height / width, 2)) - (0.625 * (height / width)) + 1));
             double performance = 3600 * density * QCH;
             stopwatch.Stop();
+
             return (Math.Round(performance), stopwatch.ElapsedTicks);
         }
 

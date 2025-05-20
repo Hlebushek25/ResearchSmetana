@@ -402,17 +402,20 @@ namespace IssleduemSmetanu
                     {
                         ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Результаты расчётов");
 
-                        worksheet.Cells[1, 1].Value = "Координата по длине канала, м";
-                        worksheet.Cells[1, 2].Value = "Температура, °С";
-                        worksheet.Cells[1, 3].Value = "Вязкость, Па*с";
-                        worksheet.Cells[1, 1].Style.Font.Bold = true;
-                        worksheet.Cells[1, 2].Style.Font.Bold = true;
-                        worksheet.Cells[1, 3].Style.Font.Bold = true;
+                        worksheet.Cells[1, 1].Value = "Материал";
+                        worksheet.Cells[2, 1].Value = TIPA_MATERIAL;
+
+                        worksheet.Cells[4, 1].Value = "Координата по длине канала, м";
+                        worksheet.Cells[4, 2].Value = "Температура, °С";
+                        worksheet.Cells[4, 3].Value = "Вязкость, Па*с";
+                        worksheet.Cells[4, 1].Style.Font.Bold = true;
+                        worksheet.Cells[4, 2].Style.Font.Bold = true;
+                        worksheet.Cells[4, 3].Style.Font.Bold = true;
                         for (int i = 0; i < resultsTable.Rows.Count; i++)
                         {
-                            worksheet.Cells[i + 2, 1].Value = resultsTable.Rows[i].Cells[0].Value;
-                            worksheet.Cells[i + 2, 2].Value = resultsTable.Rows[i].Cells[1].Value;
-                            worksheet.Cells[i + 2, 3].Value = resultsTable.Rows[i].Cells[2].Value;
+                            worksheet.Cells[i + 5, 1].Value = resultsTable.Rows[i].Cells[0].Value;
+                            worksheet.Cells[i + 5, 2].Value = resultsTable.Rows[i].Cells[1].Value;
+                            worksheet.Cells[i + 5, 3].Value = resultsTable.Rows[i].Cells[2].Value;
                         }
                         worksheet.Column(1).AutoFit();
                         worksheet.Column(2).AutoFit();
@@ -454,7 +457,7 @@ namespace IssleduemSmetanu
                         worksheet.Cells[9, 8].Style.Font.Bold = true;
                         worksheet.Cells[10, 8].Value = "Скорость крышки, м/с";
                         worksheet.Cells[11, 8].Value = "Температура крышки, °С";
-                        worksheet.Cells[12, 8].Value = "Эмперические коэффициенты математической модкли";
+                        worksheet.Cells[12, 8].Value = "Эмперические коэффициенты математической модели";
                         worksheet.Cells[12, 8].Style.Font.Bold = true;
                         worksheet.Cells[13, 8].Value = "Вязкость материала при нулевой скорости деформации сдвига и температуре приведения, Па*с";
                         worksheet.Cells[14, 8].Value = "Температурный коэффициент вязкости материала, 1/°С";
@@ -553,8 +556,9 @@ namespace IssleduemSmetanu
             }
 
             long memoryBefore = GC.GetTotalMemory(true);
-            var (performance, perfTime) = smetana.CalculatePerformance();
+            var (perf, perfTime) = smetana.CalculatePerformance();
             var (tableData, tempTime) = smetana.CalculateTemperature();
+            performance = perf;
 
             long memoryAfter = GC.GetTotalMemory(true);
             long memoryUsed = memoryAfter - memoryBefore;
@@ -617,8 +621,15 @@ namespace IssleduemSmetanu
                 {
                     series.Points.Add(data[(int)chartType, i]);
                 }
-                chartArea.AxisY.Minimum = chartType == ChartType.Temperature ? data[1, 0] : data[2, data.GetLength(1) - 1];
-                chartArea.AxisY.Maximum = chartType == ChartType.Temperature ? data[1, data.GetLength(1) - 1] : data[2, 0];
+
+                double yMin = chartType == ChartType.Temperature ? data[1, 0] : data[2, data.GetLength(1) - 1];
+                double yMax = chartType == ChartType.Temperature ? data[1, data.GetLength(1) - 1] : data[2, 0];
+                if (yMax > yMin)
+                {
+                    chartArea.AxisY.Minimum = yMin;
+                    chartArea.AxisY.Maximum = yMax;
+                }
+                
                 noChartLabel.Visible = false;
             }
             catch
