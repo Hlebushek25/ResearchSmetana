@@ -29,7 +29,7 @@ namespace IssleduemSmetanu
 
         public double QCH { get; set; }
 
-        private static string dbpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "DB.db");
+        private static string dbpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "Smetana.db");
 
         public MathModel() 
         {

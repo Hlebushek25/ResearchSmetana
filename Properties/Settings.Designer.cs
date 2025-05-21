@@ -81,5 +81,16 @@ namespace IssleduemSmetanu.Properties {
                 this["IsSoundsTurtedOff"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.DateTime LastBackupTime {
+            get {
+                return ((global::System.DateTime)(this["LastBackupTime"]));
+            }
+            set {
+                this["LastBackupTime"] = value;
+            }
+        }
     }
 }

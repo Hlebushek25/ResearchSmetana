@@ -10,7 +10,7 @@ namespace IssleduemSmetanu
 {
     internal class InteractionDB
     {
-        private static string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "DB.db");
+        private static string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "Smetana.db");
         private static string dbPathUser = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "Users.db");
 
         public static List<User> GetAllUsers()

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -127,8 +128,24 @@ namespace IssleduemSmetanu
             LoadMaterialCharacteristicsValuesToTable();
             LoadEmpericalCoefValuesToTable();
 
+            string smetanaBackupPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "smetana.backup");
+            string usersBackupPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "users.backup");
+            if (File.Exists(smetanaBackupPath) && File.Exists(usersBackupPath))
+            {
+                lastBackupLabel.Text = $"Последнее копирование: {Properties.Settings.Default.LastBackupTime.ToString("dd.MM.yyyy HH:mm")}";
+            }
+            else if (!File.Exists(smetanaBackupPath) && !File.Exists(usersBackupPath))
+            {
+                lastBackupLabel.Text = "Резервная копия отсутствует";
+                loadBackupButton.Enabled = false;
+            }
+            else
+            {
+                lastBackupLabel.Text = "Часть резервной копии не найдена!";
+            }
 
-            tryQuantityTextBox.Text = (Properties.Settings.Default.DefaultLoginTryQuantity + 1).ToString();
+
+                tryQuantityTextBox.Text = (Properties.Settings.Default.DefaultLoginTryQuantity + 1).ToString();
 
             switch (Properties.Settings.Default.LoginTimeout)
             {
@@ -1252,6 +1269,72 @@ namespace IssleduemSmetanu
             }
 
             coefValues = InteractionDB.GetAllEmpericalCoefValues();
+        }
+
+        private void createBackupButton_Click(object sender, EventArgs e)
+        {
+            string smetanaPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "Smetana.db");
+            string smetanaBackupPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "smetana.backup");
+            string usersPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "Users.db");
+            string usersBackupPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "users.backup");
+
+            try
+            {
+                File.Copy(smetanaPath, smetanaBackupPath, true);
+                File.Copy(usersPath, usersBackupPath, true);
+                DateTime currentDate = DateTime.Now;
+                lastBackupLabel.Text = $"Последнее копирование: {currentDate.ToString("dd.MM.yyyy HH:mm")}";
+                Properties.Settings.Default.LastBackupTime = currentDate;
+                Properties.Settings.Default.Save();
+                loadBackupButton.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                Dialog dialog = new Dialog($"Ошибка при создании резервной копии: {ex.Message}", DialogType.Error);
+                dialog.ShowDialog();
+            }
+        }
+
+        private async void loadBackupButton_Click(object sender, EventArgs e)
+        {
+            string smetanaPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "Smetana.db");
+            string smetanaBackupPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "smetana.backup");
+            string usersPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "Users.db");
+            string usersBackupPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Databases", "users.backup");
+            string previousText = lastBackupLabel.Text;
+
+            if (File.Exists(smetanaBackupPath) && File.Exists(usersBackupPath))
+            {
+                File.Copy(smetanaBackupPath, smetanaPath, true);
+                File.Copy(usersBackupPath, usersPath, true);
+                lastBackupLabel.Text = "Данные успешно восстановлены!";
+                await Task.Delay(5000);
+                lastBackupLabel.Text = previousText;
+            }
+            else if (!File.Exists(smetanaBackupPath) && File.Exists(usersBackupPath))
+            {
+                if (callDialog("Резервная копия базы данных материалов и свойств не найдена!\nХотите восстановить только базу данных пользователей?", DialogType.YesOrNo) == "yes")
+                {
+                    File.Copy(usersBackupPath, usersPath, true);
+                    lastBackupLabel.Text = "Данные успешно восстановлены!";
+                    await Task.Delay(5000);
+                    lastBackupLabel.Text = previousText;
+                }
+            }
+            else if (File.Exists(smetanaBackupPath) && !File.Exists(usersBackupPath))
+            {
+                if (callDialog("Резервная копия базы данных пользователей не найдена!\nХотите восстановить только базу данных материалов и свойств?", DialogType.YesOrNo) == "yes")
+                {
+                    File.Copy(smetanaBackupPath, smetanaPath, true);
+                    lastBackupLabel.Text = "Данные успешно восстановлены!";
+                    await Task.Delay(5000);
+                    lastBackupLabel.Text = previousText;
+                }
+            }
+            else
+            {
+                callDialog("Резервные копии баз данных не найдены!", DialogType.Error);
+            }
         }
     }
 }
