@@ -1270,8 +1270,10 @@
             // 
             this.temperatureChart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(246)))), ((int)(((byte)(246)))));
             chartArea1.Area3DStyle.WallWidth = 5;
+            chartArea1.AxisX.LabelStyle.Format = "F2";
             chartArea1.AxisX.Title = "Координата по длине канала, м";
             chartArea1.AxisX.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            chartArea1.AxisY.LabelStyle.Format = "F2";
             chartArea1.AxisY.Title = "Температура, °С";
             chartArea1.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             chartArea1.Name = "ChartArea1";
@@ -1319,8 +1321,10 @@
             // 
             this.viscosityChart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(246)))), ((int)(((byte)(246)))));
             chartArea2.Area3DStyle.WallWidth = 5;
+            chartArea2.AxisX.LabelStyle.Format = "F2";
             chartArea2.AxisX.Title = "Координата по длине канала, м";
             chartArea2.AxisX.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            chartArea2.AxisY.LabelStyle.Format = "F2";
             chartArea2.AxisY.Title = "Вязкость, Па*с";
             chartArea2.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             chartArea2.Name = "ChartArea1";

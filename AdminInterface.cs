@@ -607,6 +607,10 @@ namespace IssleduemSmetanu
         {
             try
             {
+                for (int i = userTable.Rows.Count - 2; i >= 0; i--)
+                {
+                    userTable.Rows.RemoveAt(i);
+                }
                 //List<User> users = InteractionDB.GetAllUsers();
                 foreach (User user in users)
                 {
@@ -637,7 +641,12 @@ namespace IssleduemSmetanu
         {
             try
             {
+                for (int i = materialTable.Rows.Count - 2; i >= 0; i--)
+                {
+                    materialTable.Rows.RemoveAt(i);
+                }
                 //List<Material> materials = InteractionDB.GetAllMaterials();
+
                 foreach (Material material in materials)
                 {
                     int rowIndex = materialTable.Rows.Add();
@@ -656,6 +665,10 @@ namespace IssleduemSmetanu
         {
             try
             {
+                for (int i = materialCharacteristicsTable.Rows.Count - 2; i >= 0; i--)
+                {
+                    materialCharacteristicsTable.Rows.RemoveAt(i);
+                }
                 //List<MaterialCharacteristic> characteristics = InteractionDB.GetAllMaterialCharacteristics();
                 foreach (MaterialCharacteristic characteristic in characteristics)
                 {
@@ -685,6 +698,10 @@ namespace IssleduemSmetanu
                 //    materialCharacteristicsValuesTable.Rows[rowIndex].Cells[2].Value = characteristicValue.nameCharacteristic;
                 //    materialCharacteristicsValuesTable.Rows[rowIndex].Cells[3].Value = characteristicValue.value;
                 //}
+                for (int i = materialCharacteristicsValuesTable.Rows.Count - 2; i >= 0; i--)
+                {
+                    materialCharacteristicsValuesTable.Rows.RemoveAt(i);
+                }
                 foreach (MaterialCharacteristicValue characteristicValue in characteristicValues)
                 {
                     int rowIndex = materialCharacteristicsValuesTable.Rows.Add();
@@ -705,6 +722,10 @@ namespace IssleduemSmetanu
         {
             try
             {
+                for (int i = empiricalCoefTable.Rows.Count - 2; i >= 0; i--)
+                {
+                    empiricalCoefTable.Rows.RemoveAt(i);
+                }
                 //List<EmpericalCoef> coefs = InteractionDB.GetAllEmpericalCoef();
                 foreach (EmpericalCoef coef in coefs)
                 {
@@ -724,6 +745,10 @@ namespace IssleduemSmetanu
         {
             try
             {
+                for (int i = empiricalCoefValuesTable.Rows.Count - 2; i >= 0; i--)
+                {
+                    empiricalCoefValuesTable.Rows.RemoveAt(i);
+                }
                 //List<EmpericalCoefValue> coefValues = InteractionDB.GetAllEmpericalCoefValues();
                 foreach (EmpericalCoefValue coefValue in coefValues)
                 {
@@ -1254,30 +1279,96 @@ namespace IssleduemSmetanu
 
             if (File.Exists(smetanaBackupPath) && File.Exists(usersBackupPath))
             {
-                File.Copy(smetanaBackupPath, smetanaPath, true);
-                File.Copy(usersBackupPath, usersPath, true);
-                lastBackupLabel.Text = "Данные успешно восстановлены!";
-                await Task.Delay(5000);
-                lastBackupLabel.Text = previousText;
+                try
+                {
+                    if (callDialog($"Все базы данных будут возвращены к состоянию на {Properties.Settings.Default.LastBackupTime.ToString("dd.MM.yyyy HH:mm")}. Уверены, что хотите восстановить?", DialogType.YesOrNo) == "yes")
+                    {
+                        File.Copy(smetanaBackupPath, smetanaPath, true);
+                        File.Copy(usersBackupPath, usersPath, true);
+                        #region ------ Обновление данных в табличках ------
+                        users = new List<User>(InteractionDB.GetAllUsers());
+                        roles = new List<Role>(InteractionDB.GetAllRoles());
+                        materials = new List<Material>(InteractionDB.GetAllMaterials());
+                        characteristics = new List<MaterialCharacteristic>(InteractionDB.GetAllMaterialCharacteristics());
+                        characteristicValues = new List<MaterialCharacteristicValue>(InteractionDB.GetAllMaterialCharacteristicsValues());
+                        coefs = new List<EmpericalCoef>(InteractionDB.GetAllEmpericalCoef());
+                        coefValues = new List<EmpericalCoefValue>(InteractionDB.GetAllEmpericalCoefValues());
+                        LoadUsersToTable();
+                        LoadMaterialsToTable();
+                        LoadMaterialCharacteristicsToTable();
+                        LoadEmpericalCoefToTable();
+                        LoadMaterialCharacteristicsValuesToTable();
+                        LoadEmpericalCoefValuesToTable();
+                        ActionCode = "Restart";
+                        #endregion
+                        lastBackupLabel.Text = "Данные успешно восстановлены!";
+                        await Task.Delay(5000);
+                        lastBackupLabel.Text = previousText;
+                    }
+                }
+                catch
+                {
+                    Dialog dialog = new Dialog("Ошибка при восстановлении данных!", DialogType.Error);
+                    dialog.ShowDialog();
+                }
             }
             else if (!File.Exists(smetanaBackupPath) && File.Exists(usersBackupPath))
             {
                 if (callDialog("Резервная копия базы данных материалов и свойств не найдена!\nХотите восстановить только базу данных пользователей?", DialogType.YesOrNo) == "yes")
                 {
-                    File.Copy(usersBackupPath, usersPath, true);
-                    lastBackupLabel.Text = "Данные успешно восстановлены!";
-                    await Task.Delay(5000);
-                    lastBackupLabel.Text = previousText;
+                    if (callDialog($"База данных пользователей будет возвращена к состоянию на {Properties.Settings.Default.LastBackupTime.ToString("dd.MM.yyyy HH:mm")}. Уверены, что хотите восстановить?", DialogType.YesOrNo) == "yes")
+                    {
+                        try
+                        {
+                            File.Copy(usersBackupPath, usersPath, true);
+                            #region ------ Обновление данных в табличках ------
+                            users = new List<User>(InteractionDB.GetAllUsers());
+                            roles = new List<Role>(InteractionDB.GetAllRoles());
+                            LoadUsersToTable();
+                            #endregion
+                            lastBackupLabel.Text = "Данные успешно восстановлены!";
+                            await Task.Delay(5000);
+                            lastBackupLabel.Text = previousText;
+                        }
+                        catch
+                        {
+                            Dialog dialog = new Dialog("Ошибка при восстановлении данных!", DialogType.Error);
+                            dialog.ShowDialog();
+                        }
+                    }
                 }
             }
             else if (File.Exists(smetanaBackupPath) && !File.Exists(usersBackupPath))
             {
                 if (callDialog("Резервная копия базы данных пользователей не найдена!\nХотите восстановить только базу данных материалов и свойств?", DialogType.YesOrNo) == "yes")
                 {
-                    File.Copy(smetanaBackupPath, smetanaPath, true);
-                    lastBackupLabel.Text = "Данные успешно восстановлены!";
-                    await Task.Delay(5000);
-                    lastBackupLabel.Text = previousText;
+                    if (callDialog($"База данных материалов и свойств будет возвращена к состоянию на {Properties.Settings.Default.LastBackupTime.ToString("dd.MM.yyyy HH:mm")}. Уверены, что хотите восстановить?", DialogType.YesOrNo) == "yes")
+                    {
+                        try
+                        {
+                            File.Copy(smetanaBackupPath, smetanaPath, true);
+                            #region ------ Обновление данных в табличках ------
+                            materials = new List<Material>(InteractionDB.GetAllMaterials());
+                            characteristics = new List<MaterialCharacteristic>(InteractionDB.GetAllMaterialCharacteristics());
+                            characteristicValues = new List<MaterialCharacteristicValue>(InteractionDB.GetAllMaterialCharacteristicsValues());
+                            coefs = new List<EmpericalCoef>(InteractionDB.GetAllEmpericalCoef());
+                            coefValues = new List<EmpericalCoefValue>(InteractionDB.GetAllEmpericalCoefValues());
+                            LoadMaterialsToTable();
+                            LoadMaterialCharacteristicsToTable();
+                            LoadEmpericalCoefToTable();
+                            LoadMaterialCharacteristicsValuesToTable();
+                            LoadEmpericalCoefValuesToTable();
+                            #endregion
+                            lastBackupLabel.Text = "Данные успешно восстановлены!";
+                            await Task.Delay(5000);
+                            lastBackupLabel.Text = previousText;
+                        }
+                        catch
+                        {
+                            Dialog dialog = new Dialog("Ошибка при восстановлении данных!", DialogType.Error);
+                            dialog.ShowDialog();
+                        }
+                    }
                 }
             }
             else

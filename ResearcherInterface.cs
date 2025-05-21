@@ -420,7 +420,7 @@ namespace IssleduemSmetanu
                         worksheet.Column(1).AutoFit();
                         worksheet.Column(2).AutoFit();
                         worksheet.Column(3).AutoFit();
-                        var cell = worksheet.Cells[$"A1:C{resultsTable.Rows.Count}"];
+                        var cell = worksheet.Cells[$"A4:C{resultsTable.Rows.Count + 3}"];
                         cell.Style.Border.Top.Style = ExcelBorderStyle.Thin;
                         cell.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         cell.Style.Border.Left.Style = ExcelBorderStyle.Thin;
@@ -619,7 +619,7 @@ namespace IssleduemSmetanu
             {
                 for (int i = 0; i < data.GetLength(1); i++)
                 {
-                    series.Points.Add(data[(int)chartType, i]);
+                    series.Points.AddXY(data[0, i], data[(int)chartType, i]);
                 }
 
                 double yMin = chartType == ChartType.Temperature ? data[1, 0] : data[2, data.GetLength(1) - 1];
