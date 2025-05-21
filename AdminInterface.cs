@@ -61,59 +61,6 @@ namespace IssleduemSmetanu
             empiricalCoefTable.CellValueChanged += (sender, e) => SaveChanges();
             empiricalCoefValuesTable.CellValueChanged += (sender, e) => SaveChanges();
 
-            try
-            {
-                DataGridViewComboBoxColumn comboColumn = (DataGridViewComboBoxColumn)userTable.Columns["Role"];
-                //comboColumn.Items.AddRange("Исследователь", "Администратор", "");
-                foreach (var role in roles)
-                {
-                    comboColumn.Items.Add(role.nameRole);
-                }
-            }
-            catch
-            {
-                Dialog dialog = new Dialog("В таблице \"Пользователи\" отсутствует столбец \"Роль\"", DialogType.Error);
-                dialog.ShowDialog();
-            }
-
-            try
-            {
-                DataGridViewComboBoxColumn comboColumn2 = (DataGridViewComboBoxColumn)materialCharacteristicsValuesTable.Columns["materialID_inCharValues"];
-                foreach (var material in materials)
-                {
-                    comboColumn2.Items.Add(material.nameMaterial.ToString());
-                }
-                DataGridViewComboBoxColumn comboColumn3 = (DataGridViewComboBoxColumn)materialCharacteristicsValuesTable.Columns["characteristicID_inCharValues"];
-                foreach (var characteristic in characteristics)
-                {
-                    comboColumn3.Items.Add(characteristic.name.ToString());
-                }
-            }
-            catch
-            {
-                Dialog dialog = new Dialog("В таблице \"Значения параметров свойств\" отсутствуют столбцы \"id материала\" и/или \"id свойства\"", DialogType.Error);
-                dialog.ShowDialog();
-            }
-
-            try
-            {
-                DataGridViewComboBoxColumn comboColumn4 = (DataGridViewComboBoxColumn)empiricalCoefValuesTable.Columns["materialID_inEmpCoefValue"];
-                foreach (var material in materials)
-                {
-                    comboColumn4.Items.Add(material.nameMaterial.ToString());
-                }
-                DataGridViewComboBoxColumn comboColumn5 = (DataGridViewComboBoxColumn)empiricalCoefValuesTable.Columns["empiricalCoefID_inEmpCoefValues"];
-                foreach (var coef in coefs)
-                {
-                    comboColumn5.Items.Add(coef.name.ToString());
-                }
-            }
-            catch
-            {
-                Dialog dialog = new Dialog("В таблице \"Значения параметров свойств\" отсутствуют столбцы \"id материала\" и/или \"id коэффициента\"", DialogType.Error);
-                dialog.ShowDialog();
-            }
-
             // меню для удаляшки строк
             contextMenu = new ContextMenuStrip();
             var deleteItem = new ToolStripMenuItem("Удалить строку");
@@ -1006,6 +953,7 @@ namespace IssleduemSmetanu
             }
 
             users = InteractionDB.GetAllUsers();
+            UpdateComboBoxes();
         }
 
         private void SaveMaterialsChanges()
@@ -1042,8 +990,8 @@ namespace IssleduemSmetanu
                     InteractionDB.AddMaterial(newMaterial);
                 }
             }
-
             materials = InteractionDB.GetAllMaterials();
+            UpdateComboBoxes();
         }
 
         private void SaveMaterialCharacteristicsChanges()
@@ -1083,8 +1031,8 @@ namespace IssleduemSmetanu
                     InteractionDB.AddMaterialCharacteristic(newChar);
                 }
             }
-
             characteristics = InteractionDB.GetAllMaterialCharacteristics();
+            UpdateComboBoxes();
         }
 
         private void SaveMaterialCharacteristicsValuesChanges()
@@ -1189,6 +1137,7 @@ namespace IssleduemSmetanu
             }
 
             coefs = InteractionDB.GetAllEmpericalCoef();
+            UpdateComboBoxes();
         }
 
         private void SaveEmpericalCoefValuesChanges()
@@ -1252,6 +1201,68 @@ namespace IssleduemSmetanu
             }
 
             coefValues = InteractionDB.GetAllEmpericalCoefValues();
+        }
+
+        private void UpdateComboBoxes()
+        {
+            try
+            {
+                DataGridViewComboBoxColumn comboColumn = (DataGridViewComboBoxColumn)userTable.Columns["Role"];
+                comboColumn.Items.Clear();
+                foreach (var role in roles)
+                {
+                    comboColumn.Items.Add(role.nameRole);
+                }
+            }
+            catch
+            {
+                Dialog dialog = new Dialog("В таблице \"Пользователи\" отсутствует столбец \"Роль\"", DialogType.Error);
+                dialog.ShowDialog();
+            }
+
+            try
+            {
+                DataGridViewComboBoxColumn comboColumn2 = (DataGridViewComboBoxColumn)materialCharacteristicsValuesTable.Columns["materialID_inCharValues"];
+                comboColumn2.Items.Clear();
+                foreach (var material in materials)
+                {
+                    comboColumn2.Items.Add(material.nameMaterial.ToString());
+                }
+
+                DataGridViewComboBoxColumn comboColumn3 = (DataGridViewComboBoxColumn)materialCharacteristicsValuesTable.Columns["characteristicID_inCharValues"];
+                comboColumn3.Items.Clear();
+                foreach (var characteristic in characteristics)
+                {
+                    comboColumn3.Items.Add(characteristic.name.ToString());
+                }
+            }
+            catch
+            {
+                Dialog dialog = new Dialog("В таблице \"Значения параметров свойств\" отсутствуют столбцы \"id материала\" и/или \"id свойства\"", DialogType.Error);
+                dialog.ShowDialog();
+            }
+
+            try
+            {
+                DataGridViewComboBoxColumn comboColumn4 = (DataGridViewComboBoxColumn)empiricalCoefValuesTable.Columns["materialID_inEmpCoefValue"];
+                comboColumn4.Items.Clear();
+                foreach (var material in materials)
+                {
+                    comboColumn4.Items.Add(material.nameMaterial.ToString());
+                }
+
+                DataGridViewComboBoxColumn comboColumn5 = (DataGridViewComboBoxColumn)empiricalCoefValuesTable.Columns["empiricalCoefID_inEmpCoefValues"];
+                comboColumn5.Items.Clear();
+                foreach (var coef in coefs)
+                {
+                    comboColumn5.Items.Add(coef.name.ToString());
+                }
+            }
+            catch
+            {
+                Dialog dialog = new Dialog("В таблице \"Значения параметров свойств\" отсутствуют столбцы \"id материала\" и/или \"id коэффициента\"", DialogType.Error);
+                dialog.ShowDialog();
+            }
         }
     }
 }
