@@ -564,14 +564,16 @@ namespace IssleduemSmetanu
             long memoryUsed = memoryAfter - memoryBefore;
             temperature = Math.Round(tableData[1, tableData.GetLength(1) - 1], 1);
             productViscosity = tableData[2, tableData.GetLength(1) - 1];
+            var stopwatch = Stopwatch.StartNew();
             DisplayCombinedArrayInTable(resultsTable, tableData);
             DisplayChart(temperatureChart, tableData, ChartType.Temperature);
             DisplayChart(viscosityChart, tableData, ChartType.Viscosity);
+            stopwatch.Stop();
             //long memoryAfter = GC.GetTotalMemory(true);
             //long memoryUsed = memoryAfter - memoryBefore;
             int N = (int)Math.Round(smetana.length / smetana.step);
             criteriaIndicatorsLabel.Text = $"Производительность = {performance} [кг/ч]\nТемпература = {temperature} [°C]\nВязкость = {productViscosity} [Па*с]";
-            efficiencyLabel.Text = $"Время расчета и визуализации результатов = {Math.Round((double)(perfTime + tempTime) / 1000000, 4)} [мс]\nОбъем ОЗУ, необходимой для моделирования объекта = {memoryUsed / 1024.0:F2} КБ\nК-во арифметических операций при расчете = {39+34*N}";
+            efficiencyLabel.Text = $"Время расчета и визуализации результатов = {Math.Round((double)(perfTime + tempTime + stopwatch.ElapsedTicks) / 1000000, 2)} [мс]\nОбъем ОЗУ, необходимой для моделирования объекта = {memoryUsed / 1024.0:F2} КБ\nК-во арифметических операций при расчете = {39+34*N}";
         }
 
         private void DisplayCombinedArrayInTable(DataGridView resultsTable, double[,] combinedArray)

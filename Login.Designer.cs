@@ -50,7 +50,7 @@
             this.label1.Location = new System.Drawing.Point(73, 439);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(153, 18);
+            this.label1.Size = new System.Drawing.Size(190, 21);
             this.label1.TabIndex = 1;
             this.label1.Text = "Закрыть программу";
             // 
@@ -63,7 +63,7 @@
             this.label2.Location = new System.Drawing.Point(557, 439);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(127, 18);
+            this.label2.Size = new System.Drawing.Size(161, 21);
             this.label2.TabIndex = 2;
             this.label2.Text = "Войти в систему";
             // 
@@ -74,7 +74,7 @@
             this.usernameTextBox.Location = new System.Drawing.Point(347, 171);
             this.usernameTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.usernameTextBox.Name = "usernameTextBox";
-            this.usernameTextBox.Size = new System.Drawing.Size(225, 21);
+            this.usernameTextBox.Size = new System.Drawing.Size(225, 24);
             this.usernameTextBox.TabIndex = 4;
             this.usernameTextBox.Enter += new System.EventHandler(this.usernameTextBox_Enter);
             this.usernameTextBox.Leave += new System.EventHandler(this.usernameTextBox_Leave);
@@ -88,7 +88,7 @@
             this.usernameLabel.Location = new System.Drawing.Point(343, 145);
             this.usernameLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.usernameLabel.Name = "usernameLabel";
-            this.usernameLabel.Size = new System.Drawing.Size(118, 15);
+            this.usernameLabel.Size = new System.Drawing.Size(141, 18);
             this.usernameLabel.TabIndex = 5;
             this.usernameLabel.Text = "Имя пользователя";
             // 
@@ -101,7 +101,7 @@
             this.passwordLabel.Location = new System.Drawing.Point(343, 208);
             this.passwordLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.passwordLabel.Name = "passwordLabel";
-            this.passwordLabel.Size = new System.Drawing.Size(51, 15);
+            this.passwordLabel.Size = new System.Drawing.Size(61, 18);
             this.passwordLabel.TabIndex = 7;
             this.passwordLabel.Text = "Пароль";
             // 
@@ -113,7 +113,7 @@
             this.passwordTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.passwordTextBox.Name = "passwordTextBox";
             this.passwordTextBox.PasswordChar = '●';
-            this.passwordTextBox.Size = new System.Drawing.Size(225, 21);
+            this.passwordTextBox.Size = new System.Drawing.Size(225, 24);
             this.passwordTextBox.TabIndex = 6;
             this.passwordTextBox.Enter += new System.EventHandler(this.passwordTextBox_Enter);
             this.passwordTextBox.Leave += new System.EventHandler(this.passwordTextBox_Leave);
@@ -136,6 +136,7 @@
             this.button1.TabIndex = 9;
             this.button1.Text = "Я админ";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
@@ -146,6 +147,7 @@
             this.button2.TabIndex = 10;
             this.button2.Text = "Я лигущка";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Visible = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // checkBox1
@@ -154,10 +156,11 @@
             this.checkBox1.ForeColor = System.Drawing.Color.White;
             this.checkBox1.Location = new System.Drawing.Point(347, 315);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(122, 20);
+            this.checkBox1.Size = new System.Drawing.Size(125, 20);
             this.checkBox1.TabIndex = 11;
             this.checkBox1.Text = "Оффнуть звук";
             this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.Visible = false;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // Login
